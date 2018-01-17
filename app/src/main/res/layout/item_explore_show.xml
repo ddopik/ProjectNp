@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/nav_header_height"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/dp8"
+    android:layout_marginStart="@dimen/dp8"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/show_item_height">
+
+        <!--<ImageView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:background="@color/radio_hits_primary_color" />-->
+
+        <ImageView
+            android:id="@+id/show_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+
+        <ImageView
+            android:id="@+id/channel_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_margin="@dimen/dp8" />
+
+        <ImageView
+            android:id="@+id/status_image"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_margin="@dimen/dp8"
+            android:visibility="gone" />
+    </FrameLayout>
+
+    <com.spade.nrc.ui.CustomViews.CustomTextView
+        android:id="@+id/show_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="@dimen/dp8"
+        app:color="@color/black"
+        tools:text="Show Name" />
+
+    <TextView
+        android:id="@+id/presenter_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp8"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/grey_text_color"
+        tools:text="Show Name SDcsdcsdcsdcsd" />
+
+    <TextView
+        android:id="@+id/show_times"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp8"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="@color/grey_text_color"
+        android:visibility="gone"
+        tools:text="Show Name SDcsdcsdcsdcsd" />
+</LinearLayout>

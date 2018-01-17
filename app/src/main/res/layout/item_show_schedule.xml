@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <ImageView
+        android:id="@+id/show_image"
+        android:layout_width="@dimen/show_schedule_image_dimen"
+        android:layout_height="@dimen/show_schedule_image_dimen"
+        android:scaleType="centerCrop"
+        android:src="@drawable/ic_radio_default_show" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/dp8"
+        android:layout_marginStart="@dimen/dp8"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/show_times"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="start"
+            android:textColor="@color/radio_hits_second_color"
+            android:textStyle="bold"
+            tools:text="06:00 PM" />
+
+        <com.spade.nrc.ui.CustomViews.CustomTextView
+            android:id="@+id/show_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp8"
+            android:layout_marginTop="@dimen/dp8"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textSize="@dimen/material_text_subhead"
+            android:textStyle="bold"
+            app:color="@color/radio_hits_primary_color"
+            tools:text="Show Name" />
+
+        <TextView
+            android:id="@+id/presenter_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="start"
+            android:maxLines="1"
+            android:textColor="@color/grey_text_color"
+            android:textStyle="bold"
+            tools:text="Presenter Names" />
+    </LinearLayout>
+</LinearLayout>

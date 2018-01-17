@@ -1,0 +1,84 @@
+package com.spade.nrc.ui.explore.presenter;
+
+import android.content.Context;
+
+import com.androidnetworking.error.ANError;
+import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.ui.explore.view.ExploreView;
+import com.spade.nrc.utils.PrefUtils;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
+/**
+ * Created by Ayman Abouzeid on 1/3/18.
+ */
+
+public class ExplorePresenterImpl implements ExplorePresenter {
+
+    private ExploreView exploreView;
+    private Context context;
+
+    public ExplorePresenterImpl(Context context) {
+        this.context = context;
+    }
+
+    @Override
+    public void setView(ExploreView view) {
+        this.exploreView = view;
+    }
+
+    @Override
+    public void getFeaturedShows() {
+        exploreView.showFeaturedShowsProgress();
+        ApiHelper.getFeaturedShows(PrefUtils.getAppLang(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(showsResponse -> {
+                    exploreView.hideFeaturedShowsProgress();
+                    exploreView.showFeaturedShows(showsResponse.getData());
+                }, throwable -> {
+                    exploreView.hideFeaturedShowsProgress();
+                    if (throwable != null) {
+                        ANError anError = (ANError) throwable;
+                        exploreView.showMessage(anError.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void getLiveNowShows() {
+        exploreView.showLiveShowsProgress();
+        ApiHelper.getLiveShows(PrefUtils.getAppLang(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(showsResponse -> {
+                    exploreView.hideLiveShowsProgress();
+                    exploreView.showLiveNowShows(showsResponse.getData());
+                }, throwable -> {
+                    exploreView.hideLiveShowsProgress();
+                    if (throwable != null) {
+                        ANError anError = (ANError) throwable;
+                        exploreView.showMessage(anError.getMessage());
+                    }
+                });
+    }
+
+    @Override
+    public void getSlidingBanners() {
+        exploreView.showSliderProgress();
+        ApiHelper.getSlidingBanners(PrefUtils.getAppLang(context))
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(slideBannerResponse -> {
+                    exploreView.hideSliderProgress();
+                    exploreView.showSlides(slideBannerResponse.getSlideBannerList());
+                }, throwable -> {
+                    exploreView.hideSliderProgress();
+                    if (throwable != null) {
+                        ANError anError = (ANError) throwable;
+                        exploreView.showMessage(anError.getMessage());
+                    }
+                });
+    }
+}

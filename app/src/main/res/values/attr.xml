@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CustomRecyclerView">
+        <attr name="orientation" format="enum">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+            <enum name="grid" value="2" />
+        </attr>
+        <attr name="span_size" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="CustomTextView">
+        <!--<attr name="fontTypeFaceStyle" format="enum">-->
+        <!--<enum name="raleway-bold" value="0" />-->
+        <!--</attr>-->
+        <attr name="color" format="color" />
+    </declare-styleable>
+    <declare-styleable name="CustomEditText">
+        <attr name="editTextTypeFace" format="enum">
+            <enum name="gotham-regular" value="0" />
+            <enum name="gotham-semi-bold" value="1" />
+            <enum name="gotham-bold" value="2" />
+        </attr>
+    </declare-styleable>
+</resources>
