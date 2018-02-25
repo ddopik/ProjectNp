@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">NRC</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="our_channels">Our Channels</string>
     <string name="live_now">Live Now</string>
     <string name="player">Player</string>
@@ -10,10 +12,44 @@
     <string name="shows">Shows</string>
     <string name="presenters">Presenters</string>
     <string name="schedule">Schedule</string>
-    <string name="radio_hits">Radiohits Fm 88.2</string>
-    <string name="mega_fm">Mega Fm 92.7</string>
-    <string name="nagham">Nagham Fm 105.3</string>
+    <string name="radio_hits">Radio Hits 88.2</string>
+    <string name="mega_fm">Mega FM 92.7</string>
+    <string name="nagham">Nagham FM 105.3</string>
     <string name="sh3by">95 Fm</string>
+    <string name="explore">Explore</string>
+    <string name="presented_by">Presented by</string>
+    <string name="up_next">Up next</string>
+    <string name="next_show_title_tag" translatable="false">next show tag</string>
+    <string name="enjoy_listening">Enjoy listening to %s</string>
+    <string name="live_streaming">Live Streaming</string>
+    <string name="about">About</string>
+    <string name="streaming_error">Streaming Error</string>
+    <string name="profile">Profile</string>
+    <string name="news">News</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="lang">Language</string>
+    <string name="login">Login</string>
+    <string name="call_now">Call Now</string>
+    <string name="send_email">Send an e-mail</string>
+    <string name="send_message">Send message</string>
+    <string name="website_link">Website link</string>
+    <string name="share_feed_back">Share your feedback</string>
+    <string name="address">Address</string>
+    <string name="about_nrc">    Nile Radio Company, is an Egyptian joint stock company for radio management and production.
+    It has four commercial radio stations that address all sectors of the society and cover all age groups
+    in order to provide constant entertainment for radio listeners and raise the collective awareness of the Egyptian public with the consolidation of
+    the Egyptian identity. The four radio stations are:Mega FM 92.7
+Radio Hits 88.2
+Nagham FM 105.3
+95 FM
+</string>
+    <string name="enjoy_listening_to_nrc">Enjoy Listening To \n NRC SUBSIDIARIES</string>
+    <string name="nrc_mobile">0238555960</string>
+    <string name="nrc_fax">0238555959</string>
+    <string name="nrc_email">info@nrceg.com</string>
+    <string name="nrc_address">EMPC, 6th of October, Egypt.</string>
+    <string name="about_nrc_title">about nrc</string>
+    <!--29.9657458,31.0140652-->
 
     <string-array name="week_days">
         <item>Saturday</item>
@@ -21,7 +57,31 @@
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
-        <item>Thursday</item>
+        <item>Thursday</item>S
         <item>Friday</item>
+    </string-array>
+
+    <string-array name="channels_ids">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="channels_streaming_array">
+        <item>https://ahmsamir.radioca.st/stream</item>
+        <item>http://nebula.shoutca.st:8211/mp3</item>
+        <item>http://178.32.62.154:8957/;</item>
+        <item>http://178.32.62.154:9010/;</item>
+    </string-array>
+
+    <string-array name="menu_titles">
+        <!--<item>@string/explore</item>-->
+        <item>@string/about</item>
+        <item>@string/profile</item>a
+        <item>@string/news</item>
+        <item>@string/contact_us</item>
+        <item>@string/lang</item>
+        <item>@string/login</item>
     </string-array>
 </resources>

@@ -1,7 +1,5 @@
 package com.spade.nrc.ui.explore.view;
 
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
@@ -10,36 +8,54 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 
 import com.spade.nrc.R;
 import com.spade.nrc.base.BaseFragment;
+import com.spade.nrc.media.player.MediaPlayerTrack;
+import com.spade.nrc.nrc.media.player.MediaInterface;
+import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
+import com.spade.nrc.ui.explore.model.LiveShowsData;
 import com.spade.nrc.ui.explore.model.SlideBanner;
 import com.spade.nrc.ui.explore.presenter.ExplorePresenter;
 import com.spade.nrc.ui.explore.presenter.ExplorePresenterImpl;
+import com.spade.nrc.ui.main.ChannelNavigationInterface;
 import com.spade.nrc.ui.shows.model.Show;
+import com.spade.nrc.utils.ChannelUtils;
+import com.spade.nrc.utils.Constants;
 
-import java.io.IOException;
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.spade.nrc.utils.Constants.*;
+import static com.spade.nrc.utils.Constants.FEATURED_SHOW_TYPE;
 
 /**
  * Created by Ayman Abouzeid on 1/6/18.
  */
 
-public class ExploreFragment extends BaseFragment implements ExploreView {
+public class ExploreFragment extends BaseFragment implements ExploreView, View.OnClickListener, ShowsAdapter.ShowActions, LiveShowsAdapter.LiveShowActions {
 
     private View exploreView;
     private ExplorePresenter explorePresenter;
     private ProgressBar sliderProgress, liveProgress, featuredProgress;
-    private ShowsAdapter liveShowsAdapter, featuredShowsAdapter;
+    private ShowsAdapter featuredShowsAdapter;
+    private LiveShowsAdapter liveShowsAdapter;
     private SlidingBannerAdapter slidingBannerAdapter;
-    private List<Show> liveNowShows, featuredShows;
+    private List<LiveShowsData> liveNowShows;
+    private List<Show> featuredShows;
     private List<SlideBanner> slideBannerList;
-
+    private ChannelNavigationInterface channelNavigationInterface;
+    private RelativeLayout featuredShowsLayout, liveShowsLayout;
+    //    private MediaInterface mediaInterface;
+    private EventBus eventBus;
 
     @Nullable
     @Override
@@ -116,13 +132,26 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     public void showFeaturedShows(List<Show> showList) {
         this.featuredShows.clear();
         this.featuredShows.addAll(showList);
+
+        if (showList.isEmpty())
+            featuredShowsLayout.setVisibility(View.GONE);
+
         featuredShowsAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void showLiveNowShows(List<Show> showList) {
+    public void showLiveNowShows(List<LiveShowsData> showList) {
         this.liveNowShows.clear();
         this.liveNowShows.addAll(showList);
+
+        if (showList.isEmpty())
+            liveShowsLayout.setVisibility(View.GONE);
+
+//            eventBus.post(showList.get(0));
+//        else
+//            eventBus.post(new MediaPlayerTrack(Constants.RADIO_HITS_ID,
+//                    getString(R.string.enjoy_listening, getString(ChannelUtils.getChannelTitle(Constants.RADIO_HITS_ID)))));
+
         liveShowsAdapter.notifyDataSetChanged();
     }
 
@@ -130,17 +159,32 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
     protected void initPresenter() {
         explorePresenter = new ExplorePresenterImpl(getContext());
         explorePresenter.setView(this);
+        eventBus = EventBus.getDefault();
     }
 
     @Override
     protected void initViews() {
+//        Toolbar toolbar = exploreView.findViewById(R.id.toolbar);
+
         CustomRecyclerView featuredRecycler = exploreView.findViewById(R.id.featured_shows_recycler);
         CustomRecyclerView liveShowsRecycler = exploreView.findViewById(R.id.live_now_recycler_view);
+        ImageView radioChannelImageView = exploreView.findViewById(R.id.radio_channel_image_view);
+        ImageView sh3byChannelImageView = exploreView.findViewById(R.id.sh3by_channel_image_view);
+        ImageView naghamChannelImageView = exploreView.findViewById(R.id.nagham_channel_image_view);
+        ImageView megaChannelImageView = exploreView.findViewById(R.id.mega_channel_image_view);
         ViewPager sliderPager = exploreView.findViewById(R.id.slider_pager);
+
 
         sliderProgress = exploreView.findViewById(R.id.slider_progress);
         liveProgress = exploreView.findViewById(R.id.live_now_progress);
         featuredProgress = exploreView.findViewById(R.id.featured_show_progress);
+        featuredShowsLayout = exploreView.findViewById(R.id.featured_show_layout);
+        liveShowsLayout = exploreView.findViewById(R.id.live_show_layout);
+
+        radioChannelImageView.setOnClickListener(this);
+        sh3byChannelImageView.setOnClickListener(this);
+        naghamChannelImageView.setOnClickListener(this);
+        megaChannelImageView.setOnClickListener(this);
 
         featuredShows = new ArrayList<>();
         liveNowShows = new ArrayList<>();
@@ -150,23 +194,85 @@ public class ExploreFragment extends BaseFragment implements ExploreView {
         sliderPager.setAdapter(slidingBannerAdapter);
 
         int defaultColor = ContextCompat.getColor(getContext(), R.color.black);
-        liveShowsAdapter = new ShowsAdapter(getContext(), liveNowShows, LIVE_SHOW_TYPE, defaultColor);
+        liveShowsAdapter = new LiveShowsAdapter(getContext(), liveNowShows);
+        liveShowsAdapter.setShowActions(this);
         liveShowsRecycler.setAdapter(liveShowsAdapter);
 
-        featuredShowsAdapter = new ShowsAdapter(getContext(), featuredShows, FEATURED_SHOW_TYPE, defaultColor);
+        featuredShowsAdapter = new ShowsAdapter(getContext(), featuredShows, FEATURED_SHOW_TYPE);
+        featuredShowsAdapter.setShowActions(this);
         featuredRecycler.setAdapter(featuredShowsAdapter);
 
         explorePresenter.getSlidingBanners();
         explorePresenter.getLiveNowShows();
         explorePresenter.getFeaturedShows();
 
-//        MediaPlayer mediaPlayer = new MediaPlayer();
-//        try {
-//            mediaPlayer.setDataSource("https://ahmsamir.radioca.st/stream");
-//            mediaPlayer.prepare();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        mediaPlayer.start();
+    }
+
+
+    public void setChannelNavigationInterface(ChannelNavigationInterface channelNavigationInterface) {
+        this.channelNavigationInterface = channelNavigationInterface;
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.radio_channel_image_view:
+                channelNavigationInterface.openChannel(Constants.RADIO_HITS_ID);
+                break;
+            case R.id.sh3by_channel_image_view:
+                channelNavigationInterface.openChannel(Constants.SH3BY_ID);
+                break;
+            case R.id.nagham_channel_image_view:
+                channelNavigationInterface.openChannel(Constants.NAGHAM_ID);
+                break;
+            case R.id.mega_channel_image_view:
+                channelNavigationInterface.openChannel(Constants.MEGA_FM_ID);
+                break;
+        }
+    }
+
+//    public void setMediaInterface(MediaInterface mediaInterface) {
+//        this.mediaInterface = mediaInterface;
+//    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (!eventBus.isRegistered(this))
+            eventBus.register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (eventBus.isRegistered(this))
+            eventBus.unregister(this);
+        super.onDestroy();
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEvent(MediaPlayerEvent mediaPlayerEvent) {
+        if (liveShowsAdapter != null)
+            liveShowsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onShowClicked(Show show) {
+        eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+    }
+
+    @Override
+    public void onLiveShowClicked(Show show, int channelID) {
+        eventBus.post(new ShowsClickEvent(show.getId(), channelID, true));
+    }
+
+    @Override
+    public void onPlayClicked(Show show, int channelID) {
+        if (show != null)
+            eventBus.post(show);
+        else {
+            String mediaTitle = String.format(getString(R.string.enjoy_listening)
+                    , getString(ChannelUtils.getChannelTitle(channelID)));
+            eventBus.post(new MediaPlayerTrack(channelID, mediaTitle));
+        }
     }
 }

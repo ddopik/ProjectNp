@@ -1,5 +1,9 @@
 package com.spade.nrc.utils;
 
+import android.content.Context;
+import android.util.Log;
+import android.util.TypedValue;
+
 /**
  * Created by Ayman Abouzeid on 1/15/18.
  */
@@ -7,8 +11,10 @@ package com.spade.nrc.utils;
 public class Constants {
     public static final String[] WEEK_DAYS = {"saturday", "sunday", "monday", "tuesday", "wednesday", "thursday", "friday"};
     public static final String EXTRA_CHANNEL_ID = "EXTRA_CHANNEL_ID";
+    public static final String EXTRA_SHOW_ID = "EXTRA_SHOW_ID";
+    public static final String EXTRA_PRESENTER_ID = "EXTRA_PRESENTER_ID";
     public static final String EXTRA_SHOW_TYPE = "EXTRA_SHOW_TYPE";
-    public static final String EXTRA_DAY = "EXTRA_SHOW_TYPE";
+    public static final String EXTRA_DAY = "EXTRA_DAY";
     public static final String SATURDAY = "saturday";
     public static final String SUNDAY = "sunday";
     public static final String MONDAY = "monday";
@@ -24,5 +30,20 @@ public class Constants {
     public static final int NORMAL_SHOW_TYPE = 1;
     public static final int LIVE_SHOW_TYPE = 2;
     public static final int SCHEDULE_SHOW_TYPE = 3;
+    public static final String EXTRA_SHOW = "EXTRA_SHOW";
+    public static final String EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL";
+    public static final String ACTION_PAUSE = "ACTION_PAUSE";
+    public static final String ACTION_PLAY = "ACTION_PLAY";
 
+    public static int dpToPx(Context context, int dp) {
+        float density = context.getResources()
+                .getDisplayMetrics()
+                .density;
+        Log.d("DENISTY", density + "");
+        return Math.round((float) dp * density);
+    }
+
+    public static int pxToDp(Context context, int px) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.getResources().getDisplayMetrics());
+    }
 }

@@ -1,163 +1,205 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:animateLayoutChanges="true"
     android:background="@color/white"
-    android:orientation="vertical"
-    tools:context="com.spade.nrc.ui.main.MainActivity">
+    android:orientation="vertical">
 
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/black"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <!--<FrameLayout-->
-        <!--android:id="@+id/fragment_container"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent" />-->
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/menu_image_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_menu" />
+    </android.support.v7.widget.Toolbar>
 
-            <ProgressBar
-                android:id="@+id/slider_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:visibility="gone" />
 
-            <android.support.v4.view.ViewPager
-                android:id="@+id/slider_pager"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_pager_height" />
-        </RelativeLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toolbar"
+        android:animateLayoutChanges="true"
+        android:background="@color/white"
+        android:orientation="vertical"
+        tools:context="com.spade.nrc.ui.main.MainActivity">
 
         <LinearLayout
-            android:id="@+id/channels_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/grey_background"
-            android:gravity="center"
             android:orientation="vertical">
 
-            <com.spade.nrc.ui.CustomViews.CustomTextView
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_our_channels"
-                android:drawablePadding="@dimen/dp8"
-                android:drawableStart="@drawable/ic_our_channels"
-                android:padding="@dimen/activity_vertical_margin"
-                android:text="@string/our_channels"
-                android:textAllCaps="true"
-                android:textSize="@dimen/material_text_subhead"
-                app:color="@color/black" />
+                android:layout_height="wrap_content">
+
+                <ProgressBar
+                    android:id="@+id/slider_progress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:visibility="gone" />
+
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/slider_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/view_pager_height" />
+            </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/channels_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:background="@color/grey_background"
                 android:gravity="center"
-                android:orientation="horizontal">
+                android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <com.spade.nrc.ui.CustomViews.CustomTextView
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_radiohits_circle" />
+                    android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/ic_our_channels"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:text="@string/our_channels"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/material_text_subhead"
+                    app:color="@color/black" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_95fm_circle" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:id="@+id/top_channels_layout"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/radio_channel_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_radiohits_circle" />
+
+                        <ImageView
+                            android:id="@+id/sh3by_channel_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_95fm_circle" />
+                    </LinearLayout>
+
+                    <LinearLayout
+
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/top_channels_layout"
+                        android:layout_marginBottom="@dimen/activity_vertical_margin"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/nagham_channel_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_naghamfm_circle" />
+
+                        <ImageView
+                            android:id="@+id/mega_channel_image_view"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/ic_megafm_circle" />
+                    </LinearLayout>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/ic_nrc_landing" />
+                </RelativeLayout>
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
+                android:id="@+id/live_show_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/activity_vertical_margin"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_marginBottom="@dimen/dp8">
 
-                <ImageView
+                <com.spade.nrc.ui.CustomViews.CustomTextView
+                    android:id="@+id/live_now_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/ic_live_now"
+                    android:gravity="center_vertical"
+                    android:padding="@dimen/dp8"
+                    android:text="@string/live_now"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/material_text_subhead"
+                    app:color="@color/black" />
+
+                <com.spade.nrc.ui.CustomViews.CustomRecyclerView
+                    android:id="@+id/live_now_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/live_now_title"
+                    android:layout_marginEnd="@dimen/dp8"
+                    android:orientation="horizontal" />
+
+                <ProgressBar
+                    android:id="@+id/live_now_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_naghamfm_circle" />
+                    android:layout_below="@id/live_now_title"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
 
-                <ImageView
+            <RelativeLayout
+                android:id="@+id/featured_show_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/circle_image_background_dimen">
+
+
+                <com.spade.nrc.ui.CustomViews.CustomTextView
+                    android:id="@+id/shows_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_featured_shows"
+                    android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/ic_featured_shows"
+                    android:padding="@dimen/dp8"
+                    android:text="@string/featured_shows"
+                    android:textAllCaps="true"
+                    android:textSize="@dimen/material_text_subhead"
+                    app:color="@color/black" />
+
+                <com.spade.nrc.ui.CustomViews.CustomRecyclerView
+                    android:id="@+id/featured_shows_recycler"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/shows_title"
+                    android:layout_marginEnd="@dimen/dp8"
+                    android:layout_marginRight="@dimen/dp8"
+                    android:orientation="horizontal" />
+
+                <ProgressBar
+                    android:id="@+id/featured_show_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_megafm_circle" />
-            </LinearLayout>
+                    android:layout_below="@id/shows_title"
+                    android:layout_centerHorizontal="true"
+                    android:visibility="gone" />
+            </RelativeLayout>
         </LinearLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/dp8">
-
-            <com.spade.nrc.ui.CustomViews.CustomTextView
-                android:id="@+id/live_now_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_live_now"
-                android:drawablePadding="@dimen/dp8"
-                android:drawableStart="@drawable/ic_live_now"
-                android:padding="@dimen/dp8"
-                android:text="@string/live_now"
-                android:textAllCaps="true"
-                android:textSize="@dimen/material_text_subhead"
-                app:color="@color/black" />
-
-            <com.spade.nrc.ui.CustomViews.CustomRecyclerView
-                android:id="@+id/live_now_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/live_now_title"
-                android:orientation="horizontal" />
-
-            <ProgressBar
-                android:id="@+id/live_now_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/live_now_title"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/activity_vertical_margin">
-
-
-            <com.spade.nrc.ui.CustomViews.CustomTextView
-                android:id="@+id/shows_title"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:drawableLeft="@drawable/ic_featured_shows"
-                android:drawablePadding="@dimen/dp8"
-                android:drawableStart="@drawable/ic_featured_shows"
-                android:padding="@dimen/dp8"
-                android:text="@string/featured_shows"
-                android:textAllCaps="true"
-                android:textSize="@dimen/material_text_subhead"
-                app:color="@color/black" />
-
-            <com.spade.nrc.ui.CustomViews.CustomRecyclerView
-                android:id="@+id/featured_shows_recycler"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shows_title"
-                android:orientation="horizontal" />
-
-            <ProgressBar
-                android:id="@+id/featured_show_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/shows_title"
-                android:layout_centerHorizontal="true"
-                android:visibility="gone" />
-        </RelativeLayout>
-    </LinearLayout>
-</ScrollView>
-
+    </ScrollView>
+</RelativeLayout>

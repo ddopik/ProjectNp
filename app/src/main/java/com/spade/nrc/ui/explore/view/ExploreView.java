@@ -1,6 +1,7 @@
 package com.spade.nrc.ui.explore.view;
 
 import com.spade.nrc.base.BaseView;
+import com.spade.nrc.ui.explore.model.LiveShowsData;
 import com.spade.nrc.ui.explore.model.SlideBanner;
 import com.spade.nrc.ui.shows.model.Show;
 
@@ -27,5 +28,5 @@ public interface ExploreView extends BaseView {
 
     void showFeaturedShows(List<Show> showList);
 
-    void showLiveNowShows(List<Show> showList);
+    void showLiveNowShows(List<LiveShowsData> showList);
 }

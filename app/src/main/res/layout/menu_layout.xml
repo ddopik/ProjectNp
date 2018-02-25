@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:background="@android:color/transparent">
+
+    <ImageView
+        android:id="@+id/menu_collapsed_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:scaleType="fitXY"
+        android:src="@drawable/ic_menu_closed"
+        android:visibility="visible" />
+
+    <LinearLayout
+        android:id="@+id/menu_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/ic_menu_opened"
+        android:orientation="horizontal"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/radio_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:src="@drawable/ic_radiohits_menu" />
+
+        <ImageView
+            android:id="@+id/nagham_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp32"
+            android:layout_weight="1"
+            android:src="@drawable/ic_nagham_menu" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/explore_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|top"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:drawableTop="@drawable/ic_explore_menu"
+                android:text="@string/explore"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/material_text_caption" />
+
+            <ImageView
+                android:id="@+id/close_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/activity_vertical_margin"
+                android:src="@drawable/ic_close_white" />
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/mega_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp32"
+            android:layout_weight="1"
+            android:src="@drawable/ic_mega_menu" />
+
+        <ImageView
+            android:id="@+id/sh3by_image_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/activity_vertical_margin"
+            android:layout_weight="1"
+            android:src="@drawable/ic_95_menu" />
+
+    </LinearLayout>
+
+
+</FrameLayout>

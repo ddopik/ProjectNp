@@ -1,8 +1,14 @@
 package com.spade.nrc.network;
 
 import com.rx2androidnetworking.Rx2AndroidNetworking;
+import com.spade.nrc.ui.channel.model.ChannelsResponse;
+import com.spade.nrc.ui.explore.model.LiveShowsResponse;
 import com.spade.nrc.ui.explore.model.SlideBannerResponse;
+import com.spade.nrc.ui.presenters.model.PresenterDetailsResponse;
 import com.spade.nrc.ui.presenters.model.PresentersResponse;
+import com.spade.nrc.ui.shows.model.CurrentAndNextShowsResponse;
+import com.spade.nrc.ui.shows.model.ShowDetailsResponse;
+import com.spade.nrc.ui.shows.model.ShowsPagesResponse;
 import com.spade.nrc.ui.shows.model.ShowsResponse;
 
 import io.reactivex.Observable;
@@ -15,8 +21,12 @@ public class ApiHelper {
 
     private static final String BASE_URL = "http://dev.spade.studio/nrc/public/api/v1/{lang}/";
     private static final String PRESENTERS_LIST_URL = BASE_URL + "presenters";
+    private static final String PRESENTERS_DETAILS_URL = BASE_URL + "presenters/{id}";
+    private static final String SHOW_DETAILS_URL = BASE_URL + "shows/{id}";
     private static final String SHOWS_LIST_URL = BASE_URL + "shows";
     private static final String FEATURED_SHOWS_LIST_URL = BASE_URL + "getFeaturedShows";
+    private static final String CURRENT_AND_NEXT_SHOWS = BASE_URL + "getCurrentAndNextShowsForChannel";
+    private static final String CHANNELS_URL = BASE_URL + "channels";
     private static final String LIVE_SHOWS_LIST_URL = BASE_URL + "getLiveShows";
     private static final String SLIDING_BANNERS_URL = BASE_URL + "slidingBanners";
     private static final String SHOWS_BY_DAY = BASE_URL + "getShowsByDay/{day}";
@@ -26,6 +36,8 @@ public class ApiHelper {
     private static final String LANG_PATH_PARAM = "lang";
     private static final String CHANNEL_PARAM = "channel";
     private static final String DAY_PARAM = "day";
+    private static final String PAGE_PARAM = "page";
+    private static final String ID_PATH_PARAM = "id";
 
     public static Observable<PresentersResponse> getPresenters(String appLang, String channelID) {
         return Rx2AndroidNetworking.get(PRESENTERS_LIST_URL)
@@ -35,12 +47,46 @@ public class ApiHelper {
                 .getObjectObservable(PresentersResponse.class);
     }
 
-    public static Observable<ShowsResponse> getShows(String appLang, String channelID) {
+    public static Observable<PresenterDetailsResponse> getPresenterDetails(String appLang, String presenterID, String channelID) {
+        return Rx2AndroidNetworking.get(PRESENTERS_DETAILS_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addPathParameter(ID_PATH_PARAM, presenterID)
+                .addQueryParameter(CHANNEL_PARAM, channelID)
+                .build()
+                .getObjectObservable(PresenterDetailsResponse.class);
+    }
+
+    public static Observable<ShowsPagesResponse> getShows(String appLang, String channelID) {
         return Rx2AndroidNetworking.get(SHOWS_LIST_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .addQueryParameter(CHANNEL_PARAM, channelID)
+                .addQueryParameter(PAGE_PARAM, "1")
                 .build()
-                .getObjectObservable(ShowsResponse.class);
+                .getObjectObservable(ShowsPagesResponse.class);
+    }
+
+    public static Observable<CurrentAndNextShowsResponse> getCurrentAndNextShows(String appLang, String channelID) {
+        return Rx2AndroidNetworking.get(CURRENT_AND_NEXT_SHOWS)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addQueryParameter(CHANNEL_PARAM, channelID)
+                .addQueryParameter(PAGE_PARAM, "1")
+                .build()
+                .getObjectObservable(CurrentAndNextShowsResponse.class);
+    }
+
+    public static Observable<ChannelsResponse> getChannels(String appLang) {
+        return Rx2AndroidNetworking.get(CHANNELS_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .build()
+                .getObjectObservable(ChannelsResponse.class);
+    }
+
+    public static Observable<ShowDetailsResponse> getShowDetails(String appLang, String showID) {
+        return Rx2AndroidNetworking.get(SHOW_DETAILS_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addPathParameter(ID_PATH_PARAM, showID)
+                .build()
+                .getObjectObservable(ShowDetailsResponse.class);
     }
 
     public static Observable<ShowsResponse> getShowsByDay(String appLang, String day, String channelID) {
@@ -59,11 +105,11 @@ public class ApiHelper {
                 .getObjectObservable(ShowsResponse.class);
     }
 
-    public static Observable<ShowsResponse> getLiveShows(String appLang) {
+    public static Observable<LiveShowsResponse> getLiveShows(String appLang) {
         return Rx2AndroidNetworking.get(LIVE_SHOWS_LIST_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .build()
-                .getObjectObservable(ShowsResponse.class);
+                .getObjectObservable(LiveShowsResponse.class);
     }
 
     public static Observable<SlideBannerResponse> getSlidingBanners(String appLang) {

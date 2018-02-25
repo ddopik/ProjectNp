@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.spade.nrc.ui.presenters.model.Presenter;
 
 import java.util.List;
 
@@ -61,7 +62,7 @@ public class Show implements Parcelable {
         this.description = ((String) in.readValue((String.class.getClassLoader())));
         this.media = ((String) in.readValue((String.class.getClassLoader())));
         this.isFeatured = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        in.readList(this.presenters, (com.spade.nrc.ui.shows.model.Presenter.class.getClassLoader()));
+        in.readList(this.presenters, (Presenter.class.getClassLoader()));
         in.readList(this.schedules, (com.spade.nrc.ui.shows.model.Schedule.class.getClassLoader()));
         this.channel = (Channel) in.readValue(Channel.class.getClassLoader());
     }

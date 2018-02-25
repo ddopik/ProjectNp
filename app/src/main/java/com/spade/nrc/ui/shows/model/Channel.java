@@ -23,22 +23,28 @@ public class Channel implements Parcelable {
     private String slug;
     @SerializedName("brief")
     @Expose
-    private Object brief;
+    private String brief;
     @SerializedName("media")
     @Expose
     private String media;
     @SerializedName("facebook")
     @Expose
-    private Object facebook;
+    private String facebook;
     @SerializedName("twitter")
     @Expose
-    private Object twitter;
+    private String twitter;
     @SerializedName("instgram")
     @Expose
-    private Object instgram;
+    private String instgram;
     @SerializedName("youtube")
     @Expose
-    private Object youtube;
+    private String youtube;
+    @SerializedName("telephone_number")
+    @Expose
+    private String telephoneNumber;
+    @SerializedName("sms_number")
+    @Expose
+    private String smsNumber;
     public final static Parcelable.Creator<Channel> CREATOR = new Creator<Channel>() {
 
 
@@ -59,12 +65,15 @@ public class Channel implements Parcelable {
         this.id = ((Integer) in.readValue((Integer.class.getClassLoader())));
         this.name = ((String) in.readValue((String.class.getClassLoader())));
         this.slug = ((String) in.readValue((String.class.getClassLoader())));
-        this.brief = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.brief = ((String) in.readValue((String.class.getClassLoader())));
         this.media = ((String) in.readValue((String.class.getClassLoader())));
-        this.facebook = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.twitter = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.instgram = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.youtube = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.facebook = ((String) in.readValue((String.class.getClassLoader())));
+        this.twitter = ((String) in.readValue((String.class.getClassLoader())));
+        this.instgram = ((String) in.readValue((String.class.getClassLoader())));
+        this.youtube = ((String) in.readValue((String.class.getClassLoader())));
+        this.telephoneNumber = ((String) in.readValue((String.class.getClassLoader())));
+        this.smsNumber = ((String) in.readValue((String.class.getClassLoader())));
+
     }
 
     public Channel() {
@@ -94,11 +103,11 @@ public class Channel implements Parcelable {
         this.slug = slug;
     }
 
-    public Object getBrief() {
+    public String getBrief() {
         return brief;
     }
 
-    public void setBrief(Object brief) {
+    public void setBrief(String brief) {
         this.brief = brief;
     }
 
@@ -110,36 +119,53 @@ public class Channel implements Parcelable {
         this.media = media;
     }
 
-    public Object getFacebook() {
+    public String getFacebook() {
         return facebook;
     }
 
-    public void setFacebook(Object facebook) {
+    public void setFacebook(String facebook) {
         this.facebook = facebook;
     }
 
-    public Object getTwitter() {
+    public String getTwitter() {
         return twitter;
     }
 
-    public void setTwitter(Object twitter) {
+    public void setTwitter(String twitter) {
         this.twitter = twitter;
     }
 
-    public Object getInstgram() {
+    public String getInstgram() {
         return instgram;
     }
 
-    public void setInstgram(Object instgram) {
+    public void setInstgram(String instgram) {
         this.instgram = instgram;
     }
 
-    public Object getYoutube() {
+
+    public String getYoutube() {
         return youtube;
     }
 
-    public void setYoutube(Object youtube) {
+    public void setYoutube(String youtube) {
         this.youtube = youtube;
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
+    }
+
+    public String getSmsNumber() {
+        return smsNumber;
+    }
+
+    public void setSmsNumber(String smsNumber) {
+        this.smsNumber = smsNumber;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
@@ -152,6 +178,8 @@ public class Channel implements Parcelable {
         dest.writeValue(twitter);
         dest.writeValue(instgram);
         dest.writeValue(youtube);
+        dest.writeValue(telephoneNumber);
+        dest.writeValue(smsNumber);
     }
 
     public int describeContents() {

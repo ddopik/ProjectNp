@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.nrc.media.player.MusicProvider;
 import com.spade.nrc.ui.explore.view.ExploreView;
 import com.spade.nrc.utils.PrefUtils;
 
@@ -55,6 +56,8 @@ public class ExplorePresenterImpl implements ExplorePresenter {
                 .subscribe(showsResponse -> {
                     exploreView.hideLiveShowsProgress();
                     exploreView.showLiveNowShows(showsResponse.getData());
+//                    MusicProvider musicProvider = MusicProvider.getInstance();
+//                    musicProvider.setShowsList(showsResponse.getData());
                 }, throwable -> {
                     exploreView.hideLiveShowsProgress();
                     if (throwable != null) {

@@ -13,22 +13,39 @@
         android:layout_toLeftOf="@id/arrow_image"
         android:layout_toStartOf="@id/arrow_image">
 
-        <ImageView
-            android:id="@+id/presenter_image"
-            android:layout_width="@dimen/circular_image_size"
-            android:layout_height="@dimen/circular_image_size"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_centerVertical="true" />
+        <FrameLayout
+            android:id="@+id/presenter_image_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/presenter_image_background"
+                android:layout_width="82dp"
+                android:layout_height="82dp" />
+
+            <ImageView
+                android:id="@+id/presenter_image"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_mega_default_presenter" />
+        </FrameLayout>
+
+        <!--<ImageView-->
+        <!--android:id="@+id/presenter_image"-->
+        <!--android:layout_width="@dimen/circle_image_dimen"-->
+        <!--android:layout_height="@dimen/circle_image_dimen"-->
+        <!--android:layout_alignParentLeft="true"-->
+        <!--android:layout_alignParentStart="true"-->
+        <!--android:layout_centerVertical="true" />-->
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="@dimen/dp8"
             android:layout_marginStart="@dimen/dp8"
-            android:layout_toEndOf="@id/presenter_image"
-            android:layout_toRightOf="@id/presenter_image"
+            android:layout_toEndOf="@id/presenter_image_layout"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <com.spade.nrc.ui.CustomViews.CustomTextView
@@ -37,11 +54,13 @@
                 android:layout_height="wrap_content"
                 tools:text="A7la 7 el sa3a sb3a" />
 
-            <com.spade.nrc.ui.CustomViews.CustomTextView
+            <TextView
                 android:id="@+id/show_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp8"
+                android:textColor="@color/grey_text_color"
+                android:visibility="gone"
                 tools:text="Osam Mounir" />
         </LinearLayout>
     </RelativeLayout>

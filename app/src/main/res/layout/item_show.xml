@@ -3,18 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/show_item_height">
+    android:layout_height="@dimen/show_item_height"
+    android:layout_marginBottom="1dp">
 
     <ImageView
         android:id="@+id/show_image"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:src="@drawable/ic_radio_default_show" />
 
     <ImageView
         android:id="@+id/opacity_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.2"
+        android:alpha="0.4"
         android:background="@color/black" />
 
     <ImageView
@@ -22,7 +24,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
         android:padding="@dimen/activity_vertical_margin"
         android:src="@drawable/ic_favorite"
         android:visibility="gone" />
@@ -30,7 +31,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/favourite_image"
         android:layout_toStartOf="@id/favourite_image"
         android:orientation="vertical"
         android:padding="@dimen/activity_vertical_margin">
@@ -43,12 +43,12 @@
             app:color="@color/white"
             tools:text="A7la 7 el sa3a sb3a" />
 
-        <com.spade.nrc.ui.CustomViews.CustomTextView
+        <TextView
             android:id="@+id/presenter_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp8"
-            app:color="@color/white"
+            android:layout_marginTop="@dimen/dp4"
+            android:textColor="@color/white"
             tools:text="Osam Mounir" />
     </LinearLayout>
 </RelativeLayout>

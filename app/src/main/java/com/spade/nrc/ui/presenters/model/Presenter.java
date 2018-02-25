@@ -6,6 +6,9 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.spade.nrc.ui.shows.model.Show;
+
+import java.util.List;
 
 public class Presenter implements Parcelable {
 
@@ -33,6 +36,10 @@ public class Presenter implements Parcelable {
     @SerializedName("media")
     @Expose
     private String media;
+    @SerializedName("show")
+    @Expose
+    private List<Show> showList;
+
     public final static Creator<Presenter> CREATOR = new Creator<Presenter>() {
 
 
@@ -58,6 +65,7 @@ public class Presenter implements Parcelable {
         this.twitter = ((String) in.readValue((String.class.getClassLoader())));
         this.instagram = ((String) in.readValue((String.class.getClassLoader())));
         this.media = ((String) in.readValue((String.class.getClassLoader())));
+        in.readList(this.showList, Show.class.getClassLoader());
     }
 
     public Presenter() {
@@ -127,6 +135,14 @@ public class Presenter implements Parcelable {
         this.media = media;
     }
 
+    public List<Show> getShowList() {
+        return showList;
+    }
+
+    public void setShowList(List<Show> showList) {
+        this.showList = showList;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(name);
@@ -136,6 +152,7 @@ public class Presenter implements Parcelable {
         dest.writeValue(twitter);
         dest.writeValue(instagram);
         dest.writeValue(media);
+        dest.writeList(showList);
     }
 
     public int describeContents() {

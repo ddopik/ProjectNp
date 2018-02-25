@@ -12,14 +12,18 @@ public class NavigationManager {
 
     private AppCompatActivity activity;
 
-    public void openFragmentAsRoot(BaseFragment baseFragment, int fragmentContainerID) {
+    public NavigationManager(AppCompatActivity activity) {
+        this.activity = activity;
+    }
+
+    public void openFragmentAsRoot(BaseFragment baseFragment, int fragmentContainerID, String tag) {
         activity.getSupportFragmentManager().beginTransaction()
-                .add(fragmentContainerID, baseFragment).commit();
+                .add(fragmentContainerID, baseFragment, tag).commit();
     }
 
 
-    public void openFragment(BaseFragment baseFragment, int fragmentContainerID, String name) {
+    public void openFragment(BaseFragment baseFragment, int fragmentContainerID, String tag) {
         activity.getSupportFragmentManager().beginTransaction().
-                add(fragmentContainerID, baseFragment).addToBackStack(name).commit();
+                add(fragmentContainerID, baseFragment).addToBackStack(tag).commit();
     }
 }

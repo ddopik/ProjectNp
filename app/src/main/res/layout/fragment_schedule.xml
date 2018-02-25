@@ -16,7 +16,7 @@
         app:tabSelectedTextColor="@color/mega_second_color"
         app:tabTextColor="@color/white" />
 
-    <com.spade.nrc.ui.CustomViews.CustomViewPager
+    <android.support.v4.view.ViewPager
         android:id="@+id/fragments_viewpager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

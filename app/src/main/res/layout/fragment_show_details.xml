@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/grey_background"
+    android:orientation="vertical">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fitsSystemWindows="true">
+
+        <android.support.design.widget.CollapsingToolbarLayout
+            android:id="@+id/collapsing_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:contentScrim="?attr/colorPrimary"
+            app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true"
+                app:layout_collapseMode="parallax">
+
+                <ImageView
+                    android:id="@+id/show_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/show_image_height"
+                    android:scaleType="centerCrop" />
+
+                <!--<ImageView-->
+
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="@dimen/show_image_height"-->
+                <!--android:alpha="0.5"-->
+                <!--android:scaleType="centerCrop"-->
+                <!--android:src="@drawable/two_gradients_drawble" />-->
+            </FrameLayout>
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+                app:layout_collapseMode="pin"
+                app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+                <ImageView
+                    android:id="@+id/back_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_arrow_left" />
+            </android.support.v7.widget.Toolbar>
+        </android.support.design.widget.CollapsingToolbarLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/grey_background"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical">
+
+
+                    <com.spade.nrc.ui.CustomViews.CustomTextView
+                        android:id="@+id/show_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:textSize="@dimen/material_text_subhead"
+                        app:color="@color/black" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/dp8">
+
+                        <TextView
+                            android:id="@+id/show_days"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:textAllCaps="true"
+                            android:textColor="@color/grey_text_color" />
+
+                        <TextView
+                            android:id="@+id/show_followers"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:textAllCaps="true"
+                            android:textColor="@color/grey_text_color"
+                            android:visibility="gone" />
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/show_times"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginStart="@dimen/activity_vertical_margin"
+                        android:layout_marginTop="@dimen/dp8"
+                        android:textAllCaps="true"
+                        android:textColor="@color/grey_text_color" />
+
+                    <TextView
+                        android:id="@+id/about_show_text_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/dp8"
+                        android:paddingEnd="@dimen/activity_vertical_margin"
+                        android:paddingStart="@dimen/activity_vertical_margin"
+                        android:paddingTop="@dimen/activity_vertical_margin"
+                        android:textColor="@color/black"
+                        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ullamcorper feugiat nisi nec consectetur. Nulla eu eros sapien. Nullam hendrerit volutpat volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia nisl vel nulla condimentum iaculis. Suspendisse ante diam, interdum at viverra eu, volutpat nec ante. Nunc porta diam massa, at posuere tellus luctus eu." />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/presenters_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/circle_image_background_dimen"
+                    android:background="@color/grey_background"
+                    android:orientation="vertical">
+
+                    <com.spade.nrc.ui.CustomViews.CustomTextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp8"
+                        android:layout_marginStart="@dimen/dp8"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
+                        android:gravity="start"
+                        android:text="@string/presented_by"
+                        android:textAllCaps="true"
+                        android:textSize="@dimen/material_text_subhead"
+                        app:color="@color/grey_text_color" />
+
+                    <com.spade.nrc.ui.CustomViews.CustomRecyclerView
+                        android:id="@+id/show_presenters_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:orientation="vertical" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true" />
+        </RelativeLayout>
+    </android.support.v4.widget.NestedScrollView>
+</android.support.design.widget.CoordinatorLayout>

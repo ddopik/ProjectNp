@@ -31,7 +31,7 @@ public class ShowsPresenterImpl implements ShowsPresenter {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {
                     showsView.hideProgress();
-                    showsView.displayShows(showsResponse.getData());
+                    showsView.displayShows(showsResponse.getShowsData().getShows());
                 }, throwable -> {
                     showsView.hideProgress();
                     if (throwable != null) {
