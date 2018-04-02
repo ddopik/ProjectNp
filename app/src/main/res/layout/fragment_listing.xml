@@ -8,14 +8,13 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/circle_image_background_dimen"
         android:background="@color/white">
 
         <com.spade.nrc.ui.CustomViews.CustomRecyclerView
             android:id="@+id/items_recycler"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/white"
+            android:layout_marginBottom="@dimen/circle_image_background_dimen"
             app:orientation="vertical" />
 
         <ProgressBar

@@ -2,6 +2,7 @@ package com.spade.nrc.ui.general;
 
 import android.support.v7.app.AppCompatActivity;
 
+import com.spade.nrc.R;
 import com.spade.nrc.base.BaseFragment;
 
 /**
@@ -25,5 +26,13 @@ public class NavigationManager {
     public void openFragment(BaseFragment baseFragment, int fragmentContainerID, String tag) {
         activity.getSupportFragmentManager().beginTransaction().
                 add(fragmentContainerID, baseFragment).addToBackStack(tag).commit();
+    }
+
+    public BaseFragment getCurrentFragment() {
+        return (BaseFragment) activity.getSupportFragmentManager().findFragmentById(R.id.fragment_container);
+    }
+
+    public interface OnMenuOpenClicked {
+        void onMenuImageClicked();
     }
 }

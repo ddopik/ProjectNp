@@ -9,4 +9,6 @@ import com.spade.nrc.ui.channel.view.ChannelsDetailsView;
 
 public interface ChannelDetailsPresenter extends BasePresenter<ChannelsDetailsView> {
     void setUpViewPager(int channelID);
+
+    void addChannelToFav(int channelID);
 }

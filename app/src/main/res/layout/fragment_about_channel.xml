@@ -17,7 +17,7 @@
             <ImageView
                 android:id="@+id/channel_image"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/show_image_height" />
+                android:layout_height="@dimen/show_item_height" />
 
             <TextView
                 android:id="@+id/about_channel_text_view"

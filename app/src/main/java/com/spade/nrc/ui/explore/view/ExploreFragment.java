@@ -2,7 +2,6 @@ package com.spade.nrc.ui.explore.view;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,10 +11,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
-import com.spade.nrc.nrc.media.player.MediaInterface;
 import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
 import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
@@ -23,7 +24,9 @@ import com.spade.nrc.ui.explore.model.LiveShowsData;
 import com.spade.nrc.ui.explore.model.SlideBanner;
 import com.spade.nrc.ui.explore.presenter.ExplorePresenter;
 import com.spade.nrc.ui.explore.presenter.ExplorePresenterImpl;
+import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.ChannelNavigationInterface;
+import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
@@ -54,7 +57,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     private List<SlideBanner> slideBannerList;
     private ChannelNavigationInterface channelNavigationInterface;
     private RelativeLayout featuredShowsLayout, liveShowsLayout;
-    //    private MediaInterface mediaInterface;
+    private NavigationManager.OnMenuOpenClicked onMenuOpenClicked;
     private EventBus eventBus;
 
     @Nullable
@@ -147,11 +150,6 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         if (showList.isEmpty())
             liveShowsLayout.setVisibility(View.GONE);
 
-//            eventBus.post(showList.get(0));
-//        else
-//            eventBus.post(new MediaPlayerTrack(Constants.RADIO_HITS_ID,
-//                    getString(R.string.enjoy_listening, getString(ChannelUtils.getChannelTitle(Constants.RADIO_HITS_ID)))));
-
         liveShowsAdapter.notifyDataSetChanged();
     }
 
@@ -160,6 +158,13 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         explorePresenter = new ExplorePresenterImpl(getContext());
         explorePresenter.setView(this);
         eventBus = EventBus.getDefault();
+        sendAnalytics(getString(R.string.explore));
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -172,6 +177,8 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         ImageView sh3byChannelImageView = exploreView.findViewById(R.id.sh3by_channel_image_view);
         ImageView naghamChannelImageView = exploreView.findViewById(R.id.nagham_channel_image_view);
         ImageView megaChannelImageView = exploreView.findViewById(R.id.mega_channel_image_view);
+        ImageView menuImageView = exploreView.findViewById(R.id.menu_image_view);
+
         ViewPager sliderPager = exploreView.findViewById(R.id.slider_pager);
 
 
@@ -181,6 +188,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         featuredShowsLayout = exploreView.findViewById(R.id.featured_show_layout);
         liveShowsLayout = exploreView.findViewById(R.id.live_show_layout);
 
+        menuImageView.setOnClickListener(this);
         radioChannelImageView.setOnClickListener(this);
         sh3byChannelImageView.setOnClickListener(this);
         naghamChannelImageView.setOnClickListener(this);
@@ -193,7 +201,6 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         slidingBannerAdapter = new SlidingBannerAdapter(getContext(), slideBannerList);
         sliderPager.setAdapter(slidingBannerAdapter);
 
-        int defaultColor = ContextCompat.getColor(getContext(), R.color.black);
         liveShowsAdapter = new LiveShowsAdapter(getContext(), liveNowShows);
         liveShowsAdapter.setShowActions(this);
         liveShowsRecycler.setAdapter(liveShowsAdapter);
@@ -228,12 +235,11 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
             case R.id.mega_channel_image_view:
                 channelNavigationInterface.openChannel(Constants.MEGA_FM_ID);
                 break;
+            case R.id.menu_image_view:
+                onMenuOpenClicked.onMenuImageClicked();
+                break;
         }
     }
-
-//    public void setMediaInterface(MediaInterface mediaInterface) {
-//        this.mediaInterface = mediaInterface;
-//    }
 
     @Override
     public void onStart() {
@@ -267,12 +273,20 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
 
     @Override
     public void onPlayClicked(Show show, int channelID) {
-        if (show != null)
-            eventBus.post(show);
-        else {
-            String mediaTitle = String.format(getString(R.string.enjoy_listening)
+        String mediaTitle;
+        List<Schedule> scheduleList = new ArrayList<>();
+        if (show != null) {
+            mediaTitle = show.getTitle();
+            scheduleList.addAll(show.getSchedules());
+        } else {
+            mediaTitle = String.format(getString(R.string.enjoy_listening)
                     , getString(ChannelUtils.getChannelTitle(channelID)));
-            eventBus.post(new MediaPlayerTrack(channelID, mediaTitle));
         }
+        MediaPlayerTrack mediaPlayerTrack = new MediaPlayerTrack(channelID, mediaTitle, scheduleList);
+        eventBus.post(mediaPlayerTrack);
+    }
+
+    public void setOnMenuOpenClicked(NavigationManager.OnMenuOpenClicked onMenuOpenClicked) {
+        this.onMenuOpenClicked = onMenuOpenClicked;
     }
 }

@@ -8,5 +8,5 @@ import com.spade.nrc.ui.presenters.view.PresentersView;
  */
 
 public interface PresentersPresenter extends BasePresenter<PresentersView> {
-    void getPresenters(String appLang, int channelID);
+    void getPresenters(String appLang, int channelID, int pageNumber);
 }

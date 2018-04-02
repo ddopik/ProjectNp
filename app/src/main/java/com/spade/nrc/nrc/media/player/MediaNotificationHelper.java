@@ -24,7 +24,6 @@ import android.content.ContextWrapper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.media.MediaDescriptionCompat;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaButtonReceiver;
 import android.support.v4.media.session.MediaControllerCompat;
@@ -40,12 +39,10 @@ import com.spade.nrc.utils.ChannelUtils;
  */
 public class MediaNotificationHelper extends ContextWrapper {
 
-    private static NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
     public String CHANNEL_ONE_ID = getPackageName();
-    private int notificationID = 101;
-
     private CharSequence CHANNEL_ONE_NAME = "NRC Live Streaming";
+    int notificationID = 101;
 
     public MediaNotificationHelper(Context context) {
         super(context);
@@ -65,7 +62,7 @@ public class MediaNotificationHelper extends ContextWrapper {
     }
 
     public void createChannels() {
-        NotificationChannel notificationChannel = null;
+        NotificationChannel notificationChannel;
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             notificationChannel = new NotificationChannel(CHANNEL_ONE_ID,
                     CHANNEL_ONE_NAME, NotificationManager.IMPORTANCE_HIGH);
@@ -75,9 +72,14 @@ public class MediaNotificationHelper extends ContextWrapper {
         }
     }
 
+    public void clearNotification() {
+        notificationManager.cancel(notificationID);
+    }
+
 
     public static Notification createNotification(Context context,
                                                   MediaSessionCompat mediaSession, String channelID) {
+//        mStarted = true;
         MediaControllerCompat controller = mediaSession.getController();
         MediaMetadataCompat mMetadata = controller.getMetadata();
         PlaybackStateCompat mPlaybackState = controller.getPlaybackState();
@@ -103,23 +105,26 @@ public class MediaNotificationHelper extends ContextWrapper {
         int albumArt = ChannelUtils.getLiveStreamingDefault(Integer.parseInt(mMetadata.getDescription().getMediaId()));
         Bitmap art = BitmapFactory.decodeResource(context.getResources(),
                 albumArt);
-//        if (notificationBuilder == null)
-            notificationBuilder = new NotificationCompat.Builder(context, channelID);
-//        else
-//            notificationBuilder.mActions.clear();
-
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, channelID);
         notificationBuilder
                 .setStyle(new android.support.v4.media.app.NotificationCompat.MediaStyle()
                         .setShowActionsInCompactView(new int[]{0})
-                        .setMediaSession(mediaSession.getSessionToken()))
+                        .setMediaSession(mediaSession.getSessionToken())
+                        .setShowCancelButton(true)
+                        .setCancelButtonIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(context,
+                                PlaybackStateCompat.ACTION_STOP)))
                 .addAction(action)
+                .setDeleteIntent(MediaButtonReceiver.buildMediaButtonPendingIntent(context,
+                        PlaybackStateCompat.ACTION_STOP))
                 .setSmallIcon(R.drawable.ic_nrclogowhite)
                 .setLargeIcon(art)
                 .setColorized(true)
                 .setShowWhen(true)
+                .setSound(null)
                 .setContentIntent(controller.getSessionActivity())
                 .setContentText(title)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+        notificationBuilder.setOngoing(mPlaybackState.getState() == PlaybackStateCompat.STATE_PLAYING);
 
         return notificationBuilder.build();
     }

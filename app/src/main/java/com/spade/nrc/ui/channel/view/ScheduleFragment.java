@@ -11,7 +11,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.channel.presenter.SchedulePresenter;
 import com.spade.nrc.ui.channel.presenter.SchedulePresenterImpl;
@@ -56,6 +59,13 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(getContext(),
                 ChannelUtils.getChannelSchedulesColorList(channelID)));
         schedulePresenter.setUpViewPager(channelID);
+        sendAnalytics(String.format(getString(R.string.channel_schedule_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override

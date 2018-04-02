@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
-import com.spade.nrc.ui.presenters.view.PresentersView;
 import com.spade.nrc.ui.shows.view.ShowsView;
 import com.spade.nrc.utils.PrefUtils;
 
@@ -24,14 +23,14 @@ public class ShowsPresenterImpl implements ShowsPresenter {
     }
 
     @Override
-    public void getShows(String appLang, int channelID) {
+    public void getShows(String appLang, int channelID, int pageNumber) {
         showsView.showProgress();
-        ApiHelper.getShows(PrefUtils.getAppLang(context), String.valueOf(channelID))
+        ApiHelper.getShows(PrefUtils.getAppLang(context), String.valueOf(channelID), String.valueOf(pageNumber))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {
                     showsView.hideProgress();
-                    showsView.displayShows(showsResponse.getShowsData().getShows());
+                    showsView.displayShows(showsResponse.getShowsData());
                 }, throwable -> {
                     showsView.hideProgress();
                     if (throwable != null) {
@@ -42,9 +41,9 @@ public class ShowsPresenterImpl implements ShowsPresenter {
     }
 
     @Override
-    public void getShowsByDay(String appLang, String day, int channelID) {
+    public void getShowsByDay(String appLang, String day, int channelID, int pageNumber) {
         showsView.showProgress();
-        ApiHelper.getShowsByDay(PrefUtils.getAppLang(context), day, String.valueOf(channelID))
+        ApiHelper.getShowsByDay(PrefUtils.getAppLang(context), day, String.valueOf(channelID), String.valueOf(pageNumber))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {

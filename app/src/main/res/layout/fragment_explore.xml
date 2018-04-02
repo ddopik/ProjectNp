@@ -131,7 +131,8 @@
                 android:id="@+id/live_show_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/dp8">
+                android:layout_marginBottom="@dimen/dp8"
+                android:layout_marginTop="@dimen/dp8">
 
                 <com.spade.nrc.ui.CustomViews.CustomTextView
                     android:id="@+id/live_now_title"
@@ -167,14 +168,13 @@
                 android:id="@+id/featured_show_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/circle_image_background_dimen">
+                android:layout_marginTop="@dimen/dp8">
 
 
                 <com.spade.nrc.ui.CustomViews.CustomTextView
                     android:id="@+id/shows_title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableLeft="@drawable/ic_featured_shows"
                     android:drawablePadding="@dimen/dp8"
                     android:drawableStart="@drawable/ic_featured_shows"
                     android:padding="@dimen/dp8"
@@ -188,8 +188,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/shows_title"
+                    android:layout_marginBottom="100dp"
                     android:layout_marginEnd="@dimen/dp8"
-                    android:layout_marginRight="@dimen/dp8"
                     android:orientation="horizontal" />
 
                 <ProgressBar

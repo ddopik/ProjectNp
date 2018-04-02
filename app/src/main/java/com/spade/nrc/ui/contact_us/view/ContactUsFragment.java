@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,7 +24,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
+import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.utils.Utils;
 
 
@@ -36,7 +40,8 @@ public class ContactUsFragment extends BaseFragment implements OnMapReadyCallbac
     private ProgressBar progressBar;
     private String facebookUrl, instagramUrl, twitterUrl, linkedInUrl, mobileNumber, email;
     private NestedScrollView mainScroll;
-//    private SupportMapFragment mapFragment;
+    private SupportMapFragment mapFragment;
+    private NavigationManager.OnMenuOpenClicked onMenuOpenClicked;
 
     @Nullable
     @Override
@@ -49,20 +54,28 @@ public class ContactUsFragment extends BaseFragment implements OnMapReadyCallbac
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-//        mapFragment.getMapAsync(this);
+        mapFragment.getMapAsync(this);
     }
 
     @Override
     protected void initPresenter() {
+        sendAnalytics();
+    }
+
+    private void sendAnalytics() {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(getContext().getString(R.string.contact_us_analytics));
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
     protected void initViews() {
         Button sendMessage = contactUsView.findViewById(R.id.message_us_btn);
-//        mapFragment = (SupportMapFragment) getChildFragmentManager()
-//                .findFragmentById(R.id.map);
+        mapFragment = (SupportMapFragment) getChildFragmentManager()
+                .findFragmentById(R.id.map);
 
         ImageView transparentImage = contactUsView.findViewById(R.id.transparent_image);
+        ImageView menuImageView = contactUsView.findViewById(R.id.menu_image_view);
         RelativeLayout callLayout = contactUsView.findViewById(R.id.call_layout);
         RelativeLayout emailAddressLayout = contactUsView.findViewById(R.id.send_mail_layout);
         RelativeLayout sendMessageLayout = contactUsView.findViewById(R.id.send_sms_layout);
@@ -76,6 +89,7 @@ public class ContactUsFragment extends BaseFragment implements OnMapReadyCallbac
         progressBar = contactUsView.findViewById(R.id.progress_bar);
 
 
+        menuImageView.setOnClickListener(this);
         sendMessage.setOnClickListener(this);
         sendMessageLayout.setOnClickListener(this);
         callLayout.setOnClickListener(this);
@@ -149,7 +163,7 @@ public class ContactUsFragment extends BaseFragment implements OnMapReadyCallbac
                 Utils.openMail(email, getContext());
                 break;
             case R.id.send_sms_layout:
-                Utils.dial(mobileNumber, getContext());
+                Utils.sendSms(mobileNumber, getContext());
                 break;
             case R.id.facebook_image:
                 break;
@@ -159,6 +173,13 @@ public class ContactUsFragment extends BaseFragment implements OnMapReadyCallbac
                 break;
             case R.id.linkedin_image:
                 break;
+            case R.id.menu_image_view:
+                onMenuOpenClicked.onMenuImageClicked();
+                break;
         }
+    }
+
+    public void setOnMenuOpenClicked(NavigationManager.OnMenuOpenClicked onMenuOpenClicked) {
+        this.onMenuOpenClicked = onMenuOpenClicked;
     }
 }

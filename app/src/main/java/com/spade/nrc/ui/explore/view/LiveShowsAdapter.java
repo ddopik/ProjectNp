@@ -4,23 +4,24 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.spade.nrc.R;
 import com.spade.nrc.nrc.media.player.MusicProvider;
 import com.spade.nrc.ui.explore.model.LiveShowsData;
+import com.spade.nrc.ui.player.LiveShowImagesAdapter;
 import com.spade.nrc.ui.shows.model.Channel;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
-import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
+import com.spade.nrc.utils.RoundedCornersTransformation;
 import com.spade.nrc.utils.TextUtils;
 
 import java.util.List;
@@ -56,10 +57,7 @@ public class LiveShowsAdapter extends RecyclerView.Adapter<LiveShowsAdapter.Show
         Show show = showData.getShow();
         Channel channel = showData.getChannel();
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new RoundedCorners(32));
-
-        RequestOptions option = new RequestOptions().centerCrop().optionalTransform(new RoundedCorners(10));
-
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
 
         String mediaUrl;
         if (show != null) {
@@ -67,6 +65,7 @@ public class LiveShowsAdapter extends RecyclerView.Adapter<LiveShowsAdapter.Show
             holder.showTime.setText(showTimeString);
             holder.showTime.setVisibility(View.VISIBLE);
             holder.showName.setText(show.getTitle());
+            holder.showName.setMaxLines(1);
             holder.presenterName.setText(TextUtils.getPresentersNames(show.getPresenters()));
             mediaUrl = show.getMedia();
         } else {
@@ -75,14 +74,15 @@ public class LiveShowsAdapter extends RecyclerView.Adapter<LiveShowsAdapter.Show
             holder.presenterName.setVisibility(View.GONE);
             String mediaTitle = String.format(context.getString(R.string.enjoy_listening)
                     , context.getString(ChannelUtils.getChannelTitle(channel.getId())));
+            holder.showName.setMaxLines(2);
             holder.showName.setText(mediaTitle);
         }
 
         holder.statusImage.setVisibility(View.VISIBLE);
         holder.channelImage.setVisibility(View.VISIBLE);
         holder.channelImage.setImageResource(ChannelUtils.getChannelImage(channel.getId()));
-        GlideApp.with(context).load(mediaUrl).centerCrop()
-                .placeholder(ChannelUtils.getShowDefaultImage(channel.getId())).apply(option)
+        GlideApp.with(context).load(mediaUrl).apply(requestOptions).centerCrop()
+                .placeholder(ChannelUtils.getShowDefaultImage(channel.getId())).apply(requestOptions)
                 .into(holder.showImage);
 
         if (musicProvider.getPlayingMediaId() != null && musicProvider.getPlayingMediaId().equals(String.valueOf(channel.getId()))) {
@@ -114,8 +114,8 @@ public class LiveShowsAdapter extends RecyclerView.Adapter<LiveShowsAdapter.Show
         });
 
 
-        holder.showImage.setBackgroundColor(ContextCompat.getColor(context,
-                ChannelUtils.getChannelSecondaryColor(channel.getId())));
+//        holder.showImage.setBackgroundColor(ContextCompat.getColor(context,
+//                ChannelUtils.getChannelSecondaryColor(channel.getId())));
         holder.itemView.setOnClickListener(view -> {
             if (showActions != null && show != null)
                 showActions.onLiveShowClicked(show, channel.getId());

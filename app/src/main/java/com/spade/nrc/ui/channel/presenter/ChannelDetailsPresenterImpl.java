@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
 import com.spade.nrc.R;
+import com.spade.nrc.network.ApiHelper;
 import com.spade.nrc.ui.channel.view.AboutChannelFragment;
 import com.spade.nrc.ui.channel.view.ChannelsDetailsView;
 import com.spade.nrc.ui.channel.view.LiveStreamingFragment;
@@ -12,6 +13,8 @@ import com.spade.nrc.ui.channel.view.ScheduleFragment;
 import com.spade.nrc.ui.presenters.view.PresentersFragment;
 import com.spade.nrc.ui.shows.view.ShowsFragment;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.LoginProviders;
+import com.spade.nrc.utils.PrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,5 +75,25 @@ public class ChannelDetailsPresenterImpl implements ChannelDetailsPresenter {
         fragmentTitles.add(context.getString(R.string.about));
 
         channelsDetailsView.addFragment(fragments, fragmentTitles);
+    }
+
+    @Override
+    public void addChannelToFav(int channelID) {
+        if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
+            channelsDetailsView.showLoading();
+            ApiHelper.addChannelOrShowToFav(String.valueOf(channelID), ApiHelper.ADD_CHANNEL_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context),
+                    new ApiHelper.AddToFavCallBacks() {
+                        @Override
+                        public void addToFavSuccess() {
+                            channelsDetailsView.hideLoading();
+                        }
+
+                        @Override
+                        public void addToFavFailed(String error) {
+                            channelsDetailsView.hideLoading();
+                            channelsDetailsView.showMessage(error);
+                        }
+                    });
+        }
     }
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array name="menu_icons">
+        <!--<item>@drawable/ic_explore_sm</item>-->
+        <item>@drawable/ic_about_sm</item>
+        <item>@drawable/ic_profile_sm</item>
+        <item>@drawable/ic_news_sm</item>
+        <item>@drawable/ic_contactus_sm</item>
+        <item>@drawable/ic_lang_sm</item>
+        <!--<item>@drawable/ic_login_sm</item>-->
+    </integer-array>
+
+    <integer-array name="channels_icons">
+        <item>@drawable/ic_about_radiohits</item>
+        <item>@drawable/ic_about_95fm</item>
+        <item>@drawable/ic_about_naghamfm</item>
+        <item>@drawable/ic_about_megafm</item>
+    </integer-array>
+</resources>

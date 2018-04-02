@@ -12,9 +12,9 @@
         android:orientation="vertical">
 
 
-        <RelativeLayout
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/live_streaming_dimen"
+            android:layout_height="200dp"
             android:background="@color/white">
 
             <ImageView
@@ -31,40 +31,41 @@
                 android:background="@drawable/linear_black_gradient"
                 android:scaleType="centerCrop" />
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content">-->
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
-            <RelativeLayout
+            <!--<RelativeLayout-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginEnd="16dp"-->
+            <!--android:gravity="bottom">-->
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/media_control_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="@dimen/dp2"
-                android:layout_marginEnd="16dp"
-                android:gravity="bottom">
+                android:layout_marginEnd="@dimen/activity_vertical_margin"
+                android:background="@color/white"
+                android:scaleType="center"
+                android:src="@drawable/ic_play_btn_mega"
+                app:backgroundTint="@color/white"
+                app:fabSize="normal"
+                app:layout_anchor="@+id/current_show_image"
+                app:layout_anchorGravity="right|bottom" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/media_control_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/dp4"
-                    android:background="@color/white"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_play_btn_mega"
-                    app:backgroundTint="@color/white"
-                    app:fabSize="normal" />
-
-                <ProgressBar
-                    android:id="@+id/player_progress_bar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:visibility="gone" />
-            </RelativeLayout>
+            <ProgressBar
+                android:id="@+id/player_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:visibility="gone" />
+            <!--</RelativeLayout>-->
 
 
             <ProgressBar
@@ -73,7 +74,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:visibility="gone" />
-        </RelativeLayout>
+        </android.support.design.widget.CoordinatorLayout>
 
         <com.spade.nrc.ui.CustomViews.CustomTextView
             android:id="@+id/current_show_title"
@@ -143,11 +144,13 @@
 
 
         <TextView
+            android:id="@+id/up_next_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/activity_horizontal_margin"
             android:text="@string/up_next"
-            android:textAllCaps="true" />
+            android:textAllCaps="true"
+            android:visibility="gone" />
 
         <include
             layout="@layout/item_show_schedule"
@@ -156,4 +159,50 @@
             android:layout_marginBottom="@dimen/circle_image_background_dimen" />
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</android.support.v4.widget.NestedScrollView><!--<?xml version="1.0" encoding="utf-8"?>--><!--<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"--><!--xmlns:app="http://schemas.android.com/apk/res-auto"--><!--xmlns:tools="http://schemas.android.com/tools"--><!--android:layout_width="match_parent"--><!--android:layout_height="match_parent"--><!--android:background="@color/grey_background">-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:orientation="vertical">-->
+
+
+    <!--<RelativeLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/live_streaming_dimen"--><!--android:background="@color/white">-->
+
+    <!--<ImageView--><!--android:id="@+id/current_show_image"--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/nav_header_height"--><!--android:scaleType="centerCrop" />-->
+
+    <!--<ImageView--><!--android:id="@+id/filter_image"--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/nav_header_height"--><!--android:alpha="0.5"--><!--android:background="@drawable/linear_black_gradient"--><!--android:scaleType="centerCrop" />-->
+
+    <!--&lt;!&ndash;<RelativeLayout&ndash;&gt;--><!--&lt;!&ndash;android:layout_width="wrap_content"&ndash;&gt;--><!--&lt;!&ndash;android:layout_height="wrap_content">&ndash;&gt;-->
+
+    <!--&lt;!&ndash;</RelativeLayout>&ndash;&gt;-->
+
+    <!--<RelativeLayout--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_alignParentBottom="true"--><!--android:layout_alignParentEnd="true"--><!--android:layout_centerVertical="true"--><!--android:layout_marginEnd="16dp"--><!--android:gravity="bottom">-->
+
+    <!--<android.support.design.widget.FloatingActionButton--><!--android:id="@+id/media_control_btn"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_margin="@dimen/dp4"--><!--android:background="@color/white"--><!--android:scaleType="center"--><!--android:src="@drawable/ic_play_btn_mega"--><!--app:backgroundTint="@color/white"--><!--app:fabSize="normal" />-->
+
+    <!--<ProgressBar--><!--android:id="@+id/player_progress_bar"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_centerInParent="true"--><!--android:visibility="gone" />--><!--</RelativeLayout>-->
+
+
+    <!--<ProgressBar--><!--android:id="@+id/progress_bar"--><!--android:layout_width="wrap_content"--><!--android:layout_height="wrap_content"--><!--android:layout_centerInParent="true"--><!--android:visibility="gone" />--><!--</RelativeLayout>-->
+
+    <!--<com.spade.nrc.ui.CustomViews.CustomTextView--><!--android:id="@+id/current_show_title"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/white"--><!--android:paddingEnd="@dimen/dp8"--><!--android:paddingStart="@dimen/dp8"--><!--android:textSize="@dimen/material_text_subhead"--><!--app:color="@color/black"--><!--tools:text="ssdsdsdsdfsdfsdfsd" />-->
+
+    <!--<TextView--><!--android:id="@+id/current_show_presenter_name"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/white"--><!--android:paddingStart="@dimen/dp8"--><!--android:textColor="@color/grey_text_color"--><!--android:textSize="@dimen/material_text_subhead"--><!--tools:text="ssdsdsdsdfsdfsdfsd" />-->
+
+    <!--<LinearLayout--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:background="@color/white"--><!--android:gravity="center_vertical"--><!--android:orientation="horizontal"--><!--android:paddingBottom="@dimen/activity_horizontal_margin"--><!--android:paddingTop="@dimen/activity_vertical_margin">-->
+
+    <!--<ImageView--><!--android:id="@+id/facebook_image_view"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:src="@drawable/ic_fb_black" />-->
+
+    <!--<ImageView--><!--android:id="@+id/twitter_image_view"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:src="@drawable/ic_twitter_black" />-->
+
+
+    <!--<ImageView--><!--android:id="@+id/sms_image_view"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:src="@drawable/ic_msg_black" />-->
+
+    <!--<ImageView--><!--android:id="@+id/call_image_view"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_weight="1"--><!--android:src="@drawable/ic_call_black" />--><!--</LinearLayout>-->
+
+    <!--<View--><!--android:layout_width="match_parent"--><!--android:layout_height="@dimen/dp2"--><!--android:layout_marginTop="@dimen/activity_vertical_margin"--><!--android:background="@color/grey_background" />-->
+
+
+    <!--<TextView--><!--android:id="@+id/up_next_text"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:paddingStart="@dimen/activity_horizontal_margin"--><!--android:text="@string/up_next"--><!--android:textAllCaps="true"--><!--android:visibility="gone" />-->
+
+    <!--<include--><!--layout="@layout/item_show_schedule"--><!--android:layout_width="match_parent"--><!--android:layout_height="wrap_content"--><!--android:layout_marginBottom="@dimen/circle_image_background_dimen" />--><!--</LinearLayout>-->
+
+    <!--</android.support.v4.widget.NestedScrollView>-->

@@ -8,6 +8,7 @@
     <color name="grey_background">#f4f4f4</color>
     <color name="grey_text_color">#6b6b6b</color>
     <color name="separator_color">#c1c1c1</color>
+    <color name="opacity_white">#B3ffffff</color>
 
     <!-- NRC Colors -->
     <color name="nrc_primary_color">#c71c2e</color>

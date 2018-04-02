@@ -34,6 +34,13 @@
                     android:layout_height="@dimen/show_image_height"
                     android:scaleType="centerCrop" />
 
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/show_image_height"
+                    android:alpha="0.5"
+                    android:background="@color/black"
+                    android:scaleType="centerCrop" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -48,14 +55,14 @@
 
                         <ImageView
                             android:id="@+id/presenter_image_background"
-                            android:layout_width="82dp"
-                            android:layout_height="82dp"
+                            android:layout_width="@dimen/present_background_circle_image"
+                            android:layout_height="@dimen/present_background_circle_image"
                             android:background="@drawable/white_circle" />
 
                         <ImageView
                             android:id="@+id/presenter_image"
-                            android:layout_width="80dp"
-                            android:layout_height="80dp"
+                            android:layout_width="@dimen/present_circle_image"
+                            android:layout_height="@dimen/present_circle_image"
                             android:layout_gravity="center"
                             android:background="@drawable/white_circle" />
                     </FrameLayout>
@@ -148,6 +155,7 @@
                     android:paddingStart="@dimen/dp8"
                     android:paddingTop="@dimen/activity_vertical_margin"
                     android:textColor="@color/black"
+                    android:textSize="@dimen/material_text_subhead"
                     tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ullamcorper feugiat nisi nec consectetur. Nulla eu eros sapien. Nullam hendrerit volutpat volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia nisl vel nulla condimentum iaculis. Suspendisse ante diam, interdum at viverra eu, volutpat nec ante. Nunc porta diam massa, at posuere tellus luctus eu." />
 
                 <LinearLayout
@@ -159,16 +167,16 @@
                     android:background="@color/grey_background"
                     android:orientation="vertical">
 
-                    <com.spade.nrc.ui.CustomViews.CustomTextView
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/activity_horizontal_margin"
+                        android:layout_marginStart="@dimen/dp8"
                         android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:gravity="start"
-                        android:text="@string/shows"
+                        android:text="@string/shows_separated"
                         android:textAllCaps="true"
                         android:textSize="@dimen/material_text_subhead"
-                        app:color="@color/grey_text_color" />
+                        android:textColor="@color/grey_text_color" />
 
                     <com.spade.nrc.ui.CustomViews.CustomRecyclerView
                         android:id="@+id/presenter_shows_recycler_view"

@@ -1,10 +1,9 @@
 package com.spade.nrc.ui.shows.view;
 
+import android.app.ProgressDialog;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -16,9 +15,13 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.event.bus.events.PresenterClickEvent;
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.ui.presenters.view.PresentersAdapter;
 import com.spade.nrc.ui.shows.model.Show;
@@ -28,6 +31,8 @@ import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
 import com.spade.nrc.utils.TextUtils;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +40,7 @@ import java.util.List;
  * Created by Ayman Abouzeid on 1/26/18.
  */
 
-public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView {
+public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView, PresentersAdapter.OnPresenterClicked {
 
     private View showDetailsView;
     private ShowDetailsPresenterImpl showDetailsPresenter;
@@ -45,7 +50,9 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
     private TextView showName, aboutShow, showDays, showTimes;
     private ProgressBar progressBar;
     private List<Presenter> presenterList = new ArrayList<>();
-
+    private EventBus eventBus;
+    private int channelID;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -76,6 +83,21 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
     }
 
     @Override
+    public void showProgressLoading() {
+        if (progressDialog == null)
+            progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getString(R.string.loading));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
+    }
+
+    @Override
+    public void hideProgressLoading() {
+        if (progressDialog != null)
+            progressDialog.hide();
+    }
+
+    @Override
     public void setError(EditText editText, int resId) {
 
     }
@@ -85,15 +107,11 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
     protected void initPresenter() {
         showDetailsPresenter = new ShowDetailsPresenterImpl(getContext());
         showDetailsPresenter.setView(this);
+        eventBus = EventBus.getDefault();
     }
 
     @Override
     protected void initViews() {
-        CollapsingToolbarLayout collapsingToolbarLayout = showDetailsView.findViewById(R.id.collapsing_toolbar);
-        AppBarLayout appBarLayout = showDetailsView.findViewById(R.id.appBar);
-//        collapsingToolbarLayout.setTitle("Your Title");
-//        collapsingToolbarLayout.setExpandedTitleColor(getResources().getColor(android.R.color.transparent)); // transperent color = #00000000
-//        collapsingToolbarLayout.setCollapsedTitleTextColor(Color.rgb(0, 0, 0)); //Color of your title
         CustomRecyclerView showPresentersRecyclerView = showDetailsView.findViewById(R.id.show_presenters_recycler_view);
         Toolbar toolbar = showDetailsView.findViewById(R.id.toolbar);
         ImageView backBtn = toolbar.findViewById(R.id.back_button);
@@ -105,23 +123,21 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
         showDays = showDetailsView.findViewById(R.id.show_days);
         showTimes = showDetailsView.findViewById(R.id.show_times);
         presentersLayout = showDetailsView.findViewById(R.id.presenters_layout);
-        int channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
+        ImageView addToFavouriteChannel = showDetailsView.findViewById(R.id.add_to_fav_image);
+
+        channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
         int showID = getArguments().getInt(Constants.EXTRA_SHOW_ID);
         showName.setTextColor(ContextCompat.getColor(getContext(), ChannelUtils.getChannelPrimaryColor(channelID)));
         showTimes.setTextColor(ContextCompat.getColor(getContext(), ChannelUtils.getChannelSecondaryColor(channelID)));
-
-//        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
-//            @Override
-//            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-//
-//            }
-//        });
+        showPresentersRecyclerView.setNestedScrollingEnabled(false);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources()
                 .getColor(ChannelUtils.getChannelSecondaryColor(channelID)), PorterDuff.Mode.SRC_IN);
         presentersAdapter = new PresentersAdapter(getContext(), presenterList, channelID);
+        presentersAdapter.setOnPresenterClicked(this);
         showPresentersRecyclerView.setAdapter(presentersAdapter);
         showDetailsPresenter.getShowDetails(String.valueOf(showID));
         backBtn.setOnClickListener(view -> getActivity().onBackPressed());
+        addToFavouriteChannel.setOnClickListener(view -> showDetailsPresenter.addShowToFav(showID));
     }
 
 
@@ -145,5 +161,19 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
 
         if (presenterList.isEmpty())
             presentersLayout.setVisibility(View.GONE);
+
+        sendAnalytics(show.getTitle());
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    public void onPresenterClicked(int presenterID) {
+        eventBus.post(new PresenterClickEvent(presenterID, channelID, true));
+
     }
 }

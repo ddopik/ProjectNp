@@ -2,6 +2,7 @@ package com.spade.nrc.ui.shows.view;
 
 import com.spade.nrc.base.BaseView;
 import com.spade.nrc.ui.shows.model.Show;
+import com.spade.nrc.ui.shows.model.ShowsData;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
 
 public interface ShowsView extends BaseView {
     void displayShows(List<Show> showList);
+
+    void displayShows(ShowsData showsData);
 
     void showProgress();
 

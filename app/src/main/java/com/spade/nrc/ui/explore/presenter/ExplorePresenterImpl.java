@@ -80,7 +80,7 @@ public class ExplorePresenterImpl implements ExplorePresenter {
                     exploreView.hideSliderProgress();
                     if (throwable != null) {
                         ANError anError = (ANError) throwable;
-                        exploreView.showMessage(anError.getMessage());
+                        exploreView.showMessage(anError.getErrorDetail());
                     }
                 });
     }

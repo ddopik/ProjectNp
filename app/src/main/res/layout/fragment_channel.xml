@@ -54,7 +54,6 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
-                        android:layout_marginRight="@dimen/activity_vertical_margin"
                         tools:src="@drawable/ic_radio_logo" />
 
                     <LinearLayout
@@ -63,20 +62,21 @@
                         android:gravity="start"
                         android:orientation="vertical">
 
-                        <com.spade.nrc.ui.CustomViews.CustomTextView
+                        <TextView
                             android:id="@+id/channel_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Nagham fm channel"
                             android:textAllCaps="true"
+                            android:textColor="@color/white"
                             android:textSize="@dimen/material_text_subhead"
-                            app:color="@color/white" />
+                            android:textStyle="bold"
+                            tools:text="Nagham fm channel" />
 
                         <TextView
+                            android:id="@+id/add_to_favourite_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp8"
-                            android:alpha="0.6"
                             android:background="@drawable/bordered_btton_background"
                             android:paddingBottom="@dimen/dp8"
                             android:paddingEnd="@dimen/activity_vertical_margin"

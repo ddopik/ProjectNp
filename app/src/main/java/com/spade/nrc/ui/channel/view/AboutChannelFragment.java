@@ -11,7 +11,10 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.channel.presenter.AboutChannelPresenter;
 import com.spade.nrc.ui.channel.presenter.AboutChannelPresenterImpl;
@@ -90,6 +93,13 @@ public class AboutChannelFragment extends BaseFragment implements AboutChannelVi
         progressBar.getIndeterminateDrawable().setColorFilter(getResources()
                 .getColor(ChannelUtils.getChannelSecondaryColor(channelID)), PorterDuff.Mode.SRC_IN);
         aboutChannelPresenter.getChannelInfo(channelID);
+        sendAnalytics(String.format(getString(R.string.channel_about_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
 
@@ -102,7 +112,7 @@ public class AboutChannelFragment extends BaseFragment implements AboutChannelVi
 
         aboutChannel.setText(channel.getBrief());
         GlideApp.with(getContext())
-                .load(channel.getMedia()).into(channelImage);
+                .load(channel.getMedia()).centerCrop().into(channelImage);
     }
 
     @Override
