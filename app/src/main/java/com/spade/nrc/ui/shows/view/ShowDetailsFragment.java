@@ -53,6 +53,7 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
     private EventBus eventBus;
     private int channelID;
     private ProgressDialog progressDialog;
+    private ImageView addToFavouriteChannel;
 
     @Nullable
     @Override
@@ -123,7 +124,7 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
         showDays = showDetailsView.findViewById(R.id.show_days);
         showTimes = showDetailsView.findViewById(R.id.show_times);
         presentersLayout = showDetailsView.findViewById(R.id.presenters_layout);
-        ImageView addToFavouriteChannel = showDetailsView.findViewById(R.id.add_to_fav_image);
+        addToFavouriteChannel = showDetailsView.findViewById(R.id.add_to_fav_image);
 
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
         int showID = getArguments().getInt(Constants.EXTRA_SHOW_ID);
@@ -161,6 +162,11 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
 
         if (presenterList.isEmpty())
             presentersLayout.setVisibility(View.GONE);
+
+        if (show.isLiked())
+            addToFavouriteChannel.setImageResource(R.drawable.ic_favorite_added);
+        else
+            addToFavouriteChannel.setImageResource(R.drawable.ic_favorite);
 
         sendAnalytics(show.getTitle());
     }

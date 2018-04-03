@@ -39,6 +39,9 @@ public class Show implements Parcelable {
     @SerializedName("channel")
     @Expose
     private Channel channel;
+    @SerializedName("is_liked")
+    @Expose
+    private boolean isLiked;
     public final static Creator<Show> CREATOR = new Creator<Show>() {
 
 
@@ -65,6 +68,8 @@ public class Show implements Parcelable {
         in.readList(this.presenters, (Presenter.class.getClassLoader()));
         in.readList(this.schedules, (com.spade.nrc.ui.shows.model.Schedule.class.getClassLoader()));
         this.channel = (Channel) in.readValue(Channel.class.getClassLoader());
+        this.isLiked = (Boolean) in.readValue(Boolean.class.getClassLoader());
+
     }
 
     public Show() {
@@ -150,6 +155,14 @@ public class Show implements Parcelable {
         this.channel = channel;
     }
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(title);
@@ -160,6 +173,7 @@ public class Show implements Parcelable {
         dest.writeList(presenters);
         dest.writeList(schedules);
         dest.writeValue(channel);
+        dest.writeValue(isLiked);
     }
 
     public int describeContents() {
