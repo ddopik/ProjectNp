@@ -110,7 +110,7 @@ public class ProfileFragment extends BaseFragment {
         User user = realmDbHelper.getUser(PrefUtils.getUserId(getContext()));
         if (user != null) {
             if (user.getFirstName() != null && user.getLastName() != null) {
-                userName.setText(user.getFirstName().concat(" ").concat(user.getLastNameve()));
+                userName.setText(user.getFirstName().concat(" ").concat(user.getLastName()));
             } else if (user.getFirstName() != null) {
                 userName.setText(user.getFirstName());
             } else if (user.getLastName() != null) {
