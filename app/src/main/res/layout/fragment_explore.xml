@@ -20,6 +20,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_menu" />
+
+        <ImageView
+            android:id="@+id/search_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_search"
+            android:layout_gravity="end"
+            android:background="@android:color/transparent"/>
     </android.support.v7.widget.Toolbar>
 
 

@@ -26,6 +26,8 @@ import com.spade.nrc.ui.explore.presenter.ExplorePresenter;
 import com.spade.nrc.ui.explore.presenter.ExplorePresenterImpl;
 import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.ChannelNavigationInterface;
+import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.ui.search.view.SearchFragment;
 import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
@@ -49,6 +51,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     private View exploreView;
     private ExplorePresenter explorePresenter;
     private ProgressBar sliderProgress, liveProgress, featuredProgress;
+    private ImageView searchIcon;
     private ShowsAdapter featuredShowsAdapter;
     private LiveShowsAdapter liveShowsAdapter;
     private SlidingBannerAdapter slidingBannerAdapter;
@@ -57,8 +60,10 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     private List<SlideBanner> slideBannerList;
     private ChannelNavigationInterface channelNavigationInterface;
     private RelativeLayout featuredShowsLayout, liveShowsLayout;
+    private NavigationManager navigationManager;
     private NavigationManager.OnMenuOpenClicked onMenuOpenClicked;
     private EventBus eventBus;
+
 
     @Nullable
     @Override
@@ -170,7 +175,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     @Override
     protected void initViews() {
 //        Toolbar toolbar = exploreView.findViewById(R.id.toolbar);
-
+        navigationManager=new NavigationManager(((MainActivity)getActivity()));
         CustomRecyclerView featuredRecycler = exploreView.findViewById(R.id.featured_shows_recycler);
         CustomRecyclerView liveShowsRecycler = exploreView.findViewById(R.id.live_now_recycler_view);
         ImageView radioChannelImageView = exploreView.findViewById(R.id.radio_channel_image_view);
@@ -178,7 +183,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         ImageView naghamChannelImageView = exploreView.findViewById(R.id.nagham_channel_image_view);
         ImageView megaChannelImageView = exploreView.findViewById(R.id.mega_channel_image_view);
         ImageView menuImageView = exploreView.findViewById(R.id.menu_image_view);
-
+        searchIcon = exploreView.findViewById(R.id.search_icon);
         ViewPager sliderPager = exploreView.findViewById(R.id.slider_pager);
 
 
@@ -193,6 +198,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         sh3byChannelImageView.setOnClickListener(this);
         naghamChannelImageView.setOnClickListener(this);
         megaChannelImageView.setOnClickListener(this);
+        searchIcon.setOnClickListener(this);
 
         featuredShows = new ArrayList<>();
         liveNowShows = new ArrayList<>();
@@ -237,6 +243,9 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
                 break;
             case R.id.menu_image_view:
                 onMenuOpenClicked.onMenuImageClicked();
+                break;
+            case R.id.search_icon:
+                navigationManager.openFragment(new SearchFragment(),R.id.fragment_container,ExploreFragment.class.getSimpleName());
                 break;
         }
     }
