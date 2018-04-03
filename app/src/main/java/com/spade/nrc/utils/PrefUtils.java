@@ -1,7 +1,11 @@
 package com.spade.nrc.utils;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+
+import com.spade.nrc.ui.splash.SplashActivity;
 
 /**
  * Created by Ayman Abouzeid on 6/12/17.
@@ -11,6 +15,7 @@ public class PrefUtils {
     private static final String PREF_FILE_NAME = "MEK_PREF_FILE";
     private static final String USER_ID = "USER_ID";
     private static final String USER_TOKEN = "USER_TOKEN";
+    private static final String LOGIN_PROVIDER = "LOGIN_PROVIDER";
     private static final String NOTIFICATION_TOKEN = "NOTIFICATION_TOKEN";
     private static final String IS_FIRST_LAUNCH = "IS_FIRST_LAUNCH";
     private static final String IS_LANGUAGE_SELECTED = "IS_LANGUAGE_SELECTED";
@@ -32,6 +37,15 @@ public class PrefUtils {
     public static void setUserToken(Context context, String userToken) {
         getSharedPref(context).edit().putString(USER_TOKEN, userToken).apply();
     }
+
+    public static void setLoginProvider(Context context, int loginProvider) {
+        getSharedPref(context).edit().putInt(LOGIN_PROVIDER, loginProvider).apply();
+    }
+
+    public static int getLoginProvider(Context context) {
+        return getSharedPref(context).getInt(LOGIN_PROVIDER, LoginProviders.NONE.getLoginProviderCode());
+    }
+
 
     public static void setNotificationToken(Context context, String notificationToken) {
         getSharedPref(context).edit().putString(NOTIFICATION_TOKEN, notificationToken).apply();
@@ -87,5 +101,18 @@ public class PrefUtils {
 
     public static void setIsTokenSaved(Context context, boolean isSaved) {
         getSharedPref(context).edit().putBoolean(IS_TOKEN_SAVED, isSaved).apply();
+    }
+
+    private static void completeLogout(Context context) {
+        setNotificationToken(context, "");
+        setUserID(context, "");
+        setIsLoggedIn(context, false);
+        setLoginProvider(context,LoginProviders.NONE.getLoginProviderCode());
+        Intent intent = new Intent(context, SplashActivity.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK
+                | Intent.FLAG_ACTIVITY_CLEAR_TOP
+                | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        context.startActivity(intent);
+        ((Activity) context).finish();
     }
 }

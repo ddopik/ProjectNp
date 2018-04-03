@@ -2,14 +2,16 @@
     <string name="app_name">NRC</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="our_channels">Our Channels</string>
+    <string name="facebook_app_id">430642750720882</string>
+    <string name="our_channels">Our Stations</string>
     <string name="live_now">Live Now</string>
     <string name="player">Player</string>
     <string name="latest_news">Latest News</string>
     <string name="featured_shows">Featured Shows</string>
     <string name="view_all">View All</string>
-    <string name="add_to_channels">Add to my channels</string>
+    <string name="add_to_channels">Add to favorites</string>
     <string name="shows">Shows</string>
+    <string name="shows_separated">S h o w s</string>
     <string name="presenters">Presenters</string>
     <string name="schedule">Schedule</string>
     <string name="radio_hits">Radio Hits 88.2</string>
@@ -18,7 +20,8 @@
     <string name="sh3by">95 Fm</string>
     <string name="explore">Explore</string>
     <string name="presented_by">Presented by</string>
-    <string name="up_next">Up next</string>
+    <string name="presented_by_separated">P r e s e n t e d b y</string>
+    <string name="up_next">Coming next</string>
     <string name="next_show_title_tag" translatable="false">next show tag</string>
     <string name="enjoy_listening">Enjoy listening to %s</string>
     <string name="live_streaming">Live Streaming</string>
@@ -38,17 +41,63 @@
     <string name="about_nrc">    Nile Radio Company, is an Egyptian joint stock company for radio management and production.
     It has four commercial radio stations that address all sectors of the society and cover all age groups
     in order to provide constant entertainment for radio listeners and raise the collective awareness of the Egyptian public with the consolidation of
-    the Egyptian identity. The four radio stations are:Mega FM 92.7
-Radio Hits 88.2
-Nagham FM 105.3
-95 FM
+    the Egyptian identity. The four radio stations are:\n\n - Mega FM 92.7\n - Radio Hits 88.2\n - Nagham FM 105.3\n - 95 FM
 </string>
     <string name="enjoy_listening_to_nrc">Enjoy Listening To \n NRC SUBSIDIARIES</string>
     <string name="nrc_mobile">0238555960</string>
     <string name="nrc_fax">0238555959</string>
     <string name="nrc_email">info@nrceg.com</string>
     <string name="nrc_address">EMPC, 6th of October, Egypt.</string>
-    <string name="about_nrc_title">about nrc</string>
+    <string name="about_nrc_title">About NRC</string>
+
+    <string name="about_nrc_analytics">about nrc</string>
+    <string name="contact_us_analytics">contact us</string>
+    <string name="channel_live_streaming_analytics">%s live streaming</string>
+    <string name="channel_shows_analytics">%s shows</string>
+    <string name="channel_presenters_analytics">%s presenters</string>
+    <string name="channel_schedule_analytics">%s schedule</string>
+    <string name="channel_about_analytics">%s about</string>
+    <string name="password">Password</string>
+    <string name="confirm_password">Confirm Password</string>
+    <string name="login_with">Login with</string>
+    <string name="facebook">Facebook</string>
+    <string name="google">Google</string>
+    <string name="user_name">User name</string>
+    <string name="email">E-mail Address</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="phone">Phone Number</string>
+    <string name="address_hint">Check the map for the nearest store or choose other stores from here</string>
+    <string name="type_of_donation">Type of Donation</string>
+    <string name="cash_on_deleivery">Request a collection</string>
+    <string name="misr_collector">Misr ElKheir collector will pass by you</string>
+    <string name="enter_first_name">Please Enter Your First Name</string>
+    <string name="enter_last_name">Please Enter Your Last Name</string>
+    <string name="enter_user_name">Please Enter Your User Name</string>
+    <string name="enter_email_address">Please Enter Your E-Mail Address</string>
+    <string name="enter_phone_number">Please Enter Your Phone Number</string>
+    <string name="enter_address">Please Enter Your Address</string>
+    <string name="enter_valid_email_address">Please Enter Valid E-Mail Address</string>
+    <string name="enter_city">Please Enter Your City</string>
+    <string name="enter_subject">Please Enter Subject</string>
+    <string name="enter_message">Please Enter Message</string>
+    <string name="enter_password">Please Enter Your Password</string>
+    <string name="enter_confirm_password">Please Confirm Your Password</string>
+    <string name="welcome_to_nrc">welcome to nrc</string>
+    <string name="register">Register</string>
+    <string name="forget_password">Forgot password?</string>
+    <string name="something_wrong">Something went wrong</string>
+    <string name="logging_in">Logging in &#8230;</string>
+    <string name="registering">Registering &#8230;</string>
+    <string name="loading">Loading &#8230;</string>
+
+    <string name="skip">Skip</string>
+    <string name="no_internet">Check Your Internet Connection</string>
+    <string name="password_mismatch">Password and confirm password mismatch</string>
+    <string name="done">Done</string>
+    <string name="my_channels">My Channels</string>
+    <string name="followed_shows">Followed Shows</string>
+    <string name="logout">Logout</string>
     <!--29.9657458,31.0140652-->
 
     <string-array name="week_days">
@@ -78,10 +127,10 @@ Nagham FM 105.3
     <string-array name="menu_titles">
         <!--<item>@string/explore</item>-->
         <item>@string/about</item>
-        <item>@string/profile</item>a
+        <item>@string/profile</item>
         <item>@string/news</item>
         <item>@string/contact_us</item>
         <item>@string/lang</item>
-        <item>@string/login</item>
+        <!--<item>@string/login</item>-->
     </string-array>
 </resources>

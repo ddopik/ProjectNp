@@ -26,13 +26,13 @@ public class PresentersPresenterImpl implements PresentersPresenter {
     }
 
     @Override
-    public void getPresenters(String appLang, int channelID) {
+    public void getPresenters(String appLang, int channelID, int pageNumber) {
         presentersView.showLoading();
-        ApiHelper.getPresenters(appLang, String.valueOf(channelID))
+        ApiHelper.getPresenters(appLang, String.valueOf(channelID), String.valueOf(pageNumber))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(presentersResponse -> {
-                    presentersView.showPresenters(presentersResponse.getPresenterData().getPresenters());
+                    presentersView.showPresenters(presentersResponse.getPresenterData());
                     presentersView.hideLoading();
                 }, throwable -> {
                     presentersView.hideLoading();

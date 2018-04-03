@@ -2,18 +2,25 @@ package com.spade.nrc.ui.presenters.view;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
 import com.spade.nrc.ui.event.bus.events.PresenterClickEvent;
 import com.spade.nrc.ui.presenters.model.Presenter;
+import com.spade.nrc.ui.presenters.model.PresenterData;
 import com.spade.nrc.ui.presenters.presenter.PresentersPresenter;
 import com.spade.nrc.ui.presenters.presenter.PresentersPresenterImpl;
 import com.spade.nrc.utils.ChannelUtils;
@@ -37,11 +44,12 @@ public class PresentersFragment extends BaseFragment implements PresentersView, 
     private List<Presenter> presenterList = new ArrayList<>();
     private PresentersPresenter presentersPresenter;
     private EventBus eventBus;
-    private int channelID;
+    private boolean isLoading = false;
+    private int currentPage = 0, lastPage, channelID;
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         presenterView = inflater.inflate(R.layout.fragment_listing, container, false);
         initViews();
         return presenterView;
@@ -66,7 +74,41 @@ public class PresentersFragment extends BaseFragment implements PresentersView, 
         presentersAdapter = new PresentersAdapter(getContext(), presenterList, channelID);
         presentersAdapter.setOnPresenterClicked(this);
         presentersRecycle.setAdapter(presentersAdapter);
-        presentersPresenter.getPresenters(PrefUtils.getAppLang(getContext()), channelID);
+        presentersRecycle.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                super.onScrolled(recyclerView, dx, dy);
+                int visibleItemCount = presentersRecycle.getLayoutManager().getChildCount();
+                int totalItemCount = presentersRecycle.getLayoutManager().getItemCount();
+                int firstVisibleItemPosition = ((LinearLayoutManager) presentersRecycle.getLayoutManager()).findFirstVisibleItemPosition();
+
+                if (!isLoading && (currentPage < lastPage)) {
+                    if ((visibleItemCount + firstVisibleItemPosition) >= totalItemCount
+                            && firstVisibleItemPosition >= 0) {
+                        getPresenters();
+                    }
+                }
+            }
+        });
+        getPresenters();
+        sendAnalytics(String.format(getString(R.string.channel_presenters_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
+    }
+
+    private void getPresenters() {
+        currentPage += 1;
+        isLoading = true;
+        presentersPresenter.getPresenters(PrefUtils.getAppLang(getContext()), channelID, currentPage);
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
@@ -95,9 +137,11 @@ public class PresentersFragment extends BaseFragment implements PresentersView, 
     }
 
     @Override
-    public void showPresenters(List<Presenter> presenters) {
-        this.presenterList.clear();
-        this.presenterList.addAll(presenters);
+    public void showPresenters(PresenterData presenterData) {
+        lastPage = presenterData.getLastPage();
+        isLoading = false;
+        if (presenterData.getPresenters() != null)
+            this.presenterList.addAll(presenterData.getPresenters());
         presentersAdapter.notifyDataSetChanged();
     }
 

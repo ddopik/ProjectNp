@@ -5,6 +5,7 @@ import android.content.Context;
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
 import com.spade.nrc.ui.shows.view.ShowDetailsView;
+import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -46,5 +47,25 @@ public class ShowDetailsPresenterImpl implements ShowDetailsPresenter {
                         showDetailsView.showMessage(anError.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void addShowToFav(int showID) {
+        if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
+            showDetailsView.showProgressLoading();
+            ApiHelper.addChannelOrShowToFav(String.valueOf(showID), ApiHelper.ADD_SHOW_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context), new ApiHelper.AddToFavCallBacks() {
+                @Override
+                public void addToFavSuccess() {
+                    showDetailsView.hideProgressLoading();
+                    getShowDetails(String.valueOf(showID));
+                }
+
+                @Override
+                public void addToFavFailed(String error) {
+                    showDetailsView.hideProgressLoading();
+                    showDetailsView.showMessage(error);
+                }
+            });
+        }
     }
 }

@@ -9,14 +9,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.spade.nrc.R;
 import com.spade.nrc.nrc.media.player.MusicProvider;
+import com.spade.nrc.ui.player.LiveShowImagesAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
+import com.spade.nrc.utils.RoundedCornersTransformation;
 import com.spade.nrc.utils.TextUtils;
 
 import java.util.List;
@@ -64,7 +67,7 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
     public void onBindViewHolder(ShowsViewHolder holder, int position) {
         Show show = showList.get(position);
         RequestOptions requestOptions = new RequestOptions();
-        requestOptions = requestOptions.transforms(new RoundedCorners(16));
+        requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
 
         switch (itemViewType) {
             case FEATURED_SHOW_TYPE:
@@ -72,27 +75,6 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
                 holder.statusImage.setVisibility(View.GONE);
                 holder.channelImage.setVisibility(View.VISIBLE);
                 break;
-//            case LIVE_SHOW_TYPE:
-//                String showTimeString = TextUtils.getScheduleTimes(show.getSchedules());
-//                holder.showTime.setText(showTimeString);
-//                holder.showTime.setVisibility(View.VISIBLE);
-//                holder.statusImage.setVisibility(View.VISIBLE);
-//                holder.channelImage.setVisibility(View.VISIBLE);
-//                holder.channelImage.setImageResource(ChannelUtils.getChannelImage(show.getChannel().getId()));
-//
-//                boolean isPlaying = String.valueOf(show.getChannel().getId()).equals(musicProvider.getPlayingMediaId());
-//                if (isPlaying) {
-//                    holder.statusImage.setImageResource(R.drawable.ic_live_streaming_landing);
-//                } else {
-//                    holder.statusImage.setImageResource(R.drawable.ic_playbtn_landing);
-//                }
-//
-//                holder.statusImage.setOnClickListener(view -> {
-//                    if (showActions != null)
-//                        showActions.onPlayClicked(show);
-//                });
-//
-//                break;
             case SCHEDULE_SHOW_TYPE:
                 String timeString = TextUtils.getScheduleTimes(show.getSchedules());
                 holder.showTime.setText(timeString);
@@ -103,7 +85,7 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
         }
 
         if (itemViewType != NORMAL_SHOW_TYPE)
-            GlideApp.with(context).load(show.getMedia()).centerCrop()
+            GlideApp.with(context).load(show.getMedia()).apply(requestOptions).centerCrop()
                     .placeholder(ChannelUtils.getShowDefaultImage(show.getChannel().getId())).apply(requestOptions)
                     .into(holder.showImage);
         else
@@ -111,8 +93,6 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
                     .placeholder(ChannelUtils.getShowDefaultImage(show.getChannel().getId()))
                     .into(holder.showImage);
 
-        holder.showImage.setBackgroundColor(ContextCompat.getColor(context,
-                ChannelUtils.getChannelSecondaryColor(show.getChannel().getId())));
         holder.showName.setText(show.getTitle());
         holder.presenterName.setText(TextUtils.getPresentersNames(show.getPresenters()));
         holder.itemView.setOnClickListener(view -> {

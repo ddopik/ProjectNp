@@ -6,24 +6,30 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.view.ViewCompat;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
 import com.spade.nrc.nrc.media.player.MusicProvider;
 import com.spade.nrc.ui.channel.presenter.LiveStreamingPresenter;
 import com.spade.nrc.ui.channel.presenter.LiveStreamingPresenterImpl;
+import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
+import com.spade.nrc.ui.player.LiveShowImagesAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
@@ -47,14 +53,15 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
     private LiveStreamingPresenter liveStreamingPresenter;
     private View liveStreamingView;
     private ImageView currentShowImage, nextShowImage;
-    private TextView currentShowName, currentShowPresenters, nextShowName, nextShowPresenters, nextShowTimes;
+    private TextView currentShowName, currentShowPresenters, nextShowName, nextShowPresenters, nextShowTimes, upNextText;
     private ImageView mediaControlBtn;
     private ProgressBar progressBar, playerProgressBar;
     private MusicProvider musicProvider;
     private EventBus eventBus;
-    private Show currentShow;
+    private Show currentShow, nextShow;
     private int channelID;
     private String mediaTitle, facebookUrl, twitterUrl, telephoneNumber, smsNumber;
+    private LinearLayout nextShowLayout;
 
 
     @Nullable
@@ -80,6 +87,7 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
         ImageView smsImage = liveStreamingView.findViewById(R.id.sms_image_view);
         ImageView callImage = liveStreamingView.findViewById(R.id.call_image_view);
 
+        nextShowLayout = liveStreamingView.findViewById(R.id.item_show);
         progressBar = liveStreamingView.findViewById(R.id.progress_bar);
         currentShowImage = liveStreamingView.findViewById(R.id.current_show_image);
         currentShowName = liveStreamingView.findViewById(R.id.current_show_title);
@@ -89,6 +97,7 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
         nextShowTimes = liveStreamingView.findViewById(R.id.show_times);
         nextShowPresenters = liveStreamingView.findViewById(R.id.presenter_name);
         mediaControlBtn = liveStreamingView.findViewById(R.id.media_control_btn);
+        upNextText = liveStreamingView.findViewById(R.id.up_next_text);
         playerProgressBar = liveStreamingView.findViewById(R.id.player_progress_bar);
         ViewCompat.setElevation(playerProgressBar, getContext().getResources().getDimension(R.dimen.activity_horizontal_margin));
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
@@ -108,7 +117,15 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
         twitterImage.setOnClickListener(this);
         smsImage.setOnClickListener(this);
         callImage.setOnClickListener(this);
+        nextShowLayout.setOnClickListener(this);
         getChannelContactInfo();
+        sendAnalytics(String.format(getString(R.string.channel_live_streaming_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     private void getChannelContactInfo() {
@@ -167,58 +184,51 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
             currentShowPresenters.setVisibility(View.GONE);
             currentShowImage.setImageResource(ChannelUtils.getLiveStreamingDefault(channelID));
         }
-//        currentShowImage
-//                .setBackgroundColor(ContextCompat.getColor(getContext(), ChannelUtils.getChannelSecondaryColor(channelID)));
     }
 
     @Override
     public void showNextShow(Show nextShow) {
         if (nextShow != null) {
+            upNextText.setVisibility(View.VISIBLE);
+            this.nextShow = nextShow;
             nextShowTimes.setTextColor(ContextCompat.getColor(getContext(), ChannelUtils.getChannelSecondaryColor(channelID)));
             nextShowTimes.setText(TextUtils.getScheduleTimes(nextShow.getSchedules()));
             nextShowName.setText(nextShow.getTitle());
             nextShowPresenters.setText(TextUtils.getPresentersNames(nextShow.getPresenters()));
             RequestOptions requestOptions = new RequestOptions();
-            requestOptions = requestOptions.transforms(new RoundedCorners(32));
-            GlideApp.with(getContext()).load(nextShow.getMedia()).centerCrop()
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
+            GlideApp.with(getContext()).load(nextShow.getMedia()).apply(requestOptions).centerCrop()
                     .placeholder(ChannelUtils.getShowDefaultImage(channelID)).apply(requestOptions)
                     .into(nextShowImage);
+        } else {
+            nextShowLayout.setVisibility(View.GONE);
+            upNextText.setVisibility(View.GONE);
         }
     }
 
     private void updatePlayBtnStatus() {
-        Log.d("LiveStreaming", musicProvider.getPlayingMediaId() + " .. " + String.valueOf(channelID));
         if (musicProvider.getPlayingMediaId() != null && musicProvider.getPlayingMediaId().equals(String.valueOf(channelID))) {
             int state = musicProvider.getmPlaybackState().getState();
             switch (state) {
                 case PlaybackStateCompat.STATE_BUFFERING:
-                    Log.d("LiveStreamingFragment", "Shown - STATE_BUFFERING");
-//                    showPlayerProgress();
                     setPlayBtn();
                     break;
                 case PlaybackStateCompat.STATE_PLAYING:
-                    Log.d("LiveStreamingFragment", "Shown - STATE_PLAYING");
                     hidePlayerProgress();
                     setPauseBtn();
                     break;
                 case PlaybackStateCompat.STATE_PAUSED:
-                    Log.d("LiveStreamingFragment", "Shown - STATE_PAUSED");
 
                     hidePlayerProgress();
                     setPlayBtn();
                     break;
                 case PlaybackStateCompat.STATE_ERROR:
-                    Log.d("LiveStreamingFragment", "Shown - STATE_ERROR");
-
                     hidePlayerProgress();
                     setPlayBtn();
                     showToastMessage(R.string.streaming_error);
                     break;
             }
         } else {
-            Log.d("LiveStreamingFragment", "hide - else");
-
-//            hidePlayerProgress();
             setPlayBtn();
         }
     }
@@ -232,7 +242,7 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
     }
 
     private void showPlayerProgress() {
-        playerProgressBar.setVisibility(View.VISIBLE);
+//        playerProgressBar.setVisibility(View.VISIBLE);
     }
 
     private void hidePlayerProgress() {
@@ -243,11 +253,9 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.media_control_btn:
-                Log.d("LiveStreamingFragment", "Shown - onClick");
-
                 showPlayerProgress();
                 if (currentShow == null) {
-                    eventBus.post(new MediaPlayerTrack(channelID, mediaTitle));
+                    eventBus.post(new MediaPlayerTrack(channelID, mediaTitle, null));
                 } else {
                     eventBus.post(currentShow);
                 }
@@ -267,6 +275,10 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
             case R.id.call_image_view:
                 if (telephoneNumber != null && !telephoneNumber.isEmpty())
                     Utils.dial(telephoneNumber, getContext());
+                break;
+            case R.id.item_show:
+                if (nextShow != null)
+                    eventBus.post(new ShowsClickEvent(nextShow.getId(), nextShow.getChannel().getId(), true));
                 break;
         }
     }

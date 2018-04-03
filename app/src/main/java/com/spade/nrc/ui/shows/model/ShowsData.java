@@ -15,6 +15,9 @@ public class ShowsData {
     @SerializedName("shows")
     @Expose
     private List<Show> shows = new ArrayList<>();
+    @Expose
+    @SerializedName("last_page")
+    private int lastPage;
 
     public List<Show> getShows() {
         return shows;
@@ -22,5 +25,13 @@ public class ShowsData {
 
     public void setShows(List<Show> shows) {
         this.shows = shows;
+    }
+
+    public int getLastPage() {
+        return lastPage;
+    }
+
+    public void setLastPage(int lastPage) {
+        this.lastPage = lastPage;
     }
 }

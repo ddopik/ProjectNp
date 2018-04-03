@@ -49,11 +49,29 @@
                 app:layout_collapseMode="pin"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
-                <ImageView
-                    android:id="@+id/back_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_left" />
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <ImageView
+                        android:id="@+id/back_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/ic_arrow_left" />
+
+                    <ImageView
+                        android:id="@+id/add_to_fav_image"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:src="@drawable/ic_favorite" />
+                </RelativeLayout>
+
+
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -97,7 +115,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
                         android:layout_marginStart="@dimen/activity_vertical_margin"
-                        android:layout_marginTop="@dimen/dp8">
+                        android:layout_marginTop="@dimen/dp4">
 
                         <TextView
                             android:id="@+id/show_days"
@@ -123,7 +141,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
                         android:layout_marginStart="@dimen/activity_vertical_margin"
-                        android:layout_marginTop="@dimen/dp8"
+                        android:layout_marginTop="@dimen/dp4"
                         android:textAllCaps="true"
                         android:textColor="@color/grey_text_color" />
 
@@ -137,6 +155,7 @@
                         android:paddingStart="@dimen/activity_vertical_margin"
                         android:paddingTop="@dimen/activity_vertical_margin"
                         android:textColor="@color/black"
+                        android:textSize="@dimen/material_text_subhead"
                         tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent ullamcorper feugiat nisi nec consectetur. Nulla eu eros sapien. Nullam hendrerit volutpat volutpat. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum lacinia nisl vel nulla condimentum iaculis. Suspendisse ante diam, interdum at viverra eu, volutpat nec ante. Nunc porta diam massa, at posuere tellus luctus eu." />
                 </LinearLayout>
 
@@ -148,7 +167,7 @@
                     android:background="@color/grey_background"
                     android:orientation="vertical">
 
-                    <com.spade.nrc.ui.CustomViews.CustomTextView
+                    <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="@dimen/dp8"
@@ -157,8 +176,8 @@
                         android:gravity="start"
                         android:text="@string/presented_by"
                         android:textAllCaps="true"
-                        android:textSize="@dimen/material_text_subhead"
-                        app:color="@color/grey_text_color" />
+                        android:textColor="@color/grey_text_color"
+                        android:textSize="@dimen/material_text_subhead" />
 
                     <com.spade.nrc.ui.CustomViews.CustomRecyclerView
                         android:id="@+id/show_presenters_recycler_view"

@@ -1,6 +1,7 @@
 package com.spade.nrc.ui.presenters.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatImageView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -39,14 +40,14 @@ public class PresentersAdapter extends RecyclerView.Adapter<PresentersAdapter.Pr
 
 
     @Override
-    public PresenterViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public PresenterViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater layoutInflater = LayoutInflater.from(context);
         View view = layoutInflater.inflate(R.layout.item_presenter, parent, false);
         return new PresenterViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(PresenterViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull PresenterViewHolder holder, int position) {
         Presenter presenter = presenterList.get(position);
         String presenterImage = presenter.getMedia();
         String presenterName = presenter.getName();

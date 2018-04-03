@@ -1,5 +1,6 @@
 package com.spade.nrc.ui.presenters.view;
 
+import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -21,9 +22,13 @@ import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
 import com.spade.nrc.ui.explore.view.ShowsAdapter;
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.ui.presenters.presenter.PresenterDetailsPresenter;
@@ -35,6 +40,8 @@ import com.spade.nrc.utils.GlideApp;
 import com.spade.nrc.utils.Utils;
 import com.vansuita.gaussianblur.GaussianBlur;
 
+import org.greenrobot.eventbus.EventBus;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +49,7 @@ import java.util.List;
  * Created by Ayman Abouzeid on 1/26/18.
  */
 
-public class PresenterDetailsFragment extends BaseFragment implements PresenterDetailsView, View.OnClickListener {
+public class PresenterDetailsFragment extends BaseFragment implements PresenterDetailsView, View.OnClickListener, ShowsAdapter.ShowActions {
 
     private View presenterDetailsView;
     private PresenterDetailsPresenter presenterDetailsPresenter;
@@ -56,6 +63,7 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
 
     private String facebookUrl = "", twitterUrl = "", instagramUrl = "";
     private int channelID;
+    private EventBus eventBus;
 
     @Nullable
     @Override
@@ -124,12 +132,21 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
         showsAdapter.notifyDataSetChanged();
         if (shows.isEmpty())
             showLayout.setVisibility(View.GONE);
+
+        sendAnalytics(presenter.getName());
+    }
+
+    private void sendAnalytics(String screenName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(screenName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
     }
 
     @Override
     protected void initPresenter() {
         presenterDetailsPresenter = new PresenterDetailsPresenterImpl(getContext());
         presenterDetailsPresenter.setView(this);
+        eventBus = EventBus.getDefault();
     }
 
     @Override
@@ -147,6 +164,7 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
         aboutPresenter = presenterDetailsView.findViewById(R.id.about_presenter_text_view);
         presenterImage = presenterDetailsView.findViewById(R.id.presenter_image);
         presenterBlurredImage = presenterDetailsView.findViewById(R.id.presenter_blurred_image);
+        showsRecyclerView.setNestedScrollingEnabled(false);
 
         facebookImage.setOnClickListener(this);
         twitterImage.setOnClickListener(this);
@@ -166,6 +184,7 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
 
         showsAdapter = new ShowsAdapter(getContext(),
                 shows, Constants.SCHEDULE_SHOW_TYPE);
+        showsAdapter.setShowActions(this);
         showsRecyclerView.setAdapter(showsAdapter);
         presenterDetailsPresenter.getPresenterDetails(String.valueOf(presenterID), String.valueOf(channelID));
         backBtn.setOnClickListener(view -> getActivity().onBackPressed());
@@ -188,5 +207,11 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
                     Utils.openURL(instagramUrl, getContext());
                 break;
         }
+    }
+
+    @Override
+    public void onShowClicked(Show show) {
+        eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+
     }
 }

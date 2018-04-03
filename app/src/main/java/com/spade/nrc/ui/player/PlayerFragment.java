@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.DataSource;
@@ -59,8 +58,8 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
     private FrameLayout nextShowLayout;
     private LiveShowImagesAdapter liveShowImagesAdapter;
     private ViewPager viewPager;
-    private ImageView channelLogo, showImageBackground, mediaControlBtn, nextShowImage;
-    private TextView showTitle, showPresentersNames, nextShowTimes, nextShowName, nextShowPresenters, upNextShow;
+    private ImageView channelLogo, showImageBackground, mediaControlBtn, nextShowImage, nextShowBackground;
+    private TextView showTitle, showPresentersNames, nextShowTimes, nextShowName, nextShowPresenters, upNextShow, showDescription;
     private ProgressBar progressBar, playerProgressBar;
     private String mediaTitle, facebookUrl, twitterUrl, phoneNumber, smsNumber;
     private PlayerPresenter playerPresenter;
@@ -100,11 +99,13 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         ImageView smsImage = playerView.findViewById(R.id.sms_image_view);
         ImageView callImage = playerView.findViewById(R.id.call_image_view);
         ImageView collapseImage = playerView.findViewById(R.id.collapse_image);
+        nextShowBackground = playerView.findViewById(R.id.next_show_background);
         upNextShow = playerView.findViewById(R.id.up_next_text_view);
         nextShowLayout = playerView.findViewById(R.id.next_show_layout);
         nextShowImage = playerView.findViewById(R.id.show_image);
         nextShowName = playerView.findViewWithTag(getString(R.string.next_show_title_tag));
         nextShowTimes = playerView.findViewById(R.id.show_times);
+        showDescription = playerView.findViewById(R.id.show_description);
         nextShowPresenters = playerView.findViewById(R.id.presenter_name);
         viewPager = playerView.findViewById(R.id.live_shows_images_pager);
         mediaControlBtn = playerView.findViewById(R.id.media_control_btn);
@@ -222,12 +223,16 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         if (currentShow != null) {
             mediaTitle = currentShow.getTitle();
             showPresentersNames.setText(TextUtils.getPresentersNames(currentShow.getPresenters()));
+            showDescription.setText(currentShow.getDescription());
+            showPresentersNames.setVisibility(View.VISIBLE);
+            showDescription.setVisibility(View.VISIBLE);
             mediaURL = currentShow.getMedia();
 
         } else {
             mediaTitle = String.format(getString(R.string.enjoy_listening)
                     , getString(ChannelUtils.getChannelTitle(channelID)));
             showPresentersNames.setVisibility(View.GONE);
+            showDescription.setVisibility(View.GONE);
             mediaURL = "";
         }
 
@@ -309,7 +314,6 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
                     break;
             }
         } else {
-//            viewPager.setCurrentItem(ChannelUtils.RADIO_HITS_POS);
             hidePlayerProgress();
             setPlayBtn();
         }
@@ -358,7 +362,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
 
     private void showNextShowLayout() {
         isExpanded = true;
-        nextShowLayout.animate().translationYBy(-1 * TRANSLATION_VALUE).setDuration(1000)
+        nextShowLayout.animate().translationYBy(-1 * TRANSLATION_VALUE).setDuration(700)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -371,6 +375,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
                         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_arrow_down);
                         upNextShow.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
                         upNextShow.setEnabled(true);
+                        nextShowBackground.setAlpha(0.9f);
                     }
 
                     @Override
@@ -387,7 +392,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
 
     private void hideNextShowLayout() {
         isExpanded = false;
-        nextShowLayout.animate().translationYBy(TRANSLATION_VALUE).setDuration(1000)
+        nextShowLayout.animate().translationYBy(TRANSLATION_VALUE).setDuration(700)
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
@@ -399,6 +404,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
                         Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.ic_arrow_up);
                         upNextShow.setCompoundDrawablesWithIntrinsicBounds(null, null, drawable, null);
                         upNextShow.setEnabled(true);
+                        nextShowBackground.setAlpha(0.3f);
                     }
 
                     @Override
@@ -420,7 +426,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
                 if (currentShow != null)
                     eventBus.post(currentShow);
                 else
-                    eventBus.post(new MediaPlayerTrack(channelID, mediaTitle));
+                    eventBus.post(new MediaPlayerTrack(channelID, mediaTitle, null));
                 break;
             case R.id.facebook_image_view:
                 if (facebookUrl != null && !facebookUrl.isEmpty())

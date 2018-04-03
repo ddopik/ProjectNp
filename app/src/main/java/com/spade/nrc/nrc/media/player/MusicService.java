@@ -131,7 +131,7 @@ public class MusicService extends MediaBrowserServiceCompat {
     private MediaSessionCompat mSession;
     public NotificationManagerCompat mNotificationManager;
     // Indicates whether the service was started.
-    private boolean mServiceStarted;
+    private boolean mServiceStarted, mNotificationStarted = false;
     private Playback mPlayback;
     private MediaSessionCompat.QueueItem mCurrentMedia;
     private AudioBecomingNoisyReceiver mAudioBecomingNoisyReceiver;
@@ -148,6 +148,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
             if (!mPlayback.isPlaying()) {
                 Log.d(TAG, "Stopping service");
+                mediaNotificationHelper.clearNotification();
                 stopSelf();
                 mServiceStarted = false;
             }
@@ -185,7 +186,7 @@ public class MusicService extends MediaBrowserServiceCompat {
             public void onCompletion() {
                 // In this simple implementation there isn't a play queue, so we simply 'stop' after
                 // the song is over.
-                handleStopRequest();
+//                handleStopRequest();
             }
 
             @Override
@@ -217,7 +218,7 @@ public class MusicService extends MediaBrowserServiceCompat {
     @Override
     public int onStartCommand(Intent startIntent, int flags, int startId) {
         MediaButtonReceiver.handleIntent(mSession, startIntent);
-        return super.onStartCommand(startIntent, flags, startId);
+        return START_STICKY;
     }
 
     /**
@@ -391,7 +392,7 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         // reset the delayed stop handler.
         mDelayedStopHandler.removeCallbacksAndMessages(null);
-        mDelayedStopHandler.sendEmptyMessageDelayed(STOP_CMD, STOP_DELAY);
+//        mDelayedStopHandler.sendEmptyMessageDelayed(STOP_CMD, STOP_DELAY);
     }
 
     /**
@@ -502,7 +503,13 @@ public class MusicService extends MediaBrowserServiceCompat {
 
         if (state == PlaybackStateCompat.STATE_PLAYING) {
             Notification notification = getNotification();
-            startForeground(NOTIFICATION_ID, notification);
+
+            if (!mNotificationStarted) {
+                startForeground(NOTIFICATION_ID, notification);
+                mNotificationStarted = true;
+            } else
+                mediaNotificationHelper.notify(notification);
+
             mAudioBecomingNoisyReceiver.register();
         } else {
             if (state == PlaybackStateCompat.STATE_PAUSED) {

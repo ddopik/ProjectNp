@@ -10,4 +10,8 @@ import com.spade.nrc.ui.shows.model.Show;
 public interface ShowDetailsView extends BaseView {
 
     void displayShowData(Show show);
+
+    void showProgressLoading();
+
+    void hideProgressLoading();
 }

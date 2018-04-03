@@ -21,11 +21,24 @@
         android:fitsSystemWindows="false"
         android:maxWidth="120dp">
 
-        <com.spade.nrc.ui.CustomViews.CustomRecyclerView
-            android:id="@+id/side_menu_recycler_view"
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            app:orientation="vertical" />
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <com.spade.nrc.ui.CustomViews.CustomRecyclerView
+                    android:id="@+id/side_menu_recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:orientation="vertical" />
+
+                <include layout="@layout/side_menu_item" />
+            </LinearLayout>
+
+        </ScrollView>
     </android.support.design.widget.NavigationView>
 </android.support.v4.widget.DrawerLayout>

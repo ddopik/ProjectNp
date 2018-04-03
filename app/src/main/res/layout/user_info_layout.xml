@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal">
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--&gt;-->
+
+                <EditText
+                    android:id="@+id/first_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:hint="@string/first_name"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_vertical_margin"
+                    android:textAppearance="@style/TextAppearance"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/opacity_white"
+                    android:theme="@style/EditTextTheme" />
+                <!--</android.support.design.widget.TextInputLayout>-->
+
+                <!--<android.support.design.widget.TextInputLayout-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_weight="1">-->
+
+                <EditText
+                    android:id="@+id/last_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:hint="@string/last_name"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_vertical_margin"
+                    android:textAppearance="@style/TextAppearance"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/opacity_white"
+                    android:theme="@style/EditTextTheme" />
+                <!--</android.support.design.widget.TextInputLayout>-->
+            </LinearLayout>
+
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <EditText
+                android:id="@+id/email_address_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingEnd="@dimen/activity_vertical_margin"
+                android:paddingStart="@dimen/activity_vertical_margin"
+                android:textAppearance="@style/TextAppearance"
+                android:textColor="@color/white"
+                android:textColorHint="@color/opacity_white"
+                android:theme="@style/EditTextTheme" />
+            <!--</android.support.design.widget.TextInputLayout>-->
+
+            <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content">-->
+
+            <EditText
+                android:id="@+id/phone_number_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                android:paddingEnd="@dimen/activity_vertical_margin"
+                android:paddingStart="@dimen/activity_vertical_margin"
+                android:textAppearance="@style/TextAppearance"
+                android:textColor="@color/white"
+                android:textColorHint="@color/opacity_white"
+                android:theme="@style/EditTextTheme" />
+            <!--</android.support.design.widget.TextInputLayout>-->
+        </LinearLayout>
+    </ScrollView>
+
+</RelativeLayout>

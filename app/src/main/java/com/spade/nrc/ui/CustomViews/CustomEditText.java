@@ -7,7 +7,8 @@
 //import android.util.AttributeSet;
 //import android.view.Gravity;
 //
-//import com.spade.mazda.R;
+//import com.spade.nrc.R;
+//
 //
 ///**
 // * Created by Ayman Abouzeid on 10/31/17.
@@ -32,7 +33,7 @@
 //        int fontNameStringID = 0;
 //        switch (fontStyle) {
 //            case 0:
-//                fontNameStringID = R.string.gotham_regular;
+//                fontNameStringID = R.string.;
 //                break;
 //            case 1:
 //                fontNameStringID = R.string.gotham_semi_bold;

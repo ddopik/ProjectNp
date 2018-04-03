@@ -1,5 +1,6 @@
 package com.spade.nrc.ui.channel.view;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,7 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.channel.presenter.ChannelDetailsPresenter;
 import com.spade.nrc.ui.channel.presenter.ChannelDetailsPresenterImpl;
@@ -38,6 +42,7 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
     private ImageView channelLogo, channelBackground, channelIllustration;
     private PagingAdapter pagingAdapter;
     private int channelID;
+    private ProgressDialog progressDialog;
 
     @Nullable
     @Override
@@ -53,56 +58,63 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         channelDetailsPresenter.setView(this);
     }
 
+    private void sendAnalytics(String channelName) {
+        Tracker causesTracker = NRCApplication.getDefaultTracker();
+        causesTracker.setScreenName(channelName);
+        causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
     @Override
     protected void initViews() {
         Toolbar toolbar = channelDetailsView.findViewById(R.id.toolbar);
-//        CollapsingToolbarLayout collapsingToolbarLayout = channelDetailsView.findViewById(R.id.collapsing_toolbar);
         ImageView backBtn = toolbar.findViewById(R.id.back_button);
-//        collapsingToolbarLayout.setTitleEnabled(false);
-//        toolbar.setTitle(R.string.radio_hits);
         channelBackground = channelDetailsView.findViewById(R.id.channel_background);
         channelIllustration = channelDetailsView.findViewById(R.id.channel_illustration);
         channelLogo = channelDetailsView.findViewById(R.id.channel_logo);
         channelTitle = channelDetailsView.findViewById(R.id.channel_title);
         viewPager = channelDetailsView.findViewById(R.id.fragments_viewpager);
         tabLayout = channelDetailsView.findViewById(R.id.tabs);
-
+        TextView addToFavouriteChannel = channelDetailsView.findViewById(R.id.add_to_favourite_btn);
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
+        sendAnalytics(getString(ChannelUtils.getChannelTitle(channelID)));
         setChannelTheme();
 
         pagingAdapter = new PagingAdapter(getChildFragmentManager());
         channelDetailsPresenter.setUpViewPager(channelID);
+
         backBtn.setOnClickListener(view -> getActivity().onBackPressed());
+        addToFavouriteChannel.setOnClickListener(view -> channelDetailsPresenter.addChannelToFav(channelID));
     }
 
     @Override
     public void showMessage(String message) {
-
+        showToastMessage(message);
     }
 
     @Override
     public void showMessage(int resID) {
-
+        showToastMessage(resID);
     }
 
     @Override
     public void showLoading() {
-
+        if (progressDialog == null)
+            progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage(getString(R.string.loading));
+        progressDialog.setCancelable(false);
+        progressDialog.show();
     }
 
     @Override
     public void hideLoading() {
-
+        if (progressDialog != null)
+            progressDialog.hide();
     }
 
     @Override
     public void setError(EditText editText, int resId) {
 
     }
-
-//    public void setChannelID(int channelID) {
-//        this.channelID = channelID;
-//    }
 
     @Override
     public void addFragment(List<Fragment> fragmentList, List<String> fragmentTitles) {

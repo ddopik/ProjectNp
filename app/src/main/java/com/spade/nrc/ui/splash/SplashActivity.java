@@ -12,7 +12,10 @@ import com.spade.nrc.R;
 import com.spade.nrc.ui.channel.presenter.ChannelsPresenter;
 import com.spade.nrc.ui.channel.presenter.ChannelsPresenterImpl;
 import com.spade.nrc.ui.channel.view.ChannelsView;
+import com.spade.nrc.ui.login.view.LoginActivity;
 import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.utils.LoginProviders;
+import com.spade.nrc.utils.PrefUtils;
 
 /**
  * Created by spade on 6/7/17.
@@ -49,12 +52,13 @@ public class SplashActivity extends AppCompatActivity implements ChannelsView {
     }
 
     private void navigate() {
-//        int loginProvider = PrefUtils.getLoginProvider(this);
-//        if (loginProvider == LoginProviders.NONE.getLoginProviderCode()) {
-//            startActivity(LoginActivity.getLaunchIntent(this));
-//        } else {
-        startActivity(MainActivity.getLaunchIntent(this));
-//        }
+        int loginProvider = PrefUtils.getLoginProvider(this);
+        if (loginProvider == LoginProviders.NONE.getLoginProviderCode()) {
+            startActivity(LoginActivity.getLaunchIntent(this));
+        } else {
+            startActivity(MainActivity.getLaunchIntent(this));
+        }
+        PrefUtils.setIsFirstLaunch(this, false);
         finish();
     }
 

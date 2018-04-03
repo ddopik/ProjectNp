@@ -40,8 +40,8 @@ public class MediaPlayerService extends Service {
             if (action.equals(Constants.ACTION_PAUSE)) {
                 stopSelf();
             } else {
-                MediaPlayerTrack mediaPlayerTrack = new MediaPlayerTrack(Constants.NAGHAM_ID, "https://ahmsamir.radioca.st/stream");
-                mediaPlayerController.doMediaAction(mediaPlayerTrack);
+//                MediaPlayerTrack mediaPlayerTrack = new MediaPlayerTrack(Constants.NAGHAM_ID, "https://ahmsamir.radioca.st/stream");
+//                mediaPlayerController.doMediaAction(mediaPlayerTrack);
             }
         }
         return super.onStartCommand(intent, flags, startId);

@@ -16,10 +16,28 @@
             android:id="@+id/my_toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@drawable/nrc_gradient_circle"
+            android:background="@drawable/nrc_gradient"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
             app:layout_scrollFlags="scroll|enterAlways"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <ImageView
+                android:id="@+id/menu_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_menu" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/activity_horizontal_margin"
+                android:layout_marginStart="@dimen/dp8"
+                android:padding="@dimen/dp8"
+                android:text="@string/contact_us"
+                android:textColor="@color/white"
+                android:textSize="@dimen/material_text_subhead" />
+        </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>
 
@@ -122,7 +140,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:padding="@dimen/dp8"
-                        android:src="@drawable/ic_callnow_cu" />
+                        android:src="@drawable/ic_sendmesg_cu" />
 
 
                     <TextView
@@ -221,7 +239,8 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:background="@color/separator_color" />
+                    android:background="@color/separator_color"
+                    android:visibility="gone" />
 
                 <Button
                     android:id="@+id/message_us_btn"
@@ -230,7 +249,8 @@
                     android:layout_margin="@dimen/activity_vertical_margin"
                     android:background="@drawable/nrc_rounded_btn"
                     android:text="@string/share_feed_back"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"

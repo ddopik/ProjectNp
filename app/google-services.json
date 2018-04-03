@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "1010936256746",
+    "firebase_url": "https://nrc-mobile.firebaseio.com",
+    "project_id": "nrc-mobile",
+    "storage_bucket": "nrc-mobile.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1010936256746:android:0aa110cd82de0f71",
+        "android_client_info": {
+          "package_name": "com.spade.nrc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1010936256746-nnpuepotl48f3q0msqcfsbbi35q6mffd.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spade.nrc",
+            "certificate_hash": "c057c845e2810f2d8d5e20a3412f22e4f1300743"
+          }
+        },
+        {
+          "client_id": "1010936256746-pb6k8ug9a6csq9c9c6cnp15v8o1ehfvh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.spade.nrc",
+            "certificate_hash": "fd811510e2ec2e94fc155cfbabd6992d173a794f"
+          }
+        },
+        {
+          "client_id": "1010936256746-v9fjjemhm10v4it3idud0jcpp4bg35t6.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "1010936256746-2f7nslg307l23efvqbo349v6rqkgkgf9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxkCAgxdEaX8jQXiJM2DBfvxUuXKjEvaU"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1010936256746-v9fjjemhm10v4it3idud0jcpp4bg35t6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

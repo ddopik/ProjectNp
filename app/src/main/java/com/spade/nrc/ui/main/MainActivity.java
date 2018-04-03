@@ -22,7 +22,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -32,12 +31,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spade.nrc.R;
+import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaInterface;
 import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
 import com.spade.nrc.nrc.media.player.MusicProvider;
 import com.spade.nrc.nrc.media.player.MusicService;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.about.nrc.AboutNrcFragment;
 import com.spade.nrc.ui.channel.view.ChannelDetailsFragment;
 import com.spade.nrc.ui.contact_us.view.ContactUsFragment;
 import com.spade.nrc.ui.event.bus.events.PresenterClickEvent;
@@ -45,12 +46,16 @@ import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
 import com.spade.nrc.ui.explore.view.ExploreFragment;
 import com.spade.nrc.ui.explore.view.MenuAdapter;
 import com.spade.nrc.ui.general.NavigationManager;
+import com.spade.nrc.ui.general.NavigationManager.OnMenuOpenClicked;
 import com.spade.nrc.ui.player.PlayerFragment;
 import com.spade.nrc.ui.presenters.view.PresenterDetailsFragment;
+import com.spade.nrc.ui.profile.ProfileFragment;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.ui.shows.view.ShowDetailsFragment;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.LoginProviders;
+import com.spade.nrc.utils.PrefUtils;
 import com.spade.nrc.utils.TextUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -59,7 +64,8 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements ChannelNavigationInterface, MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked {
+public class MainActivity extends AppCompatActivity implements ChannelNavigationInterface,
+        MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked {
 
     private String TAG = MainActivity.class.getSimpleName();
     private NavigationManager navigationManager;
@@ -68,22 +74,28 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private EventBus eventBus;
 
     private RelativeLayout footerPlayer;
-    private LinearLayout menuOpenedLayout;
+    private LinearLayout menuOpenedLayout, userLogLayout;
     private FrameLayout playerFragment;
-    private ImageView mediaControlButton;
+    private ImageView mediaControlButton, megaImage,
+            radioHitsImageView, naghamImageView, sh3byImageView, loginImageView;
     private ImageView menuCollapsedImage;
     private ProgressBar playerProgressBar;
-    private TextView showTitle, showTimes;
+    private TextView showTitle, showTimes, exploreMenu, loginTextView;
     private DrawerLayout mDrawerLayout;
 
-    private Animation animShow, animHide;
     private Show currentShow;
     private MediaPlayerTrack currentTrack;
-    private String mMediaId;
-    private int screenHeight, playerHeight, fromY, toY, originalPosition = 0;
-    private int channelID = 1;
 
-    private boolean isPlayerExpanded = false;
+    private String mMediaId;
+    private int screenHeight;
+    private int fromY;
+    private int toY;
+    private int originalPosition = 0;
+    private int channelID = 1;
+    //    private boolean isPlayerExpanded = false;
+    private static final int ANIMATION_SPEED = 700;
+    private MainPresenter mainPresenter;
+
     private MediaBrowserCompat.ConnectionCallback mConnectionCallback =
             new MediaBrowserCompat.ConnectionCallback() {
                 @Override
@@ -139,8 +151,6 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                     musicProvider.setPlaybackState(state);
                     eventBus.post(new MediaPlayerEvent());
                     Log.d(TAG, state.getState() + " .. callback ..");
-//                    mBrowserAdapter.setPlaybackState(state);
-//                    mBrowserAdapter.notifyDataSetChanged();
                 }
             };
 
@@ -152,28 +162,35 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         init();
     }
 
+//    @Override
+//    protected void onResume() {
+//        super.onResume();
+//        if (eventBus != null)
+//            eventBus.post(new MediaPlayerEvent());
+//    }
 
     @SuppressLint("Recycle")
     private void init() {
         ImageView closeImage = findViewById(R.id.close_image_view);
-//        ImageView menuImage = findViewById(R.id.menu_image_view);
-        ImageView megaImage = findViewById(R.id.mega_image_view);
-        ImageView naghamImageView = findViewById(R.id.nagham_image_view);
-        ImageView radioHitsImageView = findViewById(R.id.radio_image_view);
-        ImageView sh3byImageView = findViewById(R.id.sh3by_image_view);
         ImageView expandPlayer = findViewById(R.id.expand_image_view);
         CustomRecyclerView menuRecyclerView = findViewById(R.id.side_menu_recycler_view);
-
+        megaImage = findViewById(R.id.mega_image_view);
+        naghamImageView = findViewById(R.id.nagham_image_view);
+        radioHitsImageView = findViewById(R.id.radio_image_view);
+        sh3byImageView = findViewById(R.id.sh3by_image_view);
+        playerFragment = findViewById(R.id.player_fragment_container);
+        footerPlayer = findViewById(R.id.footer_player_layout);
+        playerProgressBar = findViewById(R.id.player_progress_bar);
+        exploreMenu = findViewById(R.id.explore_text_view);
+        loginImageView = findViewById(R.id.menu_item_image);
+        loginTextView = findViewById(R.id.menu_item_title);
         mDrawerLayout = findViewById(R.id.drawer_layout);
-
+        userLogLayout = findViewById(R.id.menu_item_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, mDrawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         mDrawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        playerFragment = findViewById(R.id.player_fragment_container);
-        footerPlayer = findViewById(R.id.footer_player_layout);
-        playerProgressBar = findViewById(R.id.player_progress_bar);
 
         navigationManager = new NavigationManager(this);
         musicProvider = MusicProvider.getInstance();
@@ -192,28 +209,45 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 
         menuCollapsedImage.setOnClickListener(this);
         mediaControlButton.setOnClickListener(this);
-//        menuImage.setOnClickListener(this);
         megaImage.setOnClickListener(this);
         naghamImageView.setOnClickListener(this);
         radioHitsImageView.setOnClickListener(this);
         sh3byImageView.setOnClickListener(this);
+        exploreMenu.setOnClickListener(this);
         closeImage.setOnClickListener(this);
         expandPlayer.setOnClickListener(this);
+        userLogLayout.setOnClickListener(this);
 
         showTitle.setText(String.format(getString(R.string.enjoy_listening), getString(R.string.radio_hits)));
         showTitle.setTextColor(ContextCompat.getColor(this, ChannelUtils.getChannelSecondaryColor(Constants.RADIO_HITS_ID)));
 
+        if (PrefUtils.getLoginProvider(this) == LoginProviders.NONE.getLoginProviderCode()) {
+            loginImageView.setImageResource(R.drawable.ic_login_sm);
+            loginTextView.setText(R.string.login);
+        } else {
+            loginImageView.setImageResource(R.drawable.ic_login_sm);
+            loginImageView.setRotationX(180);
+            loginTextView.setText(R.string.logout);
+        }
+
+        mainPresenter = new MainPresenterImpl(this);
         initMediaBrowser();
         initAnimation();
         openExploreFragment();
         openPlayerFragment();
     }
 
+    private void checkToLogoutOrLogin() {
+        mainPresenter.checkToLogoutOrLogin();
+    }
+
     private void openExploreFragment() {
-        ExploreFragment exploreFragment = new ExploreFragment();
-        exploreFragment.setChannelNavigationInterface(this);
-//        exploreFragment.setMediaInterface(this);
-        navigationManager.openFragmentAsRoot(exploreFragment, R.id.fragment_container, ExploreFragment.class.getSimpleName());
+        if (!(navigationManager.getCurrentFragment() instanceof ExploreFragment)) {
+            ExploreFragment exploreFragment = new ExploreFragment();
+            exploreFragment.setChannelNavigationInterface(this);
+            exploreFragment.setOnMenuOpenClicked(this);
+            navigationManager.openFragmentAsRoot(exploreFragment, R.id.fragment_container, ExploreFragment.class.getSimpleName());
+        }
     }
 
     private void openPlayerFragment() {
@@ -229,6 +263,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         ChannelDetailsFragment channelDetailsFragment = new ChannelDetailsFragment();
         channelDetailsFragment.setArguments(bundle);
         navigationManager.openFragment(channelDetailsFragment, R.id.fragment_container, ChannelDetailsFragment.class.getSimpleName());
+        updateMenu(channelID);
         hideMenu();
     }
 
@@ -267,19 +302,25 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         channelID = show.getChannel().getId();
         showTitle.setTextColor(ContextCompat.getColor(this, ChannelUtils.getChannelSecondaryColor(channelID)));
 
-        controlPlayer(channelID);
+        controlPlayer(channelID, false);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void onShowPlayClicked(MediaPlayerTrack mediaPlayerTrack) {
         currentTrack = mediaPlayerTrack;
-        showTimes.setVisibility(View.GONE);
         showTitle.setText(mediaPlayerTrack.getMediaTitle());
-
         channelID = mediaPlayerTrack.getMediaChannelID();
+
+        if (mediaPlayerTrack.getSchedules() != null && !mediaPlayerTrack.getSchedules().isEmpty()) {
+            showTimes.setText(TextUtils.getScheduleTimes(mediaPlayerTrack.getSchedules()));
+            showTimes.setVisibility(View.VISIBLE);
+        } else {
+            showTimes.setVisibility(View.GONE);
+        }
+
         showTitle.setTextColor(ContextCompat.getColor(this, ChannelUtils.getChannelSecondaryColor(channelID)));
 
-        controlPlayer(channelID);
+        controlPlayer(channelID, false);
     }
 
     @Override
@@ -298,22 +339,43 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         super.onStop();
     }
 
-    private void controlPlayer(int channelID) {
-        footerPlayer.setVisibility(View.VISIBLE);
-        boolean isPlaying = String.valueOf(channelID).equals(musicProvider.getPlayingMediaId());
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        BaseFragment baseFragment = navigationManager.getCurrentFragment();
+        if (baseFragment.getArguments() != null && baseFragment.getArguments().containsKey(Constants.EXTRA_CHANNEL_ID))
+            updateMenu(baseFragment.getArguments().getInt(Constants.EXTRA_CHANNEL_ID));
+        else updateMenu(0);
+    }
+
+    @Override
+    protected void onDestroy() {
+        Log.d("MainActivity", "ONDESTROY");
+        controlPlayer(0, true);
+        super.onDestroy();
+    }
+
+    private void controlPlayer(int channelID, boolean stop) {
         MediaControllerCompat controller = MediaControllerCompat.getMediaController(this);
         MediaControllerCompat.TransportControls controls = controller.getTransportControls();
-        int state = PlaybackStateCompat.STATE_PAUSED;
-        if (isPlaying && musicProvider.getmPlaybackState() != null)
-            state = musicProvider.getmPlaybackState().getState();
+        if (stop) {
+            controls.stop();
+        } else {
+            footerPlayer.setVisibility(View.VISIBLE);
+            boolean isPlaying = String.valueOf(channelID).equals(musicProvider.getPlayingMediaId());
+            int state = PlaybackStateCompat.STATE_PAUSED;
+            if (isPlaying && musicProvider.getmPlaybackState() != null)
+                state = musicProvider.getmPlaybackState().getState();
 
-        switch (state) {
-            case PlaybackStateCompat.STATE_PLAYING:
-                controls.pause();
-                break;
-            case PlaybackStateCompat.STATE_PAUSED:
-                controls.playFromMediaId(String.valueOf(channelID), null);
-                break;
+            switch (state) {
+                case PlaybackStateCompat.STATE_PLAYING:
+                    controls.pause();
+                    break;
+                case PlaybackStateCompat.STATE_PAUSED:
+                    controls.playFromMediaId(String.valueOf(channelID), null);
+                    break;
+            }
         }
     }
 
@@ -395,7 +457,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 
     private void showMenu() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(menuOpenedLayout, "translationY", fromY, 0);
-        animTranslate.setDuration(700);
+        animTranslate.setDuration(ANIMATION_SPEED);
         animTranslate.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -424,7 +486,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private void hideMenu() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(menuOpenedLayout, "translationY", 0, toY);
 
-        animTranslate.setDuration(700);
+        animTranslate.setDuration(ANIMATION_SPEED);
         animTranslate.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -453,7 +515,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private void showPlayer() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(playerFragment,
                 "translationY", screenHeight, 0);
-        animTranslate.setDuration(700);
+        animTranslate.setDuration(ANIMATION_SPEED);
         animTranslate.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -462,6 +524,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 
             @Override
             public void onAnimationEnd(Animator animation) {
+//                isPlayerExpanded = true;
 //                menuOpenedLayout.setClickable(false);
 //                close.setClickable(true);
             }
@@ -481,8 +544,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 
     private void hidePlayer() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(playerFragment, "translationY", 0, toY);
-
-        animTranslate.setDuration(700);
+        animTranslate.setDuration(ANIMATION_SPEED);
         animTranslate.addListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
@@ -520,12 +582,12 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
             case R.id.media_control_btn:
 //                showPlayerProgress();
                 if (currentShow != null)
-                    controlPlayer(currentShow.getChannel().getId());
+                    controlPlayer(currentShow.getChannel().getId(), false);
                 else if (currentTrack != null)
-                    controlPlayer(currentTrack.getMediaChannelID());
-                else
-                    onShowPlayClicked(new MediaPlayerTrack(Constants.RADIO_HITS_ID,
-                            getString(R.string.enjoy_listening, getString(ChannelUtils.getChannelTitle(Constants.RADIO_HITS_ID)))));
+                    controlPlayer(currentTrack.getMediaChannelID(), false);
+//                else
+//                    onShowPlayClicked(new MediaPlayerTrack(Constants.RADIO_HITS_ID,
+//                            getString(R.string.enjoy_listening, getString(ChannelUtils.getChannelTitle(Constants.RADIO_HITS_ID)))));
                 break;
             case R.id.mega_image_view:
                 openChannel(Constants.MEGA_FM_ID);
@@ -550,11 +612,15 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                     mDrawerLayout.closeDrawer(Gravity.START);
                 else
                     mDrawerLayout.openDrawer(Gravity.START);
+                break;
+            case R.id.menu_item_layout:
+                checkToLogoutOrLogin();
+                break;
         }
     }
 
     private void initAnimation() {
-        playerHeight = footerPlayer.getLayoutParams().height;
+        int playerHeight = footerPlayer.getLayoutParams().height;
         Display display = getWindowManager().getDefaultDisplay();
         Point size = new Point();
         display.getSize(size);
@@ -569,10 +635,70 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     public void onItemClicked(int position) {
         switch (position) {
+            case 0:
+                AboutNrcFragment aboutNrcFragment = new AboutNrcFragment();
+                aboutNrcFragment.setOnMenuOpenClicked(this);
+                navigationManager.openFragment(aboutNrcFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
+                mDrawerLayout.closeDrawer(Gravity.START);
+                break;
+            case 1:
+                if (PrefUtils.getLoginProvider(this) != LoginProviders.NONE.getLoginProviderCode()) {
+                    ProfileFragment profileFragment = new ProfileFragment();
+//                    aboutNrcFragment.setOnMenuOpenClicked(this);
+                    navigationManager.openFragment(profileFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
+                    mDrawerLayout.closeDrawer(Gravity.START);
+                }
+                break;
             case 3:
                 ContactUsFragment contactUsFragment = new ContactUsFragment();
+                contactUsFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(contactUsFragment, R.id.fragment_container, ContactUsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
+                break;
+        }
+    }
+
+    @Override
+    public void onMenuImageClicked() {
+        mDrawerLayout.openDrawer(Gravity.START);
+    }
+
+    private void updateMenu(int channelID) {
+        switch (channelID) {
+            case Constants.NAGHAM_ID:
+                naghamImageView.setAlpha(1f);
+                megaImage.setAlpha(0.5f);
+                radioHitsImageView.setAlpha(0.5f);
+                sh3byImageView.setAlpha(0.5f);
+                exploreMenu.setAlpha(0.5f);
+                break;
+            case Constants.MEGA_FM_ID:
+                naghamImageView.setAlpha(0.5f);
+                megaImage.setAlpha(1f);
+                radioHitsImageView.setAlpha(0.5f);
+                sh3byImageView.setAlpha(0.5f);
+                exploreMenu.setAlpha(0.5f);
+                break;
+            case Constants.RADIO_HITS_ID:
+                naghamImageView.setAlpha(0.5f);
+                megaImage.setAlpha(0.5f);
+                radioHitsImageView.setAlpha(1f);
+                sh3byImageView.setAlpha(0.5f);
+                exploreMenu.setAlpha(0.5f);
+                break;
+            case Constants.SH3BY_ID:
+                naghamImageView.setAlpha(0.5f);
+                megaImage.setAlpha(0.5f);
+                radioHitsImageView.setAlpha(0.5f);
+                sh3byImageView.setAlpha(1f);
+                exploreMenu.setAlpha(0.5f);
+                break;
+            default:
+                naghamImageView.setAlpha(0.5f);
+                megaImage.setAlpha(0.5f);
+                radioHitsImageView.setAlpha(0.5f);
+                sh3byImageView.setAlpha(0.5f);
+                exploreMenu.setAlpha(1f);
                 break;
         }
     }
