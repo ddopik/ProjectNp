@@ -19,7 +19,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class SearchFragmentPresenterImpl implements ShowFragmentPresenter {
+public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
 
     private SearchFragmentView searchFragmentView;
     private List<Fragment> fragmentList;

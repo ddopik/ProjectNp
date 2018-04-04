@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
@@ -36,25 +34,6 @@
         <!--android:focusableInTouchMode="true"-->
     </android.support.v7.widget.Toolbar>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/search_tabs"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_toolbar"
-        android:background="@color/white"
-        app:tabGravity="fill"
-        app:tabMode="fixed" />
-    <!---->
-    <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tabs"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/white"-->
-        <!--app:tabGravity="fill"-->
-        <!--app:tabMode="fixed"-->
-        <!--app:tabSelectedTextColor="@color/orange"-->
-        <!--app:tabTextColor="@color/blue"-->
-        <!--/>-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/search_viewpager"
@@ -62,9 +41,6 @@
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@id/search_tabs"
         android:layout_marginBottom="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
-
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

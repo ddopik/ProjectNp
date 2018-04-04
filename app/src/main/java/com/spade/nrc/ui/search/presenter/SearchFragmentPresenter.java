@@ -12,7 +12,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public interface ShowFragmentPresenter {
+public interface SearchFragmentPresenter {
 
 
     List<Fragment> getViewPagerFragment();
