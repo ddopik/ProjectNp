@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/search_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary">
+        android:background="@drawable/nrc_gradient"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,13 +25,18 @@
                 android:src="@drawable/ic_arrow_left" />
 
             <EditText
+                android:id="@+id/search_action"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/search_view_height"
                 android:layout_marginEnd="@dimen/dp16"
                 android:layout_weight="2"
-                android:hint="@string/search_hint"
                 android:background="@drawable/rounded_edit_text"
-                android:padding="5dp" />
+                android:hint="@string/search_hint"
+                android:padding="6dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:paddingStart="@dimen/dp8"
+                android:textSize="@dimen/small_text" />
 
 
         </LinearLayout>
@@ -42,14 +48,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:layout_below="@+id/search_toolbar"
         app:layout_anchorGravity="bottom"
-        app:tabMode="scrollable" />
-
+        app:tabMode="fixed" />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/search_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp"
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-</LinearLayout>
+
+
+</RelativeLayout>
