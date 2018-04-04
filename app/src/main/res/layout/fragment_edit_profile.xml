@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white">
@@ -33,6 +32,7 @@
                     android:scaleType="centerCrop" />
 
                 <FrameLayout
+                    android:id="@+id/profile_image_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerHorizontal="true"
@@ -50,8 +50,21 @@
                         android:layout_height="@dimen/present_circle_image"
                         android:layout_gravity="center"
                         android:src="@drawable/ic_profile_default" />
-
                 </FrameLayout>
+
+                <TextView
+                    android:id="@+id/change_picture_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/profile_image_layout"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="@dimen/activity_vertical_margin"
+                    android:drawablePadding="@dimen/dp8"
+                    android:drawableStart="@drawable/ic_changepicture"
+                    android:gravity="center"
+                    android:src="@drawable/ic_profile_default"
+                    android:text="@string/change_picture"
+                    android:textColor="@color/white" />
             </RelativeLayout>
 
             <android.support.v7.widget.Toolbar
@@ -74,56 +87,106 @@
                         android:src="@drawable/ic_arrow_left" />
 
                     <TextView
-                        android:id="@+id/user_name_text_view"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
                         android:layout_toEndOf="@id/back_button"
-                        android:layout_toStartOf="@id/edit_profile"
+                        android:layout_toStartOf="@id/save_btn"
                         android:gravity="center"
                         android:src="@drawable/ic_profile_default"
                         android:text="@string/edit_profile"
                         android:textAllCaps="true"
                         android:textColor="@color/white"
                         android:textSize="@dimen/material_text_title"
-                        android:textStyle="bold"
-                        tools:text="AYMAN ABOUZEID" />
+                        android:textStyle="bold" />
 
-                    <ImageView
-                        android:id="@+id/edit_profile"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/dp8"
-                        android:layout_toStartOf="@id/notification_image"
-                        android:src="@drawable/ic_edit" />
 
-                    <ImageView
-                        android:id="@+id/notification_image"
+                    <TextView
+                        android:id="@+id/save_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
-                        android:src="@drawable/ic_notification" />
+                        android:text="@string/save"
+                        android:textColor="@color/white" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
-        <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            app:layout_anchorGravity="bottom"
-            app:tabMode="fixed" />
-
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/fragments_viewpager"
+    <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:layout_marginTop="@dimen/activity_vertical_margin"
+                android:orientation="horizontal">
+
+
+                <EditText
+                    android:id="@+id/first_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:hint="@string/first_name"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_vertical_margin"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+
+                <EditText
+                    android:id="@+id/last_name_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="start"
+                    android:hint="@string/last_name"
+                    android:paddingEnd="@dimen/activity_vertical_margin"
+                    android:paddingStart="@dimen/activity_vertical_margin"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/black" />
+            </LinearLayout>
+
+
+            <EditText
+                android:id="@+id/email_address_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:enabled="false"
+                android:gravity="start"
+                android:hint="@string/email"
+                android:inputType="textEmailAddress"
+                android:paddingEnd="@dimen/activity_vertical_margin"
+                android:paddingStart="@dimen/activity_vertical_margin"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
+
+            <EditText
+                android:id="@+id/phone_number_edit_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/activity_vertical_margin"
+                android:gravity="start"
+                android:hint="@string/phone"
+                android:inputType="phone"
+                android:paddingEnd="@dimen/activity_vertical_margin"
+                android:paddingStart="@dimen/activity_vertical_margin"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black" />
+        </LinearLayout>
+    </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>

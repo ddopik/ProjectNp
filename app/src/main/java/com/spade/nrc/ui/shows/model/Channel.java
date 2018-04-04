@@ -45,6 +45,10 @@ public class Channel implements Parcelable {
     @SerializedName("sms_number")
     @Expose
     private String smsNumber;
+    @SerializedName("is_liked")
+    @Expose
+    private boolean isLiked;
+
     public final static Parcelable.Creator<Channel> CREATOR = new Creator<Channel>() {
 
 
@@ -73,7 +77,7 @@ public class Channel implements Parcelable {
         this.youtube = ((String) in.readValue((String.class.getClassLoader())));
         this.telephoneNumber = ((String) in.readValue((String.class.getClassLoader())));
         this.smsNumber = ((String) in.readValue((String.class.getClassLoader())));
-
+        this.isLiked = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
     }
 
     public Channel() {
@@ -168,6 +172,14 @@ public class Channel implements Parcelable {
         this.smsNumber = smsNumber;
     }
 
+    public boolean isLiked() {
+        return isLiked;
+    }
+
+    public void setLiked(boolean liked) {
+        isLiked = liked;
+    }
+
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(id);
         dest.writeValue(name);
@@ -180,6 +192,7 @@ public class Channel implements Parcelable {
         dest.writeValue(youtube);
         dest.writeValue(telephoneNumber);
         dest.writeValue(smsNumber);
+        dest.writeValue(isLiked);
     }
 
     public int describeContents() {

@@ -23,6 +23,8 @@ import com.spade.sociallogin.SocialUser;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+
 import io.reactivex.Observable;
 
 import static com.spade.nrc.ui.login.presenter.LoginPresenterImpl.GOOGLE_TYPE;
@@ -55,6 +57,7 @@ public class ApiHelper {
     private static final String SOCIAL_LOGIN_USER_URL = BASE_URL + "auth/social";
     public static final String ADD_CHANNEL_TO_FAV = BASE_URL + "channel/{id}/favorite";
     public static final String ADD_SHOW_TO_FAV = BASE_URL + "show/{id}/favorite";
+    private static final String EDIT_PROFILE_URL = BASE_URL + "profile/edit";
 
     private static final String LANG_PATH_PARAM = "lang";
     private static final String CHANNEL_PARAM = "channel";
@@ -184,6 +187,19 @@ public class ApiHelper {
                 .addBodyParameter("notification_token", notificationToken)
                 .addPathParameter(LANG_PATH_PARAM, lang)
                 .setPriority(Priority.HIGH)
+                .getResponseOnlyFromNetwork()
+                .build()
+                .getObjectObservable(RegistrationResponse.class);
+    }
+
+    public static Observable<RegistrationResponse> editProfile(UserModel userModel, String userToken, File imageFile, String notificationToken) {
+        return Rx2AndroidNetworking.upload(EDIT_PROFILE_URL)
+                .addHeaders(AUTH_TOKEN, BEARER + " " + userToken)
+                .addMultipartParameter("first_name", userModel.getFirstName())
+                .addMultipartParameter("last_name", userModel.getLastName())
+                .addMultipartParameter("phone", userModel.getUserPhone())
+                .addMultipartParameter("notification_token", notificationToken)
+                .addMultipartFile("image", imageFile)
                 .getResponseOnlyFromNetwork()
                 .build()
                 .getObjectObservable(RegistrationResponse.class);
