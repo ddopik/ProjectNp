@@ -45,7 +45,7 @@ public class FragmentSearchShow extends BaseFragment implements FragmentSearchSh
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.search_result_fragment, container, false);
+        mainView = inflater.inflate(R.layout.search_show_fragment, container, false);
         progressBar = mainView.findViewById(R.id.progress_bar);
         initViews();
         initPresenter();
