@@ -1,4 +1,4 @@
-package com.spade.nrc.ui.search.presenter;
+package com.spade.nrc.ui.search.presenter.showsPresenter;
 
 ;
 

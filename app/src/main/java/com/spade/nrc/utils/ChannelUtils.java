@@ -164,6 +164,8 @@ public class ChannelUtils {
                 return R.drawable.ic_nagham_right_arrow;
             case Constants.SH3BY_ID:
                 return R.drawable.ic_sh3by_right_arrow;
+            case Constants.SEARCH:
+                return R.drawable.ic_sh3by_right_arrow;
             default:
                 return R.drawable.ic_radio_right_arrow;
         }

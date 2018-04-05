@@ -55,7 +55,10 @@ public class ApiHelper {
     private static final String SOCIAL_LOGIN_USER_URL = BASE_URL + "auth/social";
     public static final String ADD_CHANNEL_TO_FAV = BASE_URL + "channel/{id}/favorite";
     public static final String ADD_SHOW_TO_FAV = BASE_URL + "show/{id}/favorite";
-    public static final String SEARCH_URL = BASE_URL + "search/{type}/{key}";
+    public static final String SHOWS_SEARCH_URL = BASE_URL + "search/shows";
+    public static final String CHANNELS_SEARCH_URL = BASE_URL + "search/channels";
+    public static final String PRESENTERS_SEARCH_URL = BASE_URL + "search/presenters";
+
 
     private static final String LANG_PATH_PARAM = "lang";
     private static final String CHANNEL_PARAM = "channel";
@@ -64,8 +67,9 @@ public class ApiHelper {
     private static final String ID_PATH_PARAM = "id";
     private static final String AUTH_TOKEN = "Authorization";
     private static final String BEARER = "bearer";
-    private static final String TYPE = "type";
-    private static final String KEY = "key";
+    private static final String KEY = "search";
+
+
 
     public static Observable<PresentersResponse> getPresenters(String appLang, String channelID, String pageNumber) {
         return Rx2AndroidNetworking.get(PRESENTERS_LIST_URL)
@@ -221,30 +225,27 @@ public class ApiHelper {
                 });
     }
 
-    public static Observable<ShowsPagesResponse> getSearchShows(String appLang, String type, String key) {
-        return Rx2AndroidNetworking.get(SEARCH_URL)
+    public static Observable<ShowsPagesResponse> getSearchShows(String appLang, String key) {
+        return Rx2AndroidNetworking.post(SHOWS_SEARCH_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
-                .addQueryParameter(TYPE, key)
-                .addQueryParameter(KEY, key)
+                .addBodyParameter(KEY, key)
                 .build()
                 .getObjectObservable(ShowsPagesResponse.class);
     }
 
-    public static Observable<ChannelsResponse> getSearchChannels(String appLang, String type, String key) {
-        return Rx2AndroidNetworking.get(SEARCH_URL)
+    public static Observable<ChannelsResponse> getSearchChannels(String appLang, String key) {
+        return Rx2AndroidNetworking.post(CHANNELS_SEARCH_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
-                .addQueryParameter(TYPE, key)
-                .addQueryParameter(KEY, key)
+                .addBodyParameter(KEY, key)
                 .build()
                 .getObjectObservable(ChannelsResponse.class);
     }
 
 
-    public static Observable<PresentersResponse> getSearchPresenters(String appLang, String type, String key) {
-        return Rx2AndroidNetworking.get(SEARCH_URL)
+    public static Observable<PresentersResponse> getSearchPresenters(String appLang, String key) {
+        return Rx2AndroidNetworking.post(PRESENTERS_SEARCH_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
-                .addQueryParameter(TYPE, key)
-                .addQueryParameter(KEY, key)
+                .addBodyParameter(KEY, key)
                 .build()
                 .getObjectObservable(PresentersResponse.class);
     }

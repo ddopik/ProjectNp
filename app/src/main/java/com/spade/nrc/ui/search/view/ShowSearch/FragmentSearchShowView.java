@@ -1,4 +1,4 @@
-package com.spade.nrc.ui.search.view;
+package com.spade.nrc.ui.search.view.ShowSearch;
 
 import com.spade.nrc.ui.shows.model.Show;
 

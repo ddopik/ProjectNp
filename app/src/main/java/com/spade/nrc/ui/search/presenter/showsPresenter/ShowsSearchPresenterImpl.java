@@ -1,9 +1,9 @@
-package com.spade.nrc.ui.search.presenter;
+package com.spade.nrc.ui.search.presenter.showsPresenter;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.network.ApiHelper;
-import com.spade.nrc.ui.search.view.FragmentSearchShowView;
+import com.spade.nrc.ui.search.view.ShowSearch.FragmentSearchShowView;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,7 +17,7 @@ public class ShowsSearchPresenterImpl implements ShowSearchPresenter {
 
 
     FragmentSearchShowView fragmentSearchShowView;
-    private String type="shows";
+
 
 
     public ShowsSearchPresenterImpl(FragmentSearchShowView fragmentSearchShowView) {
@@ -28,7 +28,7 @@ public class ShowsSearchPresenterImpl implements ShowSearchPresenter {
     @Override
     public void findShows(String key) {
         fragmentSearchShowView.showProgressBar();
-        ApiHelper.getShows(PrefUtils.getAppLang(NRCApplication.nrcApplication), type, key)
+        ApiHelper.getSearchShows(PrefUtils.getAppLang(NRCApplication.nrcApplication), key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {
@@ -39,7 +39,7 @@ public class ShowsSearchPresenterImpl implements ShowSearchPresenter {
                     if (throwable != null) {
                         ANError anError = (ANError) throwable;
                         fragmentSearchShowView.hideShowsList();
-                        fragmentSearchShowView.viewStateMessage(anError.getMessage());
+                        fragmentSearchShowView.viewStateMessage(anError.getResponse().toString());
                     }
                 });
 

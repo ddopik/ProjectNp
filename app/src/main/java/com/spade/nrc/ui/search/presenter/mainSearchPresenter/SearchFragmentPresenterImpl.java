@@ -1,15 +1,12 @@
-package com.spade.nrc.ui.search.presenter;
+package com.spade.nrc.ui.search.presenter.mainSearchPresenter;
 
 import android.support.v4.app.Fragment;
 
 import com.spade.nrc.R;
 import com.spade.nrc.application.NRCApplication;
-import com.spade.nrc.ui.search.view.FragmentSearchChannels;
-import com.spade.nrc.ui.search.view.FragmentSearchChannelsView;
-import com.spade.nrc.ui.search.view.FragmentSearchPresenters;
-import com.spade.nrc.ui.search.view.FragmentSearchPresentersView;
-import com.spade.nrc.ui.search.view.FragmentSearchShow;
-import com.spade.nrc.ui.search.view.FragmentSearchShowView;
+import com.spade.nrc.ui.search.view.channelsSearch.FragmentSearchChannels;
+import com.spade.nrc.ui.search.view.presentersSearch.FragmentSearchPresenters;
+import com.spade.nrc.ui.search.view.ShowSearch.FragmentSearchShow;
 import com.spade.nrc.ui.search.view.SearchFragmentView;
 
 import java.util.ArrayList;
@@ -28,7 +25,6 @@ public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
     private FragmentSearchShow fragmentSearchShow;
     private FragmentSearchChannels fragmentSearchChannels;
     private FragmentSearchPresenters fragmentSearchPresenters;
-
 
 
     public SearchFragmentPresenterImpl(SearchFragmentView searchFragmentView) {
@@ -66,12 +62,11 @@ public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
     @Override
     public void notifyFragment(String key) {
 
-        ((FragmentSearchShowView) fragmentSearchShow).ViewSearchShow(key);
-        ((FragmentSearchChannelsView) fragmentSearchChannels).ViewChannelsShow(key);
-        ((FragmentSearchPresentersView) fragmentSearchPresenters).ViewSearchPresenters(key);
+        fragmentSearchShow.ViewSearchShow(key);
+        fragmentSearchChannels.viewSearchChannels(key);
+        fragmentSearchPresenters.ViewSearchPresenters(key);
 
     }
-
 
 
 }
