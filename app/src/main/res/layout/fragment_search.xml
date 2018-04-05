@@ -16,10 +16,16 @@
             android:layout_height="wrap_content"
             android:gravity="center">
 
+            <!--<android.support.v7.widget.SearchView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginEnd="@dimen/dp16"-->
+            <!--android:src="@drawable/ic_arrow_left" />-->
+            <!--android:textSize="@dimen/small_text" />-->
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dp16"
                 android:src="@drawable/ic_arrow_left" />
 
             <EditText
@@ -30,10 +36,12 @@
                 android:background="@drawable/rounded_edit_text"
                 android:hint="@string/search_hint"
                 android:padding="6dp"
+                android:textSize="@dimen/small_text"
                 android:paddingStart="@dimen/dp8"
-                android:textSize="@dimen/small_text" />
+                android:paddingLeft="@dimen/dp8"/>
+
+
         </LinearLayout>
-        <!--android:focusableInTouchMode="true"-->
     </android.support.v7.widget.Toolbar>
 
     <android.support.design.widget.TabLayout
@@ -46,15 +54,15 @@
         app:tabMode="fixed" />
     <!---->
     <!--<android.support.design.widget.TabLayout-->
-        <!--android:id="@+id/tabs"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:background="@color/white"-->
-        <!--app:tabGravity="fill"-->
-        <!--app:tabMode="fixed"-->
-        <!--app:tabSelectedTextColor="@color/orange"-->
-        <!--app:tabTextColor="@color/blue"-->
-        <!--/>-->
+    <!--android:id="@+id/tabs"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:background="@color/white"-->
+    <!--app:tabGravity="fill"-->
+    <!--app:tabMode="fixed"-->
+    <!--app:tabSelectedTextColor="@color/orange"-->
+    <!--app:tabTextColor="@color/blue"-->
+    <!--/>-->
 
     <android.support.v4.view.ViewPager
         android:id="@+id/search_viewpager"

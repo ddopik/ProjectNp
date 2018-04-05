@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v7.widget.SearchView;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.spade.nrc.R;
 import com.spade.nrc.base.BaseFragment;
@@ -40,6 +42,7 @@ public class SearchFragment extends BaseFragment implements SearchFragmentView {
 
         mainView = inflater.inflate(R.layout.fragment_search, container, false);
         initViews();
+        initPresenter();
         setupViewPager(viewPager);
         return mainView;
     }
@@ -66,24 +69,21 @@ public class SearchFragment extends BaseFragment implements SearchFragmentView {
 //                return false;
 //            }
 //        });
-//        InputMethodManager mgr = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-//        mgr.showSoftInput(searchAction, InputMethodManager.SHOW_IMPLICIT);
-
-//        searchAction.setFocusableInTouchMode(true);
-//        searchAction.setOnClickListener(v -> {
-//            searchAction.requestFocus();
-//        });
-//        searchAction.setOnEditorActionListener(new EditText.OnEditorActionListener() {
-//            @Override
-//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    fragmentSearchPresenter.notifyFragment(v.getText().toString());
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-
+//
+        searchAction.setOnEditorActionListener(
+                new EditText.OnEditorActionListener() {
+                    @Override
+                    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                        if (actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_DONE || event != null && event.getAction() == KeyEvent.ACTION_DOWN && event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
+                            if (event == null || !event.isShiftPressed()) {
+                                fragmentSearchPresenter.notifyFragment(v.getText().toString());
+                                return true; // consume.
+                            }
+                        }
+                        return false; // pass on to other listeners.
+                    }
+                }
+        );
     }
 
     @Override
@@ -98,8 +98,6 @@ public class SearchFragment extends BaseFragment implements SearchFragmentView {
         viewPager.setAdapter(pagingAdapter);
         tabLayout.setupWithViewPager(viewPager);
 //        viewPager.setOffscreenPageLimit(3);
-
-
     }
 
     @Override

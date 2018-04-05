@@ -21,12 +21,22 @@ import java.util.List;
 
 public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
 
-    private SearchFragmentView searchFragmentView;
+
     private List<Fragment> fragmentList;
     private List<String> fragmentTitle;
+    private SearchFragmentView searchFragmentView;
     private FragmentSearchShow fragmentSearchShow;
     private FragmentSearchChannels fragmentSearchChannels;
     private FragmentSearchPresenters fragmentSearchPresenters;
+
+
+
+    public SearchFragmentPresenterImpl(SearchFragmentView searchFragmentView) {
+        this.searchFragmentView = searchFragmentView;
+        fragmentSearchShow = new FragmentSearchShow();
+        fragmentSearchChannels = new FragmentSearchChannels();
+        fragmentSearchPresenters = new FragmentSearchPresenters();
+    }
 
     @Override
 
@@ -62,12 +72,6 @@ public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
 
     }
 
-    public SearchFragmentPresenterImpl(SearchFragmentView searchFragmentView) {
-        this.searchFragmentView = searchFragmentView;
-        fragmentSearchShow = new FragmentSearchShow();
-        fragmentSearchChannels = new FragmentSearchChannels();
-        fragmentSearchPresenters = new FragmentSearchPresenters();
-    }
 
 
 }
