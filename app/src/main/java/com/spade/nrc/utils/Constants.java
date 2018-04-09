@@ -26,6 +26,7 @@ public class Constants {
     public static final int MEGA_FM_ID = 2;
     public static final int RADIO_HITS_ID = 3;
     public static final int SH3BY_ID = 4;
+    public static final int SEARCH = 5;
     public static final int FEATURED_SHOW_TYPE = 0;
     public static final int NORMAL_SHOW_TYPE = 1;
     public static final int LIVE_SHOW_TYPE = 2;

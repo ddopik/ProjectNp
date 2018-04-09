@@ -245,7 +245,8 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
                 onMenuOpenClicked.onMenuImageClicked();
                 break;
             case R.id.search_icon:
-                navigationManager.openFragment(new SearchFragment(),R.id.fragment_container,ExploreFragment.class.getSimpleName());
+                channelNavigationInterface.openSearchFragment();
+//                navigationManager.openFragment(new SearchFragment(),R.id.fragment_container,ExploreFragment.class.getSimpleName());
                 break;
         }
     }

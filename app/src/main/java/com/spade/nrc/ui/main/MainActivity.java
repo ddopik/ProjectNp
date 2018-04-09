@@ -50,6 +50,7 @@ import com.spade.nrc.ui.general.NavigationManager.OnMenuOpenClicked;
 import com.spade.nrc.ui.player.PlayerFragment;
 import com.spade.nrc.ui.presenters.view.PresenterDetailsFragment;
 import com.spade.nrc.ui.profile.ProfileFragment;
+import com.spade.nrc.ui.search.view.SearchFragment;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.ui.shows.view.ShowDetailsFragment;
 import com.spade.nrc.utils.ChannelUtils;
@@ -265,6 +266,12 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         navigationManager.openFragment(channelDetailsFragment, R.id.fragment_container, ChannelDetailsFragment.class.getSimpleName());
         updateMenu(channelID);
         hideMenu();
+    }
+
+    @Override
+    public void openSearchFragment() {
+        SearchFragment searchFragment = new SearchFragment();
+        navigationManager.openFragment(searchFragment,R.id.fragment_container,SearchFragment.class.getSimpleName());
     }
 
     private void initMediaBrowser() {

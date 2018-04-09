@@ -5,4 +5,9 @@ package com.spade.nrc.ui.search.view;
  */
 
 public interface SearchFragmentView {
+
+
+    void viewShowSearch();
+
+
 }

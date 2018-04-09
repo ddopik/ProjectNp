@@ -6,4 +6,5 @@ package com.spade.nrc.ui.main;
 
 public interface ChannelNavigationInterface {
     void openChannel(int channelID);
+    void openSearchFragment();
 }
