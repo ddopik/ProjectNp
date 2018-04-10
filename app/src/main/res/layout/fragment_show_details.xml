@@ -68,7 +68,7 @@
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
                         android:layout_marginEnd="@dimen/activity_vertical_margin"
-                        android:src="@drawable/ic_favorite" />
+                        android:src="@drawable/ic_favorite_white" />
                 </RelativeLayout>
 
 

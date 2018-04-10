@@ -94,8 +94,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/dp8"
                         android:layout_toStartOf="@id/notification_image"
+                        android:padding="@dimen/dp8"
                         android:src="@drawable/ic_edit" />
 
                     <ImageView
@@ -104,7 +104,8 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="@dimen/activity_vertical_margin"
+                        android:layout_marginEnd="@dimen/dp8"
+                        android:padding="@dimen/dp8"
                         android:src="@drawable/ic_notification" />
                 </RelativeLayout>
             </android.support.v7.widget.Toolbar>

@@ -2,6 +2,7 @@ package com.spade.nrc.ui.channel.view;
 
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -11,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -55,18 +56,20 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
     private ImageView currentShowImage, nextShowImage;
     private TextView currentShowName, currentShowPresenters, nextShowName, nextShowPresenters, nextShowTimes, upNextText;
     private ImageView mediaControlBtn;
+    private ImageView currentShowFavImageView;
+    private ImageView nextShowFavImageView;
     private ProgressBar progressBar, playerProgressBar;
     private MusicProvider musicProvider;
     private EventBus eventBus;
     private Show currentShow, nextShow;
     private int channelID;
     private String mediaTitle, facebookUrl, twitterUrl, telephoneNumber, smsNumber;
-    private LinearLayout nextShowLayout;
+    private RelativeLayout nextShowLayout, favouriteLayout;
 
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         liveStreamingView = inflater.inflate(R.layout.fragment_live_streaming, container, false);
         initViews();
         return liveStreamingView;
@@ -86,7 +89,11 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
         ImageView twitterImage = liveStreamingView.findViewById(R.id.twitter_image_view);
         ImageView smsImage = liveStreamingView.findViewById(R.id.sms_image_view);
         ImageView callImage = liveStreamingView.findViewById(R.id.call_image_view);
+        ImageView shareImageView = liveStreamingView.findViewById(R.id.share_image_view);
 
+        favouriteLayout = liveStreamingView.findViewById(R.id.favourite_share_layout);
+        currentShowFavImageView = liveStreamingView.findViewById(R.id.fav_image_view);
+        nextShowFavImageView = liveStreamingView.findViewById(R.id.favourite_image);
         nextShowLayout = liveStreamingView.findViewById(R.id.item_show);
         progressBar = liveStreamingView.findViewById(R.id.progress_bar);
         currentShowImage = liveStreamingView.findViewById(R.id.current_show_image);
@@ -118,6 +125,9 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
         smsImage.setOnClickListener(this);
         callImage.setOnClickListener(this);
         nextShowLayout.setOnClickListener(this);
+        currentShowFavImageView.setOnClickListener(this);
+        nextShowFavImageView.setOnClickListener(this);
+        shareImageView.setImageResource(ChannelUtils.getChannelShareBtn(channelID));
         getChannelContactInfo();
         sendAnalytics(String.format(getString(R.string.channel_live_streaming_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
     }
@@ -178,6 +188,7 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
                     .placeholder(ChannelUtils.getLiveStreamingDefault(channelID)).centerCrop()
                     .into(currentShowImage);
         } else {
+            favouriteLayout.setVisibility(View.GONE);
             mediaTitle = String.format(getString(R.string.enjoy_listening)
                     , getString(ChannelUtils.getChannelTitle(channelID)));
             currentShowName.setText(mediaTitle);
@@ -205,6 +216,30 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
             upNextText.setVisibility(View.GONE);
         }
     }
+
+    @Override
+    public void updateFavBtn() {
+        int addedFavBtn = ChannelUtils.getChannelFavAddedBtn(channelID);
+        int favBtn = ChannelUtils.getChannelFavBtn(channelID);
+
+        if (currentShow != null)
+            if (liveStreamingPresenter.isLiked(currentShow.getId())) {
+                currentShowFavImageView.setImageResource(addedFavBtn);
+            } else {
+                currentShowFavImageView.setImageResource(favBtn);
+            }
+        else
+            currentShowFavImageView.setVisibility(View.GONE);
+
+
+        if (nextShow != null)
+            if (liveStreamingPresenter.isLiked(nextShow.getId())) {
+                nextShowFavImageView.setImageResource(addedFavBtn);
+            } else {
+                nextShowFavImageView.setImageResource(favBtn);
+            }
+    }
+
 
     private void updatePlayBtnStatus() {
         if (musicProvider.getPlayingMediaId() != null && musicProvider.getPlayingMediaId().equals(String.valueOf(channelID))) {
@@ -279,6 +314,16 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
             case R.id.item_show:
                 if (nextShow != null)
                     eventBus.post(new ShowsClickEvent(nextShow.getId(), nextShow.getChannel().getId(), true));
+                break;
+            case R.id.fav_image_view:
+                if (currentShow != null) {
+                    liveStreamingPresenter.addShowToFav(currentShow.getId());
+                }
+                break;
+            case R.id.favourite_image:
+                if (nextShow != null) {
+                    liveStreamingPresenter.addShowToFav(nextShow.getId());
+                }
                 break;
         }
     }

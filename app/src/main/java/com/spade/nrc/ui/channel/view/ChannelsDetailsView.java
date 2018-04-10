@@ -12,5 +12,7 @@ import java.util.List;
 
 public interface ChannelsDetailsView extends BaseView {
     void addFragment(List<Fragment> fragmentList, List<String> fragmentTitles);
+
+    void updateAddToFavouriteBtn();
 }
 

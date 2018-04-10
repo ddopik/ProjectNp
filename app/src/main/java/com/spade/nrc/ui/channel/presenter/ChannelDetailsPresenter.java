@@ -11,4 +11,6 @@ public interface ChannelDetailsPresenter extends BasePresenter<ChannelsDetailsVi
     void setUpViewPager(int channelID);
 
     void addChannelToFav(int channelID);
+
+    boolean isLiked(int channelID);
 }

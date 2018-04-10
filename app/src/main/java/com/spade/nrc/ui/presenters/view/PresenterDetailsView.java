@@ -10,4 +10,7 @@ import com.spade.nrc.ui.presenters.model.Presenter;
 public interface PresenterDetailsView extends BaseView {
 
     void showPresenterData(Presenter presenter);
+
+    void updateAddToFavouriteBtn();
+
 }

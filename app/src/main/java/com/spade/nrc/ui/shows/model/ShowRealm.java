@@ -1,5 +1,7 @@
 package com.spade.nrc.ui.shows.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
@@ -7,11 +9,13 @@ import io.realm.annotations.PrimaryKey;
  * Created by Ayman Abouzeid on 1/11/18.
  */
 
-public class FavouriteChannelRealm extends RealmObject {
+public class ShowRealm extends RealmObject {
 
     @PrimaryKey
+    @SerializedName("id")
     private Integer id;
-    private String name;
+    @SerializedName("is_liked")
+    private boolean isLiked;
 
     public Integer getId() {
         return id;
@@ -21,11 +25,12 @@ public class FavouriteChannelRealm extends RealmObject {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+
+    public boolean isLiked() {
+        return isLiked;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setLiked(boolean liked) {
+        isLiked = liked;
     }
 }

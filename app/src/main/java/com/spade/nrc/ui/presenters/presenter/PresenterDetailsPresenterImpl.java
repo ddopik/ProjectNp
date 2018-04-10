@@ -4,7 +4,11 @@ import android.content.Context;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.presenters.view.PresenterDetailsView;
+import com.spade.nrc.utils.ErrorUtils;
+import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -18,9 +22,11 @@ public class PresenterDetailsPresenterImpl implements PresenterDetailsPresenter 
 
     private PresenterDetailsView presenterDetailsView;
     private Context context;
+    private RealmDbHelper realmDbHelper;
 
     public PresenterDetailsPresenterImpl(Context context) {
         this.context = context;
+        this.realmDbHelper = new RealmDbImpl();
     }
 
     @Override
@@ -45,5 +51,26 @@ public class PresenterDetailsPresenterImpl implements PresenterDetailsPresenter 
                         presenterDetailsView.showMessage(anError.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void addShowToFav(int channelID) {
+        if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
+            presenterDetailsView.showLoading();
+            ApiHelper.addShowToFavourite(String.valueOf(channelID), ApiHelper.ADD_CHANNEL_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(addToFavouriteResponse -> {
+                        realmDbHelper.updateShowData(addToFavouriteResponse.getShowRealm());
+                        presenterDetailsView.hideLoading();
+                        presenterDetailsView.updateAddToFavouriteBtn();
+                    }, throwable -> {
+                        presenterDetailsView.hideLoading();
+                        if (throwable != null) {
+                            ANError anError = (ANError) throwable;
+                            presenterDetailsView.showMessage(ErrorUtils.getErrors(anError));
+                        }
+                    });
+        }
     }
 }

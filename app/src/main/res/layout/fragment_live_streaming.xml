@@ -73,6 +73,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
+                android:layout_gravity="center"
                 android:visibility="gone" />
         </android.support.design.widget.CoordinatorLayout>
 
@@ -139,18 +140,41 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp2"
-            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:background="@color/grey_background" />
 
+        <RelativeLayout
+            android:id="@+id/favourite_share_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center_vertical"
+            android:paddingBottom="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin">
+
+            <ImageView
+                android:id="@+id/fav_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/dp32" />
+
+            <ImageView
+                android:id="@+id/share_image_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/dp32" />
+        </RelativeLayout>
 
         <TextView
             android:id="@+id/up_next_text"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
             android:text="@string/up_next"
             android:textAllCaps="true"
-            android:visibility="gone" />
+            android:visibility="visible" />
 
         <include
             layout="@layout/item_show_schedule"

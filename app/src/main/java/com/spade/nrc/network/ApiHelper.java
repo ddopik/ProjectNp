@@ -1,9 +1,6 @@
 package com.spade.nrc.network;
 
-import com.androidnetworking.AndroidNetworking;
 import com.androidnetworking.common.Priority;
-import com.androidnetworking.error.ANError;
-import com.androidnetworking.interfaces.JSONObjectRequestListener;
 import com.rx2androidnetworking.Rx2ANRequest;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
 import com.spade.nrc.ui.channel.model.ChannelsResponse;
@@ -13,15 +10,13 @@ import com.spade.nrc.ui.login.UserModel;
 import com.spade.nrc.ui.presenters.model.PresenterDetailsResponse;
 import com.spade.nrc.ui.presenters.model.PresentersResponse;
 import com.spade.nrc.ui.register.RegistrationResponse;
+import com.spade.nrc.ui.shows.model.AddChannelToFavouriteResponse;
+import com.spade.nrc.ui.shows.model.AddShowToFavouriteResponse;
 import com.spade.nrc.ui.shows.model.CurrentAndNextShowsResponse;
 import com.spade.nrc.ui.shows.model.ShowDetailsResponse;
 import com.spade.nrc.ui.shows.model.ShowsPagesResponse;
 import com.spade.nrc.ui.shows.model.ShowsResponse;
-import com.spade.nrc.utils.ErrorUtils;
 import com.spade.sociallogin.SocialUser;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import java.io.File;
 
@@ -102,8 +97,9 @@ public class ApiHelper {
                 .getObjectObservable(CurrentAndNextShowsResponse.class);
     }
 
-    public static Observable<ChannelsResponse> getChannels(String appLang) {
+    public static Observable<ChannelsResponse> getChannels(String appLang, String authToken) {
         return Rx2AndroidNetworking.get(CHANNELS_URL)
+                .addHeaders(AUTH_TOKEN, BEARER + " " + authToken)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .build()
                 .getObjectObservable(ChannelsResponse.class);
@@ -205,34 +201,74 @@ public class ApiHelper {
                 .getObjectObservable(RegistrationResponse.class);
     }
 
-    public static void addChannelOrShowToFav(String id, String url, String userToken, String appLang, AddToFavCallBacks addToFavCallBacks) {
-        AndroidNetworking.post(url)
+    public static Observable<AddChannelToFavouriteResponse> addToFavourite(String id, String url, String userToken, String appLang) {
+        return Rx2AndroidNetworking.post(url)
                 .addPathParameter(ID_PATH_PARAM, id)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .addHeaders(AUTH_TOKEN, BEARER + " " + userToken)
                 .setPriority(Priority.HIGH)
                 .getResponseOnlyFromNetwork()
                 .build()
-                .getAsJSONObject(new JSONObjectRequestListener() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            boolean success = response.getBoolean("success");
-                            if (success) {
-                                addToFavCallBacks.addToFavSuccess();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                            addToFavCallBacks.addToFavFailed(e.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onError(ANError anError) {
-                        addToFavCallBacks.addToFavFailed(ErrorUtils.getErrors(anError));
-                    }
-                });
+                .getObjectObservable(AddChannelToFavouriteResponse.class);
     }
+
+    public static Observable<AddShowToFavouriteResponse> addShowToFavourite(String id, String url,
+                                                                            String userToken, String appLang) {
+        return Rx2AndroidNetworking.post(url)
+                .addPathParameter(ID_PATH_PARAM, id)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addHeaders(AUTH_TOKEN, BEARER + " " + userToken)
+                .setPriority(Priority.HIGH)
+                .getResponseOnlyFromNetwork()
+                .build()
+                .getObjectObservable(AddShowToFavouriteResponse.class);
+    }
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//            @Override
+//            public void onResponse(JSONObject response) {
+//                try {
+//                    boolean success = response.getBoolean("success");
+//                    if (success) {
+//                        addToFavCallBacks.addToFavSuccess();
+//                    }
+//                } catch (JSONException e) {
+//                    e.printStackTrace();
+//                    addToFavCallBacks.addToFavFailed(e.getMessage());
+//                }
+//            }
+//
+//            @Override
+//            public void onError(ANError anError) {
+//                addToFavCallBacks.addToFavFailed(ErrorUtils.getErrors(anError));
+//            }
+//        });
+//        AndroidNetworking.post(url)
+//                .addPathParameter(ID_PATH_PARAM, id)
+//                .addPathParameter(LANG_PATH_PARAM, appLang)
+//                .addHeaders(AUTH_TOKEN, BEARER + " " + userToken)
+//                .setPriority(Priority.HIGH)
+//                .getResponseOnlyFromNetwork()
+//                .build()
+//                .getAsJSONObject(new JSONObjectRequestListener() {
+//                    @Override
+//                    public void onResponse(JSONObject response) {
+//                        try {
+//                            boolean success = response.getBoolean("success");
+//                            if (success) {
+//                                addToFavCallBacks.addToFavSuccess();
+//                            }
+//                        } catch (JSONException e) {
+//                            e.printStackTrace();
+//                            addToFavCallBacks.addToFavFailed(e.getMessage());
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onError(ANError anError) {
+//                        addToFavCallBacks.addToFavFailed(ErrorUtils.getErrors(anError));
+//                    }
+//                });
+//    }
 
 
     public interface AddToFavCallBacks {

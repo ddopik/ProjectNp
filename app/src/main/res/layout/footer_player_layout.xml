@@ -82,7 +82,7 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/expand_image_view"
             android:padding="@dimen/dp8"
-            android:src="@drawable/ic_favorite"
+            android:src="@drawable/ic_favorite_white"
             android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

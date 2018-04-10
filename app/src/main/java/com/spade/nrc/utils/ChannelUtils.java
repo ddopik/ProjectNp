@@ -304,6 +304,51 @@ public class ChannelUtils {
         }
     }
 
+    public static int getChannelFavBtn(int channelID) {
+        switch (channelID) {
+            case Constants.RADIO_HITS_ID:
+                return R.drawable.ic_favorite_radio;
+            case Constants.MEGA_FM_ID:
+                return R.drawable.ic_favorite_mega;
+            case Constants.NAGHAM_ID:
+                return R.drawable.ic_favorite_nagham;
+            case Constants.SH3BY_ID:
+                return R.drawable.ic_favorite_sh3by;
+            default:
+                return R.drawable.ic_favorite_white;
+        }
+    }
+
+    public static int getChannelFavAddedBtn(int channelID) {
+        switch (channelID) {
+            case Constants.RADIO_HITS_ID:
+                return R.drawable.ic_favorite_added_radio;
+            case Constants.MEGA_FM_ID:
+                return R.drawable.ic_favorite_added_mega;
+            case Constants.NAGHAM_ID:
+                return R.drawable.ic_favorite_added_nagham;
+            case Constants.SH3BY_ID:
+                return R.drawable.ic_favorite_added_sh3by;
+            default:
+                return R.drawable.ic_favorite_added_white;
+        }
+    }
+
+    public static int getChannelShareBtn(int channelID) {
+        switch (channelID) {
+            case Constants.RADIO_HITS_ID:
+                return R.drawable.ic_share_radio;
+            case Constants.MEGA_FM_ID:
+                return R.drawable.ic_share_mega;
+            case Constants.NAGHAM_ID:
+                return R.drawable.ic_share_nagham;
+            case Constants.SH3BY_ID:
+                return R.drawable.ic_share_sh3by;
+            default:
+                return R.drawable.ic_share;
+        }
+    }
+
     public static int getPresenterImageBackground(int channelID) {
         switch (channelID) {
             case Constants.RADIO_HITS_ID:

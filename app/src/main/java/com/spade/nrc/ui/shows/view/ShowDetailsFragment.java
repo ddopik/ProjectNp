@@ -54,6 +54,7 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
     private int channelID;
     private ProgressDialog progressDialog;
     private ImageView addToFavouriteChannel;
+    private Show show;
 
     @Nullable
     @Override
@@ -144,6 +145,7 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
 
     @Override
     public void displayShowData(Show show) {
+        this.show = show;
         showName.setText(show.getTitle());
         aboutShow.setText(show.getDescription());
         if (show.getSchedules() != null && !show.getSchedules().isEmpty()) {
@@ -163,10 +165,7 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
         if (presenterList.isEmpty())
             presentersLayout.setVisibility(View.GONE);
 
-        if (show.isLiked())
-            addToFavouriteChannel.setImageResource(R.drawable.ic_favorite_added);
-        else
-            addToFavouriteChannel.setImageResource(R.drawable.ic_favorite);
+        updateFavBtn();
 
         sendAnalytics(show.getTitle());
     }
@@ -175,6 +174,18 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
         Tracker causesTracker = NRCApplication.getDefaultTracker();
         causesTracker.setScreenName(screenName);
         causesTracker.send(new HitBuilders.ScreenViewBuilder().build());
+    }
+
+    @Override
+    public void updateFavBtn() {
+        int addedFavBtn = ChannelUtils.getChannelFavAddedBtn(0);
+        int favBtn = ChannelUtils.getChannelFavBtn(0);
+
+        if (showDetailsPresenter.isLiked(show.getId())) {
+            addToFavouriteChannel.setImageResource(addedFavBtn);
+        } else {
+            addToFavouriteChannel.setImageResource(favBtn);
+        }
     }
 
     @Override

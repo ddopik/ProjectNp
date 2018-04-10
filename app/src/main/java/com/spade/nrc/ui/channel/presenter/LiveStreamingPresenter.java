@@ -9,4 +9,8 @@ import com.spade.nrc.ui.channel.view.LiveStreamingView;
 
 public interface LiveStreamingPresenter extends BasePresenter<LiveStreamingView> {
     void getLiveStreamingShows(String channelID);
+
+    void addShowToFav(int showID);
+
+    boolean isLiked(int showID);
 }

@@ -2,7 +2,12 @@ package com.spade.nrc.realm;
 
 import com.spade.nrc.ui.login.User;
 import com.spade.nrc.ui.login.UserModel;
+import com.spade.nrc.ui.shows.model.Channel;
+import com.spade.nrc.ui.shows.model.ChannelRealm;
+import com.spade.nrc.ui.shows.model.ShowRealm;
 import com.spade.sociallogin.SocialUser;
+
+import java.util.List;
 
 import io.realm.Realm;
 
@@ -46,23 +51,6 @@ public class RealmDbImpl implements RealmDbHelper {
     }
 
     @Override
-    public void updateUserData(String firstName, String lastName, String phoneNumber,
-                               String emailAddress, String address, String userId) {
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        User user = new User();
-        user.setUserEmail(emailAddress);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
-        user.setUserAddress(address);
-        user.setUserPhone(phoneNumber);
-        user.setUserId(userId);
-        realm.copyToRealmOrUpdate(user);
-        realm.commitTransaction();
-        realm.close();
-    }
-
-    @Override
     public void deleteUser(String userId) {
         Realm realm = Realm.getDefaultInstance();
         User user = realm.where(User.class).equalTo("userId", userId).findFirst();
@@ -76,6 +64,58 @@ public class RealmDbImpl implements RealmDbHelper {
     public User getUser(String userId) {
         Realm realm = Realm.getDefaultInstance();
         return realm.where(User.class).equalTo("userId", userId).findFirst();
+    }
+
+    @Override
+    public void saveChannels(List<Channel> channelList) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        for (Channel channel : channelList) {
+            ChannelRealm channelRealm = new ChannelRealm();
+            channelRealm.setId(channel.getId());
+            channelRealm.setLiked(channel.isLiked());
+            realm.copyToRealmOrUpdate(channelRealm);
+        }
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    @Override
+    public void updateChannelData(ChannelRealm channelRealm) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        ChannelRealm channel = new ChannelRealm();
+        channel.setId(channelRealm.getId());
+        channel.setLiked(channelRealm.isLiked());
+        realm.copyToRealmOrUpdate(channel);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    @Override
+    public void updateShowData(ShowRealm showRealm) {
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        ShowRealm show = new ShowRealm();
+        show.setId(showRealm.getId());
+        show.setLiked(showRealm.isLiked());
+        realm.copyToRealmOrUpdate(show);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    @Override
+    public boolean isChannelLiked(int channelID) {
+        Realm realm = Realm.getDefaultInstance();
+        ChannelRealm channelRealm = realm.where(ChannelRealm.class).equalTo("id", channelID).findFirst();
+        return channelRealm != null && channelRealm.isLiked();
+    }
+
+    @Override
+    public boolean isShowLiked(int showID) {
+        Realm realm = Realm.getDefaultInstance();
+        ShowRealm showRealm = realm.where(ShowRealm.class).equalTo("id", showID).findFirst();
+        return showRealm != null && showRealm.isLiked();
     }
 
 }

@@ -4,7 +4,11 @@ import android.content.Context;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.shows.view.ShowsView;
+import com.spade.nrc.utils.ErrorUtils;
+import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,9 +21,11 @@ import io.reactivex.schedulers.Schedulers;
 public class ShowsPresenterImpl implements ShowsPresenter {
     private Context context;
     private ShowsView showsView;
+    private RealmDbHelper realmDbHelper;
 
     public ShowsPresenterImpl(Context context) {
         this.context = context;
+        this.realmDbHelper = new RealmDbImpl();
     }
 
     @Override
@@ -56,6 +62,27 @@ public class ShowsPresenterImpl implements ShowsPresenter {
                         showsView.showMessage(anError.getMessage());
                     }
                 });
+    }
+
+    @Override
+    public void addShowToFav(int showID) {
+        if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
+            showsView.showLoading();
+            ApiHelper.addShowToFavourite(String.valueOf(showID), ApiHelper.ADD_SHOW_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(addToFavouriteResponse -> {
+                        realmDbHelper.updateShowData(addToFavouriteResponse.getShowRealm());
+                        showsView.hideLoading();
+                        showsView.updateAddToFavouriteBtn();
+                    }, throwable -> {
+                        showsView.hideLoading();
+                        if (throwable != null) {
+                            ANError anError = (ANError) throwable;
+                            showsView.showMessage(ErrorUtils.getErrors(anError));
+                        }
+                    });
+        }
     }
 
     @Override

@@ -11,4 +11,6 @@ public interface LiveStreamingView extends BaseView {
     void showCurrentShow(Show currentShow);
 
     void showNextShow(Show nextShow);
+
+    void updateFavBtn();
 }

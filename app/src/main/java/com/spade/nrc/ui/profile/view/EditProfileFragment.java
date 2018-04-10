@@ -10,7 +10,6 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -75,7 +74,7 @@ public class EditProfileFragment extends BaseFragment implements EditProfileView
         profilePictureImageView = mEditProfileView.findViewById(R.id.profile_image);
         profilePictureBackgroundImageView = mEditProfileView.findViewById(R.id.profile_image_background);
 
-        TextView saveBtn = (Button) mEditProfileView.findViewById(R.id.save_btn);
+        TextView saveBtn = mEditProfileView.findViewById(R.id.save_btn);
         TextView choosePic = mEditProfileView.findViewById(R.id.change_picture_text_view);
         emailAddressEditText.setVisibility(View.GONE);
         saveBtn.setOnClickListener(v -> {

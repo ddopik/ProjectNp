@@ -1,6 +1,5 @@
 package com.spade.nrc.ui.presenters.view;
 
-import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
@@ -136,6 +135,11 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
         sendAnalytics(presenter.getName());
     }
 
+    @Override
+    public void updateAddToFavouriteBtn() {
+        showsAdapter.notifyDataSetChanged();
+    }
+
     private void sendAnalytics(String screenName) {
         Tracker causesTracker = NRCApplication.getDefaultTracker();
         causesTracker.setScreenName(screenName);
@@ -213,5 +217,10 @@ public class PresenterDetailsFragment extends BaseFragment implements PresenterD
     public void onShowClicked(Show show) {
         eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
 
+    }
+
+    @Override
+    public void onFavClicked(int showID) {
+        presenterDetailsPresenter.addShowToFav(showID);
     }
 }

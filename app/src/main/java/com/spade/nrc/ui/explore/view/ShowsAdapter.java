@@ -1,6 +1,7 @@
 package com.spade.nrc.ui.explore.view;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,19 +14,18 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.spade.nrc.R;
-import com.spade.nrc.nrc.media.player.MusicProvider;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.player.LiveShowImagesAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
-import com.spade.nrc.utils.RoundedCornersTransformation;
 import com.spade.nrc.utils.TextUtils;
 
 import java.util.List;
 
 import static com.spade.nrc.utils.Constants.FEATURED_SHOW_TYPE;
-import static com.spade.nrc.utils.Constants.LIVE_SHOW_TYPE;
 import static com.spade.nrc.utils.Constants.NORMAL_SHOW_TYPE;
 import static com.spade.nrc.utils.Constants.SCHEDULE_SHOW_TYPE;
 
@@ -40,12 +40,13 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
     private int itemViewType;
     //    private MusicProvider musicProvider;
     private ShowActions showActions;
+    private RealmDbHelper realmDbHelper;
 
     public ShowsAdapter(Context context, List<Show> showList, int itemViewType) {
         this.context = context;
         this.showList = showList;
         this.itemViewType = itemViewType;
-//        musicProvider = MusicProvider.getInstance();
+        realmDbHelper = new RealmDbImpl();
     }
 
     @Override
@@ -64,11 +65,11 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
     }
 
     @Override
-    public void onBindViewHolder(ShowsViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ShowsViewHolder holder, int position) {
         Show show = showList.get(position);
         RequestOptions requestOptions = new RequestOptions();
         requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
-
+        boolean isFaved = realmDbHelper.isShowLiked(show.getId());
         switch (itemViewType) {
             case FEATURED_SHOW_TYPE:
                 holder.showTime.setVisibility(View.GONE);
@@ -81,6 +82,26 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
                 holder.showTime.setVisibility(View.VISIBLE);
                 holder.showTime.setTextColor(ContextCompat.getColor(context, ChannelUtils.getChannelSecondaryColor(show.getChannel().getId())));
                 holder.showName.setTextColor(ContextCompat.getColor(context, ChannelUtils.getChannelPrimaryColor(show.getChannel().getId())));
+                holder.favImage.setOnClickListener(view -> {
+                    if (showActions != null)
+                        showActions.onFavClicked(show.getId());
+                });
+                holder.favImage.setVisibility(View.VISIBLE);
+                if (isFaved)
+                    holder.favImage.setImageResource(ChannelUtils.getChannelFavAddedBtn(show.getChannel().getId()));
+                else
+                    holder.favImage.setImageResource(ChannelUtils.getChannelFavBtn(show.getChannel().getId()));
+                break;
+            case NORMAL_SHOW_TYPE:
+                holder.favImage.setOnClickListener(view -> {
+                    if (showActions != null)
+                        showActions.onFavClicked(show.getId());
+                });
+                holder.favImage.setVisibility(View.VISIBLE);
+                if (isFaved)
+                    holder.favImage.setImageResource(ChannelUtils.getChannelFavAddedBtn(0));
+                else
+                    holder.favImage.setImageResource(ChannelUtils.getChannelFavBtn(0));
                 break;
         }
 
@@ -99,10 +120,13 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
             if (showActions != null)
                 showActions.onShowClicked(show);
         });
+
     }
 
     public interface ShowActions {
         void onShowClicked(Show show);
+
+        void onFavClicked(int showID);
     }
 
     public void setShowActions(ShowActions showActions) {
@@ -118,7 +142,7 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
     class ShowsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView showName, presenterName, showTime;
-        private ImageView channelImage, statusImage, showImage;
+        private ImageView channelImage, statusImage, showImage, favImage;
 
         ShowsViewHolder(View itemView) {
             super(itemView);
@@ -132,6 +156,8 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
 
             if (itemViewType != Constants.NORMAL_SHOW_TYPE)
                 showTime = itemView.findViewById(R.id.show_times);
+            if (itemViewType == NORMAL_SHOW_TYPE || itemViewType == SCHEDULE_SHOW_TYPE)
+                favImage = itemView.findViewById(R.id.favourite_image);
 
         }
     }
