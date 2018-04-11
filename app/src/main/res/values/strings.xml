@@ -135,4 +135,9 @@
         <item>@string/lang</item>
         <!--<item>@string/login</item>-->
     </string-array>
+
+    <string-array name="languages">
+        <item>English</item>
+        <item>Arabic</item>
+    </string-array>
 </resources>

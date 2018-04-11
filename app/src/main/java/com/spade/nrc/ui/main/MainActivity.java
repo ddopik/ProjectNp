@@ -18,19 +18,24 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spade.nrc.R;
+import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaInterface;
@@ -83,7 +88,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private ProgressBar playerProgressBar;
     private TextView showTitle, showTimes, exploreMenu, loginTextView;
     private DrawerLayout mDrawerLayout;
-
+    private AppCompatSpinner languageSpinner;
     private Show currentShow;
     private MediaPlayerTrack currentTrack;
 
@@ -162,7 +167,6 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         setContentView(R.layout.activity_main);
         init();
     }
-
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
@@ -231,6 +235,40 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
             loginTextView.setText(R.string.logout);
         }
 
+        languageSpinner = findViewById(R.id.language_spinner);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.language_single_item, getResources().getStringArray(R.array.languages));
+        languageSpinner.setAdapter(spinnerAdapter);
+
+        ///////
+        languageSpinner.setSelected(false);  // must
+        languageSpinner.setSelection(0, true);
+////
+//        if (PrefUtils.getAppLang(this).equals(PrefUtils.ENGLISH_LANG)) {
+//            languageSpinner.setSelection(0);
+//        } else {
+//            languageSpinner.setSelection(1);
+//        }
+
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    NRCApplication.changeAppLanguage(PrefUtils.ENGLISH_LANG);
+                    NRCApplication.restartContext(getApplicationContext());
+                }
+                if (position == 1 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ARABIC_LANG))
+                    NRCApplication.changeAppLanguage(PrefUtils.ARABIC_LANG);
+                NRCApplication.restartContext(getApplicationContext());
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
+
+
         mainPresenter = new MainPresenterImpl(this);
         initMediaBrowser();
         initAnimation();
@@ -271,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     public void openSearchFragment() {
         SearchFragment searchFragment = new SearchFragment();
-        navigationManager.openFragment(searchFragment,R.id.fragment_container,SearchFragment.class.getSimpleName());
+        navigationManager.openFragment(searchFragment, R.id.fragment_container, SearchFragment.class.getSimpleName());
     }
 
     private void initMediaBrowser() {
@@ -549,6 +587,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         animTranslate.start();
     }
 
+
     private void hidePlayer() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(playerFragment, "translationY", 0, toY);
         animTranslate.setDuration(ANIMATION_SPEED);
@@ -661,6 +700,10 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 contactUsFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(contactUsFragment, R.id.fragment_container, ContactUsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
+                break;
+            case 4:
+//                mDrawerLayout.closeDrawer(Gravity.START);
+                languageSpinner.requestFocus();
                 break;
         }
     }

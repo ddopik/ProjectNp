@@ -36,6 +36,11 @@
                     android:layout_height="wrap_content"
                     app:orientation="vertical" />
 
+                <android.support.v7.widget.AppCompatSpinner
+                    android:id="@+id/language_spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@android:color/transparent" />
                 <include layout="@layout/side_menu_item" />
             </LinearLayout>
 
