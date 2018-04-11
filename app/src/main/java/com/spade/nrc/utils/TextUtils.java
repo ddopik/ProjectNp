@@ -31,8 +31,6 @@ public class TextUtils {
             Log.e("TextUtils", "Error ----->" + e.getMessage());
             return presenterNames;
         }
-
-
     }
 
     public static String getShowNames(List<Show> shows) {
