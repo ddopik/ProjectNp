@@ -25,6 +25,7 @@ import com.spade.nrc.ui.channel.presenter.ChannelDetailsPresenterImpl;
 import com.spade.nrc.ui.general.PagingAdapter;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.PrefUtils;
 
 import java.util.List;
 
@@ -76,6 +77,9 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         tabLayout = channelDetailsView.findViewById(R.id.tabs);
         TextView addToFavouriteChannel = channelDetailsView.findViewById(R.id.add_to_favourite_btn);
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
+        if(PrefUtils.getAppLang(getActivity()).equals(PrefUtils.ARABIC_LANG)){
+            backBtn.setRotationX(180);
+        }
         sendAnalytics(getString(ChannelUtils.getChannelTitle(channelID)));
         setChannelTheme();
 

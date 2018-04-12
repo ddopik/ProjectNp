@@ -71,7 +71,7 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ChannelNavigationInterface,
-        MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked {
+        MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked, AdapterView.OnItemSelectedListener {
 
     private String TAG = MainActivity.class.getSimpleName();
     private NavigationManager navigationManager;
@@ -239,36 +239,13 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.language_single_item, getResources().getStringArray(R.array.languages));
         languageSpinner.setAdapter(spinnerAdapter);
 
-        ///////
-        languageSpinner.setSelected(false);  // must
-        languageSpinner.setSelection(0, true);
-////
-//        if (PrefUtils.getAppLang(this).equals(PrefUtils.ENGLISH_LANG)) {
-//            languageSpinner.setSelection(0);
-//        } else {
-//            languageSpinner.setSelection(1);
-//        }
+        if (PrefUtils.getAppLang(this).equals(PrefUtils.ENGLISH_LANG)) {
+            languageSpinner.setSelection(0,false);
+        } else {
+            languageSpinner.setSelection(1,false);
+        }
 
-        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position == 0) {
-                    NRCApplication.changeAppLanguage(PrefUtils.ENGLISH_LANG);
-                    NRCApplication.restartContext(getApplicationContext());
-                }
-                if (position == 1 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ARABIC_LANG))
-                    NRCApplication.changeAppLanguage(PrefUtils.ARABIC_LANG);
-                NRCApplication.restartContext(getApplicationContext());
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
-
+        languageSpinner.setOnItemSelectedListener(this);
         mainPresenter = new MainPresenterImpl(this);
         initMediaBrowser();
         initAnimation();
@@ -375,6 +352,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         if (!eventBus.isRegistered(this))
             eventBus.register(this);
     }
+
 
     @Override
     protected void onStop() {
@@ -702,8 +680,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
             case 4:
-//                mDrawerLayout.closeDrawer(Gravity.START);
-                languageSpinner.requestFocus();
+                languageSpinner.performClick();
                 break;
         }
     }
@@ -751,5 +728,22 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 exploreMenu.setAlpha(1f);
                 break;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0  && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ENGLISH_LANG)) {
+            NRCApplication.changeAppLanguage(PrefUtils.ENGLISH_LANG);
+            NRCApplication.restartContext(getApplicationContext());
+        }
+        if (position == 1 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ARABIC_LANG))
+            NRCApplication.changeAppLanguage(PrefUtils.ARABIC_LANG);
+        NRCApplication.restartContext(getApplicationContext());
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
     }
 }
