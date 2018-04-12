@@ -133,6 +133,8 @@ public class ChannelUtils {
                 return R.color.sh3by_color_list;
             case Constants.RADIO_HITS_ID:
                 return R.color.radio_color_list;
+            case Constants.NRC_ID:
+                return R.color.nrc_text_color_list;
             default:
                 return R.color.radio_color_list;
         }
@@ -148,6 +150,8 @@ public class ChannelUtils {
                 return R.color.sh3by_schedule_color_list;
             case Constants.RADIO_HITS_ID:
                 return R.color.radio_schedule_color_list;
+            case Constants.NRC_ID:
+                return R.color.nrc_color_list;
             default:
                 return R.color.radio_schedule_color_list;
         }
@@ -164,7 +168,7 @@ public class ChannelUtils {
                 return R.drawable.ic_nagham_right_arrow;
             case Constants.SH3BY_ID:
                 return R.drawable.ic_sh3by_right_arrow;
-            case Constants.SEARCH:
+            case Constants.NRC_ID:
                 return R.drawable.ic_sh3by_right_arrow;
             default:
                 return R.drawable.ic_radio_right_arrow;
@@ -228,6 +232,21 @@ public class ChannelUtils {
                 return R.drawable.ic_95_menu;
             default:
                 return R.drawable.ic_radiohits_menu;
+        }
+    }
+
+    public static int getChannelAboutImage(int channelID) {
+        switch (channelID) {
+            case Constants.RADIO_HITS_ID:
+                return R.drawable.ic_about_radiohits;
+            case Constants.MEGA_FM_ID:
+                return R.drawable.ic_about_megafm;
+            case Constants.NAGHAM_ID:
+                return R.drawable.ic_about_naghamfm;
+            case Constants.SH3BY_ID:
+                return R.drawable.ic_about_95fm;
+            default:
+                return R.drawable.ic_about_radiohits;
         }
     }
 
@@ -362,7 +381,7 @@ public class ChannelUtils {
             case Constants.SH3BY_ID:
                 return R.drawable.sh3by_circle;
             default:
-                return R.drawable.radio_circle;
+                return R.drawable.nrc_gradient_circle;
         }
     }
 

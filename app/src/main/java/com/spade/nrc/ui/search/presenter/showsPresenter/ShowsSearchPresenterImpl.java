@@ -3,7 +3,7 @@ package com.spade.nrc.ui.search.presenter.showsPresenter;
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.network.ApiHelper;
-import com.spade.nrc.ui.search.view.ShowSearch.FragmentSearchShowView;
+import com.spade.nrc.ui.search.view.ShowSearch.ShowsSearchView;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,34 +15,33 @@ import io.reactivex.schedulers.Schedulers;
 
 public class ShowsSearchPresenterImpl implements ShowSearchPresenter {
 
+    private ShowsSearchView showsSearchView;
 
-    FragmentSearchShowView fragmentSearchShowView;
-
-
-
-    public ShowsSearchPresenterImpl(FragmentSearchShowView fragmentSearchShowView) {
-
-        this.fragmentSearchShowView = fragmentSearchShowView;
-    }
 
     @Override
     public void findShows(String key) {
-        fragmentSearchShowView.showProgressBar();
+        showsSearchView.showLoading();
         ApiHelper.getSearchShows(PrefUtils.getAppLang(NRCApplication.nrcApplication), key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {
-                    fragmentSearchShowView.hideProgressBar();
-                    fragmentSearchShowView.viewShowsList(showsResponse.getShowsData().getShows());
+                    showsSearchView.hideLoading();
+                    showsSearchView.viewShowsList(showsResponse.getShowsData().getShows());
                 }, throwable -> {
-                    fragmentSearchShowView.hideProgressBar();
+                    showsSearchView.hideLoading();
                     if (throwable != null) {
                         ANError anError = (ANError) throwable;
-                        fragmentSearchShowView.hideShowsList();
-                        fragmentSearchShowView.viewStateMessage(anError.getResponse().toString());
+                        showsSearchView.hideShowsList();
+//                        fragmentSearchShowView.viewStateMessage(anError.getResponse().toString());
                     }
                 });
 
+
+    }
+
+    @Override
+    public void setView(ShowsSearchView view) {
+        this.showsSearchView = view;
 
     }
 }

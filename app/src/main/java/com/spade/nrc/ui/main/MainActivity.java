@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked {
 
     private String TAG = MainActivity.class.getSimpleName();
+
     private NavigationManager navigationManager;
     private MediaBrowserCompat mMediaBrowser;
     private MusicProvider musicProvider;
@@ -236,6 +237,12 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         initAnimation();
         openExploreFragment();
         openPlayerFragment();
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SHOW_ID)) {
+            int id = getIntent().getIntExtra(Constants.EXTRA_SHOW_ID, 0);
+            int channelID = getIntent().getIntExtra(Constants.EXTRA_CHANNEL_ID, 0);
+            ShowsClickEvent showsClickEvent = new ShowsClickEvent(id, channelID, true);
+            onShowClicked(showsClickEvent);
+        }
     }
 
     private void checkToLogoutOrLogin() {
@@ -271,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     public void openSearchFragment() {
         SearchFragment searchFragment = new SearchFragment();
-        navigationManager.openFragment(searchFragment,R.id.fragment_container,SearchFragment.class.getSimpleName());
+        navigationManager.openFragment(searchFragment, R.id.fragment_container, SearchFragment.class.getSimpleName());
     }
 
     private void initMediaBrowser() {
@@ -359,7 +366,6 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     protected void onDestroy() {
         Log.d("MainActivity", "ONDESTROY");
-        controlPlayer(0, true);
         super.onDestroy();
     }
 

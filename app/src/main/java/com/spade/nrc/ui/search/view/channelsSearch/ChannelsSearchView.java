@@ -9,7 +9,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/4/18.
  */
 
-public interface SearchChannelsView extends BaseView {
+public interface ChannelsSearchView extends BaseView {
 
     void viewChannelsList(List<Channel> channelListList);
 

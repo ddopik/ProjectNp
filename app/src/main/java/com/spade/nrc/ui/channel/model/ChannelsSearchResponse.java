@@ -5,17 +5,12 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-import com.spade.nrc.ui.shows.model.Channel;
-import com.spade.nrc.ui.shows.model.Show;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Ayman Abouzeid on 2/5/18.
  */
 
-public class ChannelsResponse implements Parcelable {
+public class ChannelsSearchResponse implements Parcelable {
 
 
     @SerializedName("success")
@@ -23,29 +18,29 @@ public class ChannelsResponse implements Parcelable {
     private Boolean success;
     @SerializedName("data")
     @Expose
-    private List<Channel> data = new ArrayList<>();
-    public final static Parcelable.Creator<ChannelsResponse> CREATOR = new Parcelable.Creator<ChannelsResponse>() {
+    private ChannelsDataResponse data = new ChannelsDataResponse();
+    public final static Creator<ChannelsSearchResponse> CREATOR = new Creator<ChannelsSearchResponse>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public ChannelsResponse createFromParcel(Parcel in) {
-            return new ChannelsResponse(in);
+        public ChannelsSearchResponse createFromParcel(Parcel in) {
+            return new ChannelsSearchResponse(in);
         }
 
-        public ChannelsResponse[] newArray(int size) {
-            return (new ChannelsResponse[size]);
+        public ChannelsSearchResponse[] newArray(int size) {
+            return (new ChannelsSearchResponse[size]);
         }
 
     };
 
-    protected ChannelsResponse(Parcel in) {
+    protected ChannelsSearchResponse(Parcel in) {
         this.success = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        in.readList(this.data, (Show.class.getClassLoader()));
+        this.data = ((ChannelsDataResponse) in.readValue((ChannelsDataResponse.class.getClassLoader())));
     }
 
-    public ChannelsResponse() {
+    public ChannelsSearchResponse() {
     }
 
     public Boolean getSuccess() {
@@ -56,17 +51,17 @@ public class ChannelsResponse implements Parcelable {
         this.success = success;
     }
 
-    public List<Channel> getData() {
+    public ChannelsDataResponse getData() {
         return data;
     }
 
-    public void setData(List<Channel> data) {
+    public void setData(ChannelsDataResponse data) {
         this.data = data;
     }
 
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(success);
-        dest.writeList(data);
+        dest.writeValue(data);
     }
 
     public int describeContents() {

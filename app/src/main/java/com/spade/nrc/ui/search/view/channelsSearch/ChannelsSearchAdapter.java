@@ -1,4 +1,4 @@
-package com.spade.nrc.ui.search.view;
+package com.spade.nrc.ui.search.view.channelsSearch;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

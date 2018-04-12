@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">NRC</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="facebook_app_id">430642750720882</string>
+    <string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+    <string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+    <string name="facebook_app_id" translatable="false">430642750720882</string>
     <string name="our_channels">Our Stations</string>
     <string name="live_now">Live Now</string>
     <string name="player">Player</string>
@@ -46,7 +46,7 @@
     <string name="enjoy_listening_to_nrc">Enjoy Listening To \n NRC SUBSIDIARIES</string>
     <string name="nrc_mobile">0238555960</string>
     <string name="nrc_fax">0238555959</string>
-    <string name="nrc_email">info@nrceg.com</string>
+    <string name="nrc_email" translatable="false">info@nrceg.com</string>
     <string name="nrc_address">EMPC, 6th of October, Egypt.</string>
     <string name="about_nrc_title">About NRC</string>
 
@@ -108,7 +108,6 @@
     <string name="pick_picture">Pick Picture From</string>
     <string name="remove_from_fav">Remove from favourite channels</string>
     <string name="search_hint">Search Here</string>
-    <!--29.9657458,31.0140652-->
 
     <string-array name="week_days">
         <item>Saturday</item>
@@ -116,9 +115,10 @@
         <item>Monday</item>
         <item>Tuesday</item>
         <item>Wednesday</item>
-        <item>Thursday</item>S
+        <item>Thursday</item>
         <item>Friday</item>
     </string-array>
+
 
     <string-array name="channels_ids">
         <item>1</item>
@@ -135,12 +135,13 @@
     </string-array>
 
     <string-array name="menu_titles">
-        <!--<item>@string/explore</item>-->
+        <!--&lt;!&ndash;<item>@string/explore</item>&ndash;&gt;-->
         <item>@string/about</item>
         <item>@string/profile</item>
         <item>@string/news</item>
         <item>@string/contact_us</item>
         <item>@string/lang</item>
-        <!--<item>@string/login</item>-->
+        <!--&lt;!&ndash;<item>@string/login</item>&ndash;&gt;-->
     </string-array>
+
 </resources>

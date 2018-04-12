@@ -16,7 +16,7 @@ import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.realm.RealmDbMigration;
 import com.spade.nrc.realm.RealmModules;
 import com.spade.nrc.ui.main.MainActivity;
-import com.spade.nrc.ui.splash.SplashActivity;
+import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.PrefUtils;
 
 import org.json.JSONException;
@@ -55,7 +55,8 @@ public class NRCApplication extends Application {
     }
 
     private void initOneSignal() {
-        OneSignal.startInit(this).init();
+        OneSignal.startInit(this).setNotificationReceivedHandler(new NotificationReceivingHandler())
+                .setNotificationOpenedHandler(new NotificationOpenReceiver()).init();
         OneSignal.idsAvailable((userId, registrationId) -> PrefUtils.setNotificationToken(this, userId));
     }
 
@@ -81,8 +82,10 @@ public class NRCApplication extends Application {
 //        }
     }
 
-    private void startMainActivity(String type, int id) {
+    private void startMainActivity(int id, int channelID) {
         Intent intent = MainActivity.getLaunchIntent(this);
+        intent.putExtra(Constants.EXTRA_CHANNEL_ID, channelID);
+        intent.putExtra(Constants.EXTRA_SHOW_ID, id);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -90,14 +93,6 @@ public class NRCApplication extends Application {
     private class NotificationReceivingHandler implements OneSignal.NotificationReceivedHandler {
         @Override
         public void notificationReceived(OSNotification notification) {
-            try {
-                JSONObject dataObject = notification.payload.additionalData;
-                String type = dataObject.getString("type");
-
-            } catch (JSONException e) {
-
-
-            }
         }
     }
 
@@ -107,13 +102,9 @@ public class NRCApplication extends Application {
         public void notificationOpened(OSNotificationOpenResult result) {
             try {
                 JSONObject dataObject = result.notification.payload.additionalData;
-                String type = dataObject.getString("type");
-                if (type.equals("custom")) {
-//                    startActivity(SplashActivity.getLaunchIntent(getApplicationContext()));
-                } else {
-                    int id = dataObject.getInt("product_id");
-                    startMainActivity(type, id);
-                }
+                int showID = dataObject.getInt("id");
+                int channelID = dataObject.getInt("channel_id");
+                startMainActivity(showID, channelID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }

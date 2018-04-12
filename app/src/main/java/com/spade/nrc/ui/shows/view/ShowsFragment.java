@@ -18,8 +18,9 @@ import com.spade.nrc.R;
 import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.ads.AdModel;
 import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
-import com.spade.nrc.ui.explore.view.ShowsAdapter;
+import com.spade.nrc.ui.explore.view.ShowsAdsAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.ui.shows.model.ShowsData;
 import com.spade.nrc.ui.shows.presenter.ShowsPresenter;
@@ -37,11 +38,12 @@ import java.util.List;
  * Created by Ayman Abouzeid on 12/12/17.
  */
 
-public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapter.ShowActions {
+public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAdapter.ShowActions {
     private ShowsPresenter showsPresenter;
     private View showsView;
-    private ShowsAdapter showsAdapter;
+    private ShowsAdsAdapter showsAdapter;
     private List<Show> showList = new ArrayList<>();
+    private List<AdModel> adModelList = new ArrayList<>();
     private ProgressBar progressBar;
     private EventBus eventBus;
     private boolean isLoading = false;
@@ -63,6 +65,7 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapt
         eventBus = EventBus.getDefault();
     }
 
+
     @Override
     protected void initViews() {
         CustomRecyclerView showsRecycler = showsView.findViewById(R.id.items_recycler);
@@ -72,10 +75,9 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapt
 
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
         type = getArguments().getInt(Constants.EXTRA_SHOW_TYPE);
-//        int channelColor = ContextCompat.getColor(getContext(), ChannelUtils.getChannelSecondaryColor(channelID));
         progressBar.getIndeterminateDrawable().setColorFilter(getResources()
                 .getColor(ChannelUtils.getChannelSecondaryColor(channelID)), PorterDuff.Mode.SRC_IN);
-        showsAdapter = new ShowsAdapter(getContext(), showList, type);
+        showsAdapter = new ShowsAdsAdapter(getContext(), showList, type);
         showsAdapter.setShowActions(this);
 
         showsRecycler.setAdapter(showsAdapter);
@@ -103,8 +105,14 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapt
             }
         });
 
-        getShows();
+//        getShows();
+        getAds();
         sendAnalytics(String.format(getString(R.string.channel_shows_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
+    }
+
+
+    private void getAds() {
+        showsPresenter.getAds();
     }
 
     private void getShows() {
@@ -168,7 +176,13 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapt
         isLoading = false;
         if (showList != null)
             this.showList.addAll(showsData.getShows());
-        showsAdapter.notifyDataSetChanged();
+        showsPresenter.insertAdsBetweenShows(showList, adModelList);
+    }
+
+    @Override
+    public void displayAds(List<AdModel> adModels) {
+        adModelList.addAll(adModels);
+        getShows();
     }
 
     @Override

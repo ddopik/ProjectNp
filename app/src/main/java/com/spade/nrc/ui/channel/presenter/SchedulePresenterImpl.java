@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import com.spade.nrc.R;
 import com.spade.nrc.ui.channel.view.ScheduleView;
-import com.spade.nrc.ui.shows.view.ShowsFragment;
+import com.spade.nrc.ui.shows.view.ScheduleShowsFragment;
 import com.spade.nrc.utils.Constants;
 
 import java.util.ArrayList;
@@ -37,7 +37,7 @@ public class SchedulePresenterImpl implements SchedulePresenter {
             bundle.putInt(Constants.EXTRA_CHANNEL_ID, channelID);
             bundle.putInt(Constants.EXTRA_SHOW_TYPE, Constants.SCHEDULE_SHOW_TYPE);
             bundle.putString(Constants.EXTRA_DAY, Constants.WEEK_DAYS[i]);
-            ShowsFragment showsFragment = new ShowsFragment();
+            ScheduleShowsFragment showsFragment = new ScheduleShowsFragment();
             showsFragment.setArguments(bundle);
             fragments.add(showsFragment);
             fragmentTitles.add(weekDaysText[i]);

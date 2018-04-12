@@ -72,6 +72,7 @@ public class PresentersAdapter extends RecyclerView.Adapter<PresentersAdapter.Pr
 
     public interface OnPresenterClicked {
         void onPresenterClicked(int presenterID);
+
     }
 
     @Override

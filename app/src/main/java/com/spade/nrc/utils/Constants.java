@@ -1,9 +1,5 @@
 package com.spade.nrc.utils;
 
-import android.content.Context;
-import android.util.Log;
-import android.util.TypedValue;
-
 /**
  * Created by Ayman Abouzeid on 1/15/18.
  */
@@ -26,25 +22,25 @@ public class Constants {
     public static final int MEGA_FM_ID = 2;
     public static final int RADIO_HITS_ID = 3;
     public static final int SH3BY_ID = 4;
-    public static final int SEARCH = 5;
+    public static final int NRC_ID = 5;
     public static final int FEATURED_SHOW_TYPE = 0;
     public static final int NORMAL_SHOW_TYPE = 1;
     public static final int LIVE_SHOW_TYPE = 2;
     public static final int SCHEDULE_SHOW_TYPE = 3;
+    public static final int SEARCH_SHOW_TYPE = 4;
     public static final String EXTRA_SHOW = "EXTRA_SHOW";
     public static final String EXTRA_CHANNEL_URL = "EXTRA_CHANNEL_URL";
     public static final String ACTION_PAUSE = "ACTION_PAUSE";
     public static final String ACTION_PLAY = "ACTION_PLAY";
 
-    public static int dpToPx(Context context, int dp) {
-        float density = context.getResources()
-                .getDisplayMetrics()
-                .density;
-        Log.d("DENISTY", density + "");
-        return Math.round((float) dp * density);
-    }
-
-    public static int pxToDp(Context context, int px) {
-        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.getResources().getDisplayMetrics());
-    }
+//    public static int dpToPx(Context context, int dp) {
+//        float density = context.getResources()
+//                .getDisplayMetrics()
+//                .density;
+//        return Math.round((float) dp * density);
+//    }
+//
+//    public static int pxToDp(Context context, int px) {
+//        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, px, context.getResources().getDisplayMetrics());
+//    }
 }
