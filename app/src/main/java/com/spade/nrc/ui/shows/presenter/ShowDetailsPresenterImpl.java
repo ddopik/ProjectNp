@@ -4,7 +4,10 @@ import android.content.Context;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.shows.view.ShowDetailsView;
+import com.spade.nrc.utils.ErrorUtils;
 import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
@@ -19,9 +22,11 @@ public class ShowDetailsPresenterImpl implements ShowDetailsPresenter {
 
     private ShowDetailsView showDetailsView;
     private Context context;
+    private RealmDbHelper realmDbHelper;
 
     public ShowDetailsPresenterImpl(Context context) {
         this.context = context;
+        this.realmDbHelper = new RealmDbImpl();
     }
 
 
@@ -53,19 +58,25 @@ public class ShowDetailsPresenterImpl implements ShowDetailsPresenter {
     public void addShowToFav(int showID) {
         if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
             showDetailsView.showProgressLoading();
-            ApiHelper.addChannelOrShowToFav(String.valueOf(showID), ApiHelper.ADD_SHOW_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context), new ApiHelper.AddToFavCallBacks() {
-                @Override
-                public void addToFavSuccess() {
-                    showDetailsView.hideProgressLoading();
-                    getShowDetails(String.valueOf(showID));
-                }
-
-                @Override
-                public void addToFavFailed(String error) {
-                    showDetailsView.hideProgressLoading();
-                    showDetailsView.showMessage(error);
-                }
-            });
+            ApiHelper.addShowToFavourite(String.valueOf(showID), ApiHelper.ADD_SHOW_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(addToFavouriteResponse -> {
+                        realmDbHelper.updateShowData(addToFavouriteResponse.getShowRealm());
+                        showDetailsView.hideProgressLoading();
+                        showDetailsView.updateFavBtn();
+                    }, throwable -> {
+                        showDetailsView.hideLoading();
+                        if (throwable != null) {
+                            ANError anError = (ANError) throwable;
+                            showDetailsView.showMessage(ErrorUtils.getErrors(anError));
+                        }
+                    });
         }
+    }
+
+    @Override
+    public boolean isLiked(int showID) {
+        return realmDbHelper.isShowLiked(showID);
     }
 }

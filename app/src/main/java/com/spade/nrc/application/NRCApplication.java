@@ -2,15 +2,25 @@ package com.spade.nrc.application;
 
 import android.app.Application;
 import android.content.Context;
+import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
 import com.google.android.gms.analytics.Tracker;
+import com.onesignal.OSNotification;
+import com.onesignal.OSNotificationOpenResult;
 import com.onesignal.OneSignal;
 import com.spade.nrc.realm.RealmConfig;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.realm.RealmDbMigration;
 import com.spade.nrc.realm.RealmModules;
+import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.ui.splash.SplashActivity;
 import com.spade.nrc.utils.PrefUtils;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -69,5 +79,44 @@ public class NRCApplication extends Application {
                 modules(new RealmModules()).build();
         Realm.setDefaultConfiguration(realmConfiguration);
 //        }
+    }
+
+    private void startMainActivity(String type, int id) {
+        Intent intent = MainActivity.getLaunchIntent(this);
+        intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+    }
+
+    private class NotificationReceivingHandler implements OneSignal.NotificationReceivedHandler {
+        @Override
+        public void notificationReceived(OSNotification notification) {
+            try {
+                JSONObject dataObject = notification.payload.additionalData;
+                String type = dataObject.getString("type");
+
+            } catch (JSONException e) {
+
+
+            }
+        }
+    }
+
+    private class NotificationOpenReceiver implements OneSignal.NotificationOpenedHandler {
+
+        @Override
+        public void notificationOpened(OSNotificationOpenResult result) {
+            try {
+                JSONObject dataObject = result.notification.payload.additionalData;
+                String type = dataObject.getString("type");
+                if (type.equals("custom")) {
+//                    startActivity(SplashActivity.getLaunchIntent(getApplicationContext()));
+                } else {
+                    int id = dataObject.getInt("product_id");
+                    startMainActivity(type, id);
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }

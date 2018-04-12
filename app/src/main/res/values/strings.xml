@@ -95,10 +95,18 @@
     <string name="no_internet">Check Your Internet Connection</string>
     <string name="password_mismatch">Password and confirm password mismatch</string>
     <string name="done">Done</string>
+    <string name="save">Save</string>
+    <string name="change_picture">Change Profile Picture</string>
+
     <string name="my_channels">My Channels</string>
     <string name="channels">Channels</string>
     <string name="followed_shows">Followed Shows</string>
     <string name="logout">Logout</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="gallery">Gallery</string>
+    <string name="camera">Camera</string>
+    <string name="pick_picture">Pick Picture From</string>
+    <string name="remove_from_fav">Remove from favourite channels</string>
     <string name="search_hint">Search Here</string>
     <!--29.9657458,31.0140652-->
 

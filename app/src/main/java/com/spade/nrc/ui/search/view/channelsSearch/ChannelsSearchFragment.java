@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.spade.nrc.R;
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class FragmentSearchChannels extends BaseFragment implements FragmentSearchChannelsView {
+public class SearchChannelsFragment extends BaseFragment implements SearchChannelsView {
 
 
     private View mainView;
@@ -37,23 +38,19 @@ public class FragmentSearchChannels extends BaseFragment implements FragmentSear
     public static final int FEATURED_SHOW_TYPE = 0;
     private EventBus eventBus;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        mainView = inflater.inflate(R.layout.search_result_fragment, container, false);
+        mainView = inflater.inflate(R.layout.search_show_fragment, container, false);
         initViews();
-        initPresenter();
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-        channelsSearchPresenter = new ChannelsSearchPresenterImpl(this);
+        channelsSearchPresenter = new ChannelsSearchPresenterImpl();
+        channelsSearchPresenter.setView(this);
     }
 
     @Override
@@ -111,4 +108,28 @@ public class FragmentSearchChannels extends BaseFragment implements FragmentSear
         super.showToastMessage(messageResID);
     }
 
+    @Override
+    public void showMessage(String message) {
+
+    }
+
+    @Override
+    public void showMessage(int resID) {
+
+    }
+
+    @Override
+    public void showLoading() {
+
+    }
+
+    @Override
+    public void hideLoading() {
+
+    }
+
+    @Override
+    public void setError(EditText editText, int resId) {
+
+    }
 }

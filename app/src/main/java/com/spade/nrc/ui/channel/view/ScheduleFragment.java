@@ -100,4 +100,9 @@ public class ScheduleFragment extends BaseFragment implements ScheduleView {
         tabLayout.setupWithViewPager(viewPager);
     }
 
+    @Override
+    public void updateAddToFavouriteBtn() {
+
+    }
+
 }

@@ -46,7 +46,8 @@ import static com.spade.nrc.utils.Constants.FEATURED_SHOW_TYPE;
  * Created by Ayman Abouzeid on 1/6/18.
  */
 
-public class ExploreFragment extends BaseFragment implements ExploreView, View.OnClickListener, ShowsAdapter.ShowActions, LiveShowsAdapter.LiveShowActions {
+public class ExploreFragment extends BaseFragment implements ExploreView, View.OnClickListener,
+        ShowsAdapter.ShowActions, LiveShowsAdapter.LiveShowActions {
 
     private View exploreView;
     private ExplorePresenter explorePresenter;
@@ -274,6 +275,11 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     @Override
     public void onShowClicked(Show show) {
         eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+    }
+
+    @Override
+    public void onFavClicked(int showID) {
+
     }
 
     @Override

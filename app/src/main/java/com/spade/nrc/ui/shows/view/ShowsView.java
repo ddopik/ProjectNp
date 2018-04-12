@@ -18,4 +18,6 @@ public interface ShowsView extends BaseView {
     void showProgress();
 
     void hideProgress();
+
+    void updateAddToFavouriteBtn();
 }

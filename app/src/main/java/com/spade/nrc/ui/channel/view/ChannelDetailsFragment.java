@@ -43,6 +43,7 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
     private PagingAdapter pagingAdapter;
     private int channelID;
     private ProgressDialog progressDialog;
+    private TextView addToFavouriteChannel;
 
     @Nullable
     @Override
@@ -74,7 +75,7 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         channelTitle = channelDetailsView.findViewById(R.id.channel_title);
         viewPager = channelDetailsView.findViewById(R.id.fragments_viewpager);
         tabLayout = channelDetailsView.findViewById(R.id.tabs);
-        TextView addToFavouriteChannel = channelDetailsView.findViewById(R.id.add_to_favourite_btn);
+        addToFavouriteChannel = channelDetailsView.findViewById(R.id.add_to_favourite_btn);
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
         sendAnalytics(getString(ChannelUtils.getChannelTitle(channelID)));
         setChannelTheme();
@@ -84,6 +85,7 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
 
         backBtn.setOnClickListener(view -> getActivity().onBackPressed());
         addToFavouriteChannel.setOnClickListener(view -> channelDetailsPresenter.addChannelToFav(channelID));
+        updateAddToFavouriteBtn();
     }
 
     @Override
@@ -121,6 +123,13 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         pagingAdapter.addFragment(fragmentList, fragmentTitles);
         viewPager.setAdapter(pagingAdapter);
         tabLayout.setupWithViewPager(viewPager);
+    }
+
+    @Override
+    public void updateAddToFavouriteBtn() {
+        boolean isLiked = channelDetailsPresenter.isLiked(channelID);
+        int btnText = isLiked ? R.string.remove_from_fav : R.string.add_to_channels;
+        addToFavouriteChannel.setText(btnText);
     }
 
 

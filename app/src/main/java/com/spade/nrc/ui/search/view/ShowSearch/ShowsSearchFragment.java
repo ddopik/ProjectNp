@@ -15,6 +15,7 @@ import com.spade.nrc.ui.explore.view.ShowsAdapter;
 import com.spade.nrc.ui.search.presenter.showsPresenter.ShowSearchPresenter;
 import com.spade.nrc.ui.search.presenter.showsPresenter.ShowsSearchPresenterImpl;
 import com.spade.nrc.ui.shows.model.Show;
+import com.spade.nrc.utils.Constants;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -25,7 +26,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class FragmentSearchShow extends BaseFragment implements FragmentSearchShowView, ShowsAdapter.ShowActions {
+public class SearchShowFragment extends BaseFragment implements FragmentSearchShowView, ShowsAdapter.ShowActions {
 
     private View mainView;
     private ProgressBar progressBar;
@@ -33,14 +34,7 @@ public class FragmentSearchShow extends BaseFragment implements FragmentSearchSh
     private CustomRecyclerView customRecyclerView;
     private ShowsAdapter showsAdapter;
     private List<Show> showList = new ArrayList<>();
-    public static final int FEATURED_SHOW_TYPE = 0;
-    private EventBus eventBus;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
 
     @Nullable
     @Override
@@ -48,20 +42,18 @@ public class FragmentSearchShow extends BaseFragment implements FragmentSearchSh
         mainView = inflater.inflate(R.layout.search_show_fragment, container, false);
         progressBar = mainView.findViewById(R.id.progress_bar);
         initViews();
-        initPresenter();
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-//        eventBus = EventBus.getDefault();
         showFragmentPresenter = new ShowsSearchPresenterImpl(this);
     }
 
     @Override
     protected void initViews() {
         customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
-        showsAdapter = new ShowsAdapter(getContext(), showList, FEATURED_SHOW_TYPE);
+        showsAdapter = new ShowsAdapter(getContext(), showList, Constants.SEARCH_SHOW_TYPE);
         customRecyclerView.setAdapter(showsAdapter);
     }
 
@@ -102,7 +94,6 @@ public class FragmentSearchShow extends BaseFragment implements FragmentSearchSh
     }
 
 
-
     @Override
     public void showToastMessage(String message) {
         super.showToastMessage(message);
@@ -112,9 +103,15 @@ public class FragmentSearchShow extends BaseFragment implements FragmentSearchSh
     public void showToastMessage(int messageResID) {
         super.showToastMessage(messageResID);
     }
+
     @Override
     public void onShowClicked(Show show) {
 //        eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+    }
+
+    @Override
+    public void onFavClicked(int showID) {
+
     }
 //    @Override
 //    public void onStart() {

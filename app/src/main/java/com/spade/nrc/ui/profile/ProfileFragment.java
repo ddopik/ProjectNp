@@ -28,6 +28,7 @@ import com.spade.nrc.realm.RealmDbHelper;
 import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.general.PagingAdapter;
 import com.spade.nrc.ui.login.User;
+import com.spade.nrc.ui.profile.view.EditProfileActivity;
 import com.spade.nrc.utils.GlideApp;
 import com.spade.nrc.utils.PrefUtils;
 import com.vansuita.gaussianblur.GaussianBlur;
@@ -65,6 +66,8 @@ public class ProfileFragment extends BaseFragment {
         TabLayout tabLayout = view.findViewById(R.id.tabs);
         Toolbar toolbar = view.findViewById(R.id.toolbar);
         ImageView backBtn = toolbar.findViewById(R.id.back_button);
+        ImageView editProfileBtn = toolbar.findViewById(R.id.edit_profile);
+
         userImageView = view.findViewById(R.id.profile_image);
         userImageBackground = view.findViewById(R.id.profile_image_background);
 
@@ -74,11 +77,12 @@ public class ProfileFragment extends BaseFragment {
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
         backBtn.setOnClickListener(v -> getActivity().onBackPressed());
+        editProfileBtn.setOnClickListener(v -> startEditProfileActivity());
         setUserData();
     }
 
     private void startEditProfileActivity() {
-//        startActivityForResult(EditProfileActivity.getLaunchIntent(getContext()), REQUEST_EDIT_PROFILE);
+        startActivityForResult(EditProfileActivity.getLaunchIntent(getContext()), REQUEST_EDIT_PROFILE);
     }
 
     private void setupViewPager(ViewPager viewPager) {

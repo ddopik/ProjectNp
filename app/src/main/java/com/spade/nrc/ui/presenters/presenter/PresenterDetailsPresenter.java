@@ -9,4 +9,7 @@ import com.spade.nrc.ui.presenters.view.PresenterDetailsView;
 
 public interface PresenterDetailsPresenter extends BasePresenter<PresenterDetailsView> {
     void getPresenterDetails(String presenterID, String channelID);
+
+    void addShowToFav(int showID);
+
 }

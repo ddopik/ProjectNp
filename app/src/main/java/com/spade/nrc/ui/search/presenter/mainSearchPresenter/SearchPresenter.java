@@ -14,13 +14,12 @@ import java.util.List;
 
 public interface SearchFragmentPresenter {
 
-
     List<Fragment> getViewPagerFragment();
 
     List<String> getViewPagerFragmentsTitles();
 
     void notifyFragment(String key);
 
-
+    void setUpViewPager();
 
 }

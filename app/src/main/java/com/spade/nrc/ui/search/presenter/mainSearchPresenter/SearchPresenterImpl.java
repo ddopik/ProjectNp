@@ -4,7 +4,7 @@ import android.support.v4.app.Fragment;
 
 import com.spade.nrc.R;
 import com.spade.nrc.application.NRCApplication;
-import com.spade.nrc.ui.search.view.channelsSearch.FragmentSearchChannels;
+import com.spade.nrc.ui.search.view.channelsSearch.SearchChannelsFragment;
 import com.spade.nrc.ui.search.view.presentersSearch.FragmentSearchPresenters;
 import com.spade.nrc.ui.search.view.ShowSearch.FragmentSearchShow;
 import com.spade.nrc.ui.search.view.SearchFragmentView;
@@ -23,25 +23,23 @@ public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
     private List<String> fragmentTitle;
     private SearchFragmentView searchFragmentView;
     private FragmentSearchShow fragmentSearchShow;
-    private FragmentSearchChannels fragmentSearchChannels;
+    private SearchChannelsFragment searchChannelsFragment;
     private FragmentSearchPresenters fragmentSearchPresenters;
 
 
     public SearchFragmentPresenterImpl(SearchFragmentView searchFragmentView) {
         this.searchFragmentView = searchFragmentView;
         fragmentSearchShow = new FragmentSearchShow();
-        fragmentSearchChannels = new FragmentSearchChannels();
+        searchChannelsFragment = new SearchChannelsFragment();
         fragmentSearchPresenters = new FragmentSearchPresenters();
     }
 
     @Override
 
     public List<Fragment> getViewPagerFragment() {
-
-
-        fragmentList = new ArrayList<Fragment>();
+        fragmentList = new ArrayList<>();
         fragmentList.add(fragmentSearchShow);
-        fragmentList.add(fragmentSearchChannels);
+        fragmentList.add(searchChannelsFragment);
         fragmentList.add(fragmentSearchPresenters);
         //fragmentList.add(new FragmentSearchNews());
         return fragmentList;
@@ -63,7 +61,7 @@ public class SearchFragmentPresenterImpl implements SearchFragmentPresenter {
     public void notifyFragment(String key) {
 
         fragmentSearchShow.ViewSearchShow(key);
-        fragmentSearchChannels.viewSearchChannels(key);
+        searchChannelsFragment.viewSearchChannels(key);
         fragmentSearchPresenters.ViewSearchPresenters(key);
 
     }

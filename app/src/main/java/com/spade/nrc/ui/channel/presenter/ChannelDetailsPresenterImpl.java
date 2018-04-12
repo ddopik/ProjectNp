@@ -4,8 +4,11 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 
+import com.androidnetworking.error.ANError;
 import com.spade.nrc.R;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.channel.view.AboutChannelFragment;
 import com.spade.nrc.ui.channel.view.ChannelsDetailsView;
 import com.spade.nrc.ui.channel.view.LiveStreamingFragment;
@@ -13,11 +16,15 @@ import com.spade.nrc.ui.channel.view.ScheduleFragment;
 import com.spade.nrc.ui.presenters.view.PresentersFragment;
 import com.spade.nrc.ui.shows.view.ShowsFragment;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.ErrorUtils;
 import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by Ayman Abouzeid on 1/14/18.
@@ -27,9 +34,11 @@ public class ChannelDetailsPresenterImpl implements ChannelDetailsPresenter {
 
     private ChannelsDetailsView channelsDetailsView;
     private Context context;
+    private RealmDbHelper realmDbHelper;
 
     public ChannelDetailsPresenterImpl(Context context) {
         this.context = context;
+        realmDbHelper = new RealmDbImpl();
     }
 
     @Override
@@ -81,19 +90,25 @@ public class ChannelDetailsPresenterImpl implements ChannelDetailsPresenter {
     public void addChannelToFav(int channelID) {
         if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
             channelsDetailsView.showLoading();
-            ApiHelper.addChannelOrShowToFav(String.valueOf(channelID), ApiHelper.ADD_CHANNEL_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context),
-                    new ApiHelper.AddToFavCallBacks() {
-                        @Override
-                        public void addToFavSuccess() {
-                            channelsDetailsView.hideLoading();
-                        }
-
-                        @Override
-                        public void addToFavFailed(String error) {
-                            channelsDetailsView.hideLoading();
-                            channelsDetailsView.showMessage(error);
+            ApiHelper.addToFavourite(String.valueOf(channelID), ApiHelper.ADD_CHANNEL_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(addToFavouriteResponse -> {
+                        realmDbHelper.updateChannelData(addToFavouriteResponse.getChannelRealm());
+                        channelsDetailsView.hideLoading();
+                        channelsDetailsView.updateAddToFavouriteBtn();
+                    }, throwable -> {
+                        channelsDetailsView.hideLoading();
+                        if (throwable != null) {
+                            ANError anError = (ANError) throwable;
+                            channelsDetailsView.showMessage(ErrorUtils.getErrors(anError));
                         }
                     });
         }
+    }
+
+    @Override
+    public boolean isLiked(int channelID) {
+        return realmDbHelper.isChannelLiked(channelID);
     }
 }

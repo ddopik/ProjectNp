@@ -182,8 +182,18 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdapt
     }
 
     @Override
+    public void updateAddToFavouriteBtn() {
+        showsAdapter.notifyDataSetChanged();
+    }
+
+    @Override
     public void onShowClicked(Show show) {
         eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+    }
+
+    @Override
+    public void onFavClicked(int showID) {
+        showsPresenter.addShowToFav(showID);
     }
 
 //    @Override

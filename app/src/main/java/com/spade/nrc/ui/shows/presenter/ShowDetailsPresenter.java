@@ -12,4 +12,5 @@ public interface ShowDetailsPresenter extends BasePresenter<ShowDetailsView> {
 
     void addShowToFav(int showID);
 
+    boolean isLiked(int showID);
 }

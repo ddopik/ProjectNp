@@ -11,6 +11,8 @@ public interface ShowDetailsView extends BaseView {
 
     void displayShowData(Show show);
 
+    void updateFavBtn();
+
     void showProgressLoading();
 
     void hideProgressLoading();

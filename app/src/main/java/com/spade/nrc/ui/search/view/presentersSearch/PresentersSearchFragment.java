@@ -9,13 +9,13 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.spade.nrc.R;
-import com.spade.nrc.base.BaseFragment;
+import com.spade.nrc.base.BaseSearchFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.ui.presenters.view.PresentersAdapter;
 import com.spade.nrc.ui.search.presenter.presentersPresenter.PresentersSearchPresenter;
 import com.spade.nrc.ui.search.presenter.presentersPresenter.PresentersSearchPresenterImpl;
-
+import com.spade.nrc.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +24,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class FragmentSearchPresenters extends BaseFragment implements FragmentSearchPresentersView {
+public class PresentersSearchFragmentSearch extends BaseSearchFragment implements PresentersSearchView {
 
 
     private View mainView;
@@ -32,28 +32,19 @@ public class FragmentSearchPresenters extends BaseFragment implements FragmentSe
     private CustomRecyclerView customRecyclerView;
     private PresentersAdapter presentersAdapter;
     private PresentersSearchPresenter presentersSearchPresenter;
-    private List<Presenter> presentersList = new ArrayList<Presenter>();
-    public static final int FEATURED_SEARCH_TYPE = 5;
+    private List<Presenter> presentersList = new ArrayList<>();
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.search_result_fragment, container, false);
-        customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
-        progressBar = mainView.findViewById(R.id.progress_bar);
         initViews();
-        initPresenter();
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-
         presentersSearchPresenter = new PresentersSearchPresenterImpl(this);
     }
 
@@ -62,16 +53,9 @@ public class FragmentSearchPresenters extends BaseFragment implements FragmentSe
     protected void initViews() {
         customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
         progressBar = mainView.findViewById(R.id.progress_bar);
-        presentersAdapter = new PresentersAdapter(getContext(), presentersList, FEATURED_SEARCH_TYPE);
+        customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
+        presentersAdapter = new PresentersAdapter(getContext(), presentersList, Constants.NRC_ID);
         customRecyclerView.setAdapter(presentersAdapter);
-    }
-
-
-    @Override
-    public void ViewSearchPresenters(String key) {
-        if(presentersSearchPresenter !=null)
-        presentersSearchPresenter.findPresenter(key);
-
     }
 
     @Override
@@ -84,34 +68,16 @@ public class FragmentSearchPresenters extends BaseFragment implements FragmentSe
 
     }
 
-    @Override
-    public void showToastMessage(String message) {
-        super.showToastMessage(message);
-    }
-
-    @Override
-    public void showToastMessage(int messageResID) {
-        super.showToastMessage(messageResID);
-    }
-
 
     @Override
     public void hidePresentersList() {
         customRecyclerView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void viewStateMessage(String msg) {
-        super.showToastMessage(msg);
-    }
 
     @Override
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
+    protected void search(String query) {
+        if (presentersSearchPresenter != null)
+            presentersSearchPresenter.findPresenter(query);
     }
 }

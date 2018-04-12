@@ -12,4 +12,6 @@ public interface ShowsPresenter extends BasePresenter<ShowsView> {
 
     void getShowsByDay(String appLang, String day, int channelID, int pageNumber);
 
+    void addShowToFav(int showID);
+
 }
