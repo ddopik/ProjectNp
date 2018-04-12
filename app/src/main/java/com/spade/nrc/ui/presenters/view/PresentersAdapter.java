@@ -17,6 +17,7 @@ import com.spade.nrc.ui.CustomViews.CustomTextView;
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.GlideApp;
+import com.spade.nrc.utils.PrefUtils;
 import com.spade.nrc.utils.TextUtils;
 
 import java.util.List;
@@ -57,7 +58,12 @@ public class PresentersAdapter extends RecyclerView.Adapter<PresentersAdapter.Pr
         requestOptions = requestOptions.transforms(new CircleCrop());
         GlideApp.with(context).load(presenterImage).apply(requestOptions)
                 .placeholder(ChannelUtils.getPresenterDefaultImage(channelID)).apply(requestOptions).into(holder.presenterImageView);
+
         holder.arrowImage.setImageResource(ChannelUtils.getChannelRightArrow(channelID));
+         if(PrefUtils.getAppLang(context).equals(PrefUtils.ARABIC_LANG)){
+            holder.arrowImage.setRotationY(180);
+        }
+
         holder.presenterImageBackground.
                 setImageResource(ChannelUtils.getPresenterImageBackground(channelID));
         holder.itemView.setOnClickListener(view -> {

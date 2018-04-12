@@ -1,5 +1,6 @@
 package com.spade.nrc.ui.splash;
 
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -17,6 +18,8 @@ import com.spade.nrc.ui.main.MainActivity;
 import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
+import java.util.Locale;
+
 /**
  * Created by spade on 6/7/17.
  */
@@ -31,7 +34,7 @@ public class SplashActivity extends AppCompatActivity implements ChannelsView {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-//        changeLanguage();
+        changeLanguage();
 //        saveNotificationToken();
 //        counterToNavigate();
         init();
@@ -92,27 +95,27 @@ public class SplashActivity extends AppCompatActivity implements ChannelsView {
         navigate();
     }
 
-//    @SuppressWarnings("deprecation")
-//    public void changeLanguage() {
-//        Locale locale;
-//        if (PrefUtils.isLanguageSelected(this)) {
-//            if (PrefUtils.getAppLang(this).equals(PrefUtils.ARABIC_LANG)) {
-//                locale = new Locale(MorePresenterImpl.AR_LANG);
-//            } else {
-//                locale = new Locale(MorePresenterImpl.EN_LANG);
-//            }
-//            Configuration conf = new Configuration();
-//            conf.locale = locale;
-//            getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
-//        } else {
-//            String deviceLang = Locale.getDefault().getLanguage();
-//            if (!deviceLang.equals(PrefUtils.ARABIC_LANG)) {
-//                PrefUtils.setAppLang(this, PrefUtils.ENGLISH_LANG);
-//            } else {
-//                PrefUtils.setAppLang(this, PrefUtils.ARABIC_LANG);
-//            }
-//        }
-//    }
+    @SuppressWarnings("deprecation")
+    public void changeLanguage() {
+        Locale locale;
+        if (PrefUtils.isLanguageSelected(this)) {
+            if (PrefUtils.getAppLang(this).equals(PrefUtils.ARABIC_LANG)) {
+                locale = new Locale(PrefUtils.ARABIC_LANG);
+            } else {
+                locale = new Locale(PrefUtils.ENGLISH_LANG);
+            }
+            Configuration conf = new Configuration();
+            conf.locale = locale;
+            getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+        } else {
+            String deviceLang = Locale.getDefault().getLanguage();
+            if (!deviceLang.equals(PrefUtils.ARABIC_LANG)) {
+                PrefUtils.setAppLang(this, PrefUtils.ENGLISH_LANG);
+            } else {
+                PrefUtils.setAppLang(this, PrefUtils.ARABIC_LANG);
+            }
+        }
+    }
 //
 //    private void saveNotificationToken() {
 //        if (!PrefUtils.isTokenSaved(this)) {

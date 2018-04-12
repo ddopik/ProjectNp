@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+<string name="app_name">NRC</string>
+<string name="navigation_drawer_open" translatable="false">Open navigation drawer</string>
+<string name="navigation_drawer_close" translatable="false">Close navigation drawer</string>
+<string name="facebook_app_id" translatable="false">430642750720882</string>
+<string name="our_channels">إذاعتنا</string>
+<string name="live_now">بث مباشر</string>
+<string name="player">مشغل الموسيقي</string>
+<string name="latest_news">اخر الاخبار</string>
+<string name="featured_shows">البرامج المميزة</string>
+<string name="view_all">عرض الكل</string>
+<string name="add_to_channels">أضف للمفضلة</string>
+<string name="shows">البرامج</string>
+<string name="shows_separated">S h o w s</string>
+<string name="presenters">المذيعين</string>
+<string name="schedule">جدول البرامج</string>
+<string name="radio_hits">راديو هيتس 88.2</string>
+<string name="mega_fm">ميجا إف ام 92.7</string>
+<string name="nagham">نغم إف ام 105.3</string>
+<string name="sh3by">95 Fm</string>
+<string name="explore">تصفح</string>
+<string name="presented_by">تقديم</string>
+<string name="presented_by_separated">P r e s e n t e d b y</string>
+<string name="up_next">التالي</string>
+<string name="next_show_title_tag" translatable="false">next show tag</string>
+<string name="enjoy_listening">تستمتع بالاستماع الي %s</string>
+<string name="live_streaming">بث مباشر</string>
+<string name="about">عنا</string>
+<string name="streaming_error">خطأ في البث</string>
+<string name="profile">الملف الشخصي</string>
+<string name="news">الاخبار</string>
+<string name="contact_us">اتصل بنا</string>
+<string name="lang">اللغة</string>
+<string name="login">تسجيل الدخول</string>
+<string name="call_now">اتصل الآن</string>
+<string name="send_email">ارسل ايميل</string>
+<string name="send_message">ارسل رسالة</string>
+<string name="website_link">رابط الموقع</string>
+<string name="share_feed_back">شاركنا رأيك</string>
+<string name="address">العنوان</string>
+<string name="about_nrc">    Nile Radio Company, is an Egyptian joint stock company for radio management and production.
+    It has four commercial radio stations that address all sectors of the society and cover all age groups
+    in order to provide constant entertainment for radio listeners and raise the collective awareness of the Egyptian public with the consolidation of
+    the Egyptian identity. The four radio stations are:\n\n - Mega FM 92.7\n - Radio Hits 88.2\n - Nagham FM 105.3\n - 95 FM
+</string>
+<string name="enjoy_listening_to_nrc">تستمتع بالاستماع الي \n مجموعة إذاعات راديو النيل</string>
+<string name="nrc_mobile">0238555960</string>
+<string name="nrc_fax">0238555959</string>
+<string name="nrc_email" translatable="false">info@nrceg.com</string>
+<string name="nrc_address">مدينة الإنتاج الإعلامي.</string>
+<string name="about_nrc_title">عنا</string>
+
+<string name="about_nrc_analytics">عنا</string>
+<string name="contact_us_analytics">اتصل بنا</string>
+<string name="channel_live_streaming_analytics">%s بث مباشر</string>
+<string name="channel_shows_analytics">%s البرامج</string>
+<string name="channel_presenters_analytics">%s المذيعين</string>
+<string name="channel_schedule_analytics">%s جدول البرامج</string>
+<string name="channel_about_analytics">%s عنا</string>
+<string name="password">كلمة المرور</string>
+<string name="confirm_password">تأكيد كلمة المرور</string>
+<string name="login_with">تسجيل دخول بواسطة</string>
+<string name="facebook">فيسبوك</string>
+<string name="google">جوجل</string>
+<string name="user_name">اسم المستخدم</string>
+<string name="email">الايميل</string>
+<string name="first_name">الاسم الاول</string>
+<string name="last_name">الاسم الاخير</string>
+<string name="phone">رقم الموبايل</string>
+<string name="address_hint">Check the map for the nearest store or choose other stores from here</string>
+<string name="type_of_donation">Type of Donation</string>
+<string name="cash_on_deleivery">Request a collection</string>
+<string name="misr_collector">Misr ElKheir collector will pass by you</string>
+<string name="enter_first_name">برجاء ادخال اسمك الاول</string>
+<string name="enter_last_name">برجاء ادخال اسمك الاخير</string>
+<string name="enter_user_name">من فضلك ادخل اسم المستخدم</string>
+<string name="enter_email_address">لطفا اضف الايميل</string>
+<string name="enter_phone_number">برجاء ادخال رقم الموبايل</string>
+<string name="enter_address">العنوان</string>
+<string name="enter_valid_email_address">برجاء ادخال ايميل صحيح</string>
+<string name="enter_city">Please Enter Your City</string>
+<string name="enter_subject">Please Enter Subject</string>
+<string name="enter_message">Please Enter Message</string>
+<string name="enter_password">Please Enter Your Password</string>
+<string name="enter_confirm_password">Please Confirm Your Password</string>
+<string name="welcome_to_nrc">مرحبا بك</string>
+<string name="register">التسجيل</string>
+<string name="forget_password">نسيت كلمة المرور?</string>
+<string name="something_wrong">حدث خطأ ما</string>
+<string name="logging_in">Logging in &#8230;</string>
+<string name="registering">Registering &#8230;</string>
+<string name="loading">Loading &#8230;</string>
+
+<string name="skip">تخطي</string>
+<string name="no_internet">برجاء التأكد من الاتصال بالانترنت</string>
+<string name="password_mismatch">كلمة الرور غير متطابقة</string>
+<string name="done">تم</string>
+<string name="save">حفظ</string>
+<string name="change_picture">تغير الصورة</string>
+
+<string name="my_channels">إذاعاتي</string>
+<string name="channels">إذاعاتي</string>
+<string name="followed_shows">البرامج المفضلة</string>
+<string name="logout">تسجيل خروج</string>
+<string name="edit_profile">تعديل الملف الشخصي</string>
+<string name="gallery">المعرض</string>
+<string name="camera">كاميرا</string>
+<string name="pick_picture">اختيار الصورة من</string>
+<string name="remove_from_fav">حذف من المضفلة</string>
+<string name="search_hint">ابحث هنا</string>
+
+<string-array name="week_days">
+    <item>السبت</item>
+    <item>الاحد</item>
+    <item>الاثنين</item>
+    <item>الثلاثاء</item>
+    <item>الاربعاء</item>
+    <item>الخميس</item>
+    <item>الجمعة</item>
+</string-array>
+
+    <string-array name="languages">
+        <item>الإنجليزية</item>
+        <item>العربية</item>
+    </string-array>
+
+<!-- Do not translate-->
+
+
+<!--    <string-array name="channels_ids">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+
+    <string-array name="channels_streaming_array">
+        <item>https://ahmsamir.radioca.st/stream</item>
+        <item>http://nebula.shoutca.st:8211/mp3</item>
+        <item>http://178.32.62.154:8957/;</item>
+        <item>http://178.32.62.154:9010/;</item>
+    </string-array>
+
+    <string-array name="menu_titles">
+        &lt;!&ndash;<item>@string/explore</item>&ndash;&gt;
+        <item>@string/about</item>
+        <item>@string/profile</item>
+        <item>@string/news</item>
+        <item>@string/contact_us</item>
+        <item>@string/lang</item>
+        &lt;!&ndash;<item>@string/login</item>&ndash;&gt;
+    </string-array>-->
+
+</resources>
