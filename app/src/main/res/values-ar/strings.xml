@@ -25,7 +25,7 @@
 <string name="presented_by_separated">P r e s e n t e d b y</string>
 <string name="up_next">التالي</string>
 <string name="next_show_title_tag" translatable="false">next show tag</string>
-<string name="enjoy_listening">تستمتع بالاستماع الي %s</string>
+<string name="enjoy_listening">استمتع بالاستماع الي %s</string>
 <string name="live_streaming">بث مباشر</string>
 <string name="about">عنا</string>
 <string name="streaming_error">خطأ في البث</string>

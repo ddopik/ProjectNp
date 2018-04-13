@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -35,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.spade.nrc.R;
-import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaInterface;
@@ -69,6 +69,7 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ChannelNavigationInterface,
         MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked, AdapterView.OnItemSelectedListener {
@@ -241,9 +242,9 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         languageSpinner.setAdapter(spinnerAdapter);
 
         if (PrefUtils.getAppLang(this).equals(PrefUtils.ENGLISH_LANG)) {
-            languageSpinner.setSelection(0,false);
+            languageSpinner.setSelection(0, false);
         } else {
-            languageSpinner.setSelection(1,false);
+            languageSpinner.setSelection(1, false);
         }
 
         languageSpinner.setOnItemSelectedListener(this);
@@ -382,6 +383,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     protected void onDestroy() {
         Log.d("MainActivity", "ONDESTROY");
+        controlPlayer(Integer.parseInt(musicProvider.getPlayingMediaId()), true);
         super.onDestroy();
     }
 
@@ -738,18 +740,37 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (position == 0  && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ENGLISH_LANG)) {
-            NRCApplication.changeAppLanguage(PrefUtils.ENGLISH_LANG);
-            NRCApplication.restartContext(getApplicationContext());
-        }
+        if (position == 0 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ENGLISH_LANG))
+            changeLanguage(PrefUtils.ENGLISH_LANG);
+
         if (position == 1 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ARABIC_LANG))
-            NRCApplication.changeAppLanguage(PrefUtils.ARABIC_LANG);
-        NRCApplication.restartContext(getApplicationContext());
+            changeLanguage(PrefUtils.ARABIC_LANG);
 
     }
 
     @Override
     public void onNothingSelected(AdapterView<?> parent) {
 
+    }
+
+    @SuppressWarnings("deprecation")
+    public void changeLanguage(String lang) {
+        Locale myLocale = new Locale(lang);
+        Configuration conf = new Configuration();
+        conf.locale = myLocale;
+
+        getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+        if (lang.equals(PrefUtils.ARABIC_LANG))
+            PrefUtils.setAppLang(this, PrefUtils.ARABIC_LANG);
+        else
+            PrefUtils.setAppLang(this, PrefUtils.ENGLISH_LANG);
+
+        PrefUtils.setIsLanguageSelected(this, true);
+        restartActivity();
+    }
+
+    public void restartActivity() {
+        startActivity(getLaunchIntent(this));
+        finish();
     }
 }

@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.content.Intent;
 import android.support.multidex.MultiDex;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -13,8 +12,6 @@ import com.onesignal.OSNotification;
 import com.onesignal.OSNotificationOpenResult;
 import com.onesignal.OneSignal;
 import com.spade.nrc.realm.RealmConfig;
-import com.spade.nrc.realm.RealmDbHelper;
-import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.realm.RealmDbMigration;
 import com.spade.nrc.realm.RealmModules;
 import com.spade.nrc.ui.main.MainActivity;
@@ -87,11 +84,6 @@ public class NRCApplication extends Application {
 //        }
     }
 
-    public static void restartContext(Context context) {
-        Intent intent = context.getPackageManager().getLaunchIntentForPackage(context.getPackageName());
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        context.startActivity(intent);
-    }
 
     private void startMainActivity(int id, int channelID) {
         Intent intent = MainActivity.getLaunchIntent(this);
@@ -120,16 +112,6 @@ public class NRCApplication extends Application {
                 e.printStackTrace();
             }
         }
-    }
-}
-
-    public static void changeAppLanguage(String localLang) {
-        Locale locale = new Locale(localLang);
-        PrefUtils.setAppLang(nrcApplication, localLang);
-        Locale.setDefault(locale);
-        Configuration config = new Configuration();
-        config.locale = locale;
-        nrcApplication.getResources().updateConfiguration(config, null);
     }
 }
 

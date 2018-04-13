@@ -39,7 +39,7 @@ public class MenuAdapter extends RecyclerView.Adapter<MenuAdapter.MenuViewHolder
         holder.menuTitle.setText(mContext.getResources().getStringArray(R.array.menu_titles)[position]);
         holder.menuTitle.setGravity(Gravity.CENTER);
         holder.menuImage.setImageResource(typedArray.getResourceId(position, 0));
-        if (position == 0 || position == 1 || position == 3) {
+        if (position != 2) {
             holder.itemView.setAlpha(1);
         } else {
             holder.itemView.setAlpha(0.6f);

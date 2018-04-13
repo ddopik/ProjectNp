@@ -25,9 +25,10 @@
             android:id="@+id/search_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_menu_search"
             android:layout_gravity="end"
-            android:background="@android:color/transparent"/>
+            android:background="@android:color/transparent"
+            android:padding="@dimen/dp8"
+            android:src="@android:drawable/ic_menu_search" />
     </android.support.v7.widget.Toolbar>
 
 
@@ -44,6 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -82,8 +84,7 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    >
+                    android:layout_height="wrap_content">
 
                     <LinearLayout
                         android:id="@+id/top_channels_layout"
@@ -97,15 +98,13 @@
                             android:id="@+id/radio_channel_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_radiohits_circle"
-                           />
+                            android:src="@drawable/ic_radiohits_circle" />
 
                         <ImageView
                             android:id="@+id/sh3by_channel_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_95fm_circle"
-                            />
+                            android:src="@drawable/ic_95fm_circle" />
                     </LinearLayout>
 
                     <LinearLayout
