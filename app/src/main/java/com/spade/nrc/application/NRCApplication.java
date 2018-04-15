@@ -3,6 +3,7 @@ package com.spade.nrc.application;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.support.multidex.MultiDex;
 
 import com.google.android.gms.analytics.GoogleAnalytics;
@@ -11,16 +12,16 @@ import com.onesignal.OSNotification;
 import com.onesignal.OSNotificationOpenResult;
 import com.onesignal.OneSignal;
 import com.spade.nrc.realm.RealmConfig;
-import com.spade.nrc.realm.RealmDbHelper;
-import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.realm.RealmDbMigration;
 import com.spade.nrc.realm.RealmModules;
 import com.spade.nrc.ui.main.MainActivity;
-import com.spade.nrc.ui.splash.SplashActivity;
+import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.PrefUtils;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
@@ -42,6 +43,7 @@ public class NRCApplication extends Application {
         initGoogleAnalytics();
         initOneSignal();
         initRealm();
+
     }
 
     @Override
@@ -55,7 +57,8 @@ public class NRCApplication extends Application {
     }
 
     private void initOneSignal() {
-        OneSignal.startInit(this).init();
+        OneSignal.startInit(this).setNotificationReceivedHandler(new NotificationReceivingHandler())
+                .setNotificationOpenedHandler(new NotificationOpenReceiver()).init();
         OneSignal.idsAvailable((userId, registrationId) -> PrefUtils.setNotificationToken(this, userId));
     }
 
@@ -81,8 +84,11 @@ public class NRCApplication extends Application {
 //        }
     }
 
-    private void startMainActivity(String type, int id) {
+
+    private void startMainActivity(int id, int channelID) {
         Intent intent = MainActivity.getLaunchIntent(this);
+        intent.putExtra(Constants.EXTRA_CHANNEL_ID, channelID);
+        intent.putExtra(Constants.EXTRA_SHOW_ID, id);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
     }
@@ -90,14 +96,6 @@ public class NRCApplication extends Application {
     private class NotificationReceivingHandler implements OneSignal.NotificationReceivedHandler {
         @Override
         public void notificationReceived(OSNotification notification) {
-            try {
-                JSONObject dataObject = notification.payload.additionalData;
-                String type = dataObject.getString("type");
-
-            } catch (JSONException e) {
-
-
-            }
         }
     }
 
@@ -107,16 +105,13 @@ public class NRCApplication extends Application {
         public void notificationOpened(OSNotificationOpenResult result) {
             try {
                 JSONObject dataObject = result.notification.payload.additionalData;
-                String type = dataObject.getString("type");
-                if (type.equals("custom")) {
-//                    startActivity(SplashActivity.getLaunchIntent(getApplicationContext()));
-                } else {
-                    int id = dataObject.getInt("product_id");
-                    startMainActivity(type, id);
-                }
+                int showID = dataObject.getInt("id");
+                int channelID = dataObject.getInt("channel_id");
+                startMainActivity(showID, channelID);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
     }
 }
+

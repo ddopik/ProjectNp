@@ -27,7 +27,6 @@ import com.spade.nrc.ui.explore.presenter.ExplorePresenterImpl;
 import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.ChannelNavigationInterface;
 import com.spade.nrc.ui.main.MainActivity;
-import com.spade.nrc.ui.search.view.SearchFragment;
 import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
@@ -176,7 +175,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     @Override
     protected void initViews() {
 //        Toolbar toolbar = exploreView.findViewById(R.id.toolbar);
-        navigationManager=new NavigationManager(((MainActivity)getActivity()));
+        navigationManager = new NavigationManager(((MainActivity) getActivity()));
         CustomRecyclerView featuredRecycler = exploreView.findViewById(R.id.featured_shows_recycler);
         CustomRecyclerView liveShowsRecycler = exploreView.findViewById(R.id.live_now_recycler_view);
         ImageView radioChannelImageView = exploreView.findViewById(R.id.radio_channel_image_view);

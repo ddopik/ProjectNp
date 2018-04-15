@@ -2,9 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/NRC.iml" filepath="$PROJECT_DIR$/NRC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\Users\20128\StudioProjects\nrc-mobile\app\app.iml" filepath="C:\Users\20128\StudioProjects\nrc-mobile\app\app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/nrc-mobile.iml" filepath="$PROJECT_DIR$/.idea/nrc-mobile.iml" />
     </modules>
   </component>
 </project>
