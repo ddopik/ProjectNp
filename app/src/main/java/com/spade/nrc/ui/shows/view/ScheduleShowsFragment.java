@@ -20,7 +20,7 @@ import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
 import com.spade.nrc.ui.ads.AdModel;
 import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
-import com.spade.nrc.ui.explore.view.ShowsAdsAdapter;
+import com.spade.nrc.ui.explore.view.ShowsAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.ui.shows.model.ShowsData;
 import com.spade.nrc.ui.shows.presenter.ShowsPresenter;
@@ -38,10 +38,10 @@ import java.util.List;
  * Created by Ayman Abouzeid on 12/12/17.
  */
 
-public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAdapter.ShowActions {
+public class ScheduleShowsFragment extends BaseFragment implements ShowsView, ShowsAdapter.ShowActions {
     private ShowsPresenter showsPresenter;
     private View showsView;
-    private ShowsAdsAdapter showsAdapter;
+    private ShowsAdapter showsAdapter;
     private List<Show> showList = new ArrayList<>();
     private List<AdModel> adModelList = new ArrayList<>();
     private ProgressBar progressBar;
@@ -65,25 +65,6 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAd
         eventBus = EventBus.getDefault();
     }
 
-//    boolean moreBanners = position / adFactor <= adModelList.size();
-//        if (position % adFactor == incrementValue && position % 2 != 0 && moreBanners && position != 0) {
-//        if (incrementValue == 2) {
-//            incrementValue = 0;
-//        } else {
-//            incrementValue += 1;
-//        }
-//        addAds += 1;
-//        Log.d("AD view type", position + " .. " + String.valueOf(addAds));
-//        return AD_VIEW_TYPE;
-//    } else {
-//        Log.d("SHOW view type", position + " .. " + String.valueOf(addAds));
-//        return SHOW_VIEW_TYPE;
-//    }
-
-//    AdModel adModel = adModelList.get((position / adFactor) - 1);
-
-
-//    int showPosition = (position - addAds);
 
     @Override
     protected void initViews() {
@@ -96,7 +77,7 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAd
         type = getArguments().getInt(Constants.EXTRA_SHOW_TYPE);
         progressBar.getIndeterminateDrawable().setColorFilter(getResources()
                 .getColor(ChannelUtils.getChannelSecondaryColor(channelID)), PorterDuff.Mode.SRC_IN);
-        showsAdapter = new ShowsAdsAdapter(getContext(), showList, type);
+        showsAdapter = new ShowsAdapter(getContext(), showList, type);
         showsAdapter.setShowActions(this);
 
         showsRecycler.setAdapter(showsAdapter);
@@ -124,29 +105,24 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAd
             }
         });
 
-//        getShows();
-        getAds();
+        getShows();
         sendAnalytics(String.format(getString(R.string.channel_shows_analytics), getString(ChannelUtils.getChannelTitle(channelID))));
     }
 
-
-    private void getAds() {
-        showsPresenter.getAds();
-    }
 
     private void getShows() {
         currentPage += 1;
         isLoading = true;
 
-        switch (type) {
-            case Constants.NORMAL_SHOW_TYPE:
-                showsPresenter.getShows(PrefUtils.getAppLang(getContext()), channelID, currentPage);
-                break;
-            case Constants.SCHEDULE_SHOW_TYPE:
-                String day = getArguments().getString(Constants.EXTRA_DAY);
-                showsPresenter.getShowsByDay(PrefUtils.getAppLang(getContext()), day, channelID, currentPage);
-                break;
-        }
+//        switch (type) {
+//            case Constants.NORMAL_SHOW_TYPE:
+//                showsPresenter.getShows(PrefUtils.getAppLang(getContext()), channelID, currentPage);
+//                break;
+//            case Constants.SCHEDULE_SHOW_TYPE:
+        String day = getArguments().getString(Constants.EXTRA_DAY);
+        showsPresenter.getShowsByDay(PrefUtils.getAppLang(getContext()), day, channelID, currentPage);
+//                break;
+//        }
     }
 
     private void sendAnalytics(String screenName) {
@@ -195,13 +171,10 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAd
         isLoading = false;
         if (showList != null)
             this.showList.addAll(showsData.getShows());
-        showsPresenter.insertAdsBetweenShows(showList, adModelList);
     }
 
     @Override
     public void displayAds(List<AdModel> adModels) {
-        adModelList.addAll(adModels);
-        getShows();
     }
 
     @Override
@@ -229,8 +202,4 @@ public class ShowsFragment extends BaseFragment implements ShowsView, ShowsAdsAd
         showsPresenter.addShowToFav(showID);
     }
 
-//    @Override
-//    public void onPlayClicked(Show show) {
-//
-//    }
 }

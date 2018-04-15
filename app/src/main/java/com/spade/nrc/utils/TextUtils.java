@@ -1,5 +1,7 @@
 package com.spade.nrc.utils;
 
+import android.util.Log;
+
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
@@ -14,17 +16,21 @@ public class TextUtils {
 
     public static String getPresentersNames(List<Presenter> presenters) {
         String presenterNames = "";
-
-        if (presenters != null && !presenters.isEmpty()) {
-            for (int i = 0; i < presenters.size(); i++) {
-                if (i == presenters.size() - 1) {
-                    presenterNames = presenterNames.concat(presenters.get(i).getName());
-                } else {
-                    presenterNames = presenterNames.concat(presenters.get(i).getName()).concat(" - ");
+        try {
+            if (presenters != null && !presenters.isEmpty()) {
+                for (int i = 0; i < presenters.size(); i++) {
+                    if (i == presenters.size() - 1) {
+                        presenterNames = presenterNames.concat(presenters.get(i).getName());
+                    } else {
+                        presenterNames = presenterNames.concat(presenters.get(i).getName()).concat(" - ");
+                    }
                 }
             }
+            return presenterNames;
+        } catch (Exception e) {
+            Log.e("TextUtils", "Error ----->" + e.getMessage());
+            return presenterNames;
         }
-        return presenterNames;
     }
 
     public static String getShowNames(List<Show> shows) {

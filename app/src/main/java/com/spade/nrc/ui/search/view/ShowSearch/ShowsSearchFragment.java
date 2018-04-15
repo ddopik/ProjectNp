@@ -6,11 +6,13 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.spade.nrc.R;
-import com.spade.nrc.base.BaseFragment;
+import com.spade.nrc.base.BaseSearchFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
 import com.spade.nrc.ui.explore.view.ShowsAdapter;
 import com.spade.nrc.ui.search.presenter.showsPresenter.ShowSearchPresenter;
 import com.spade.nrc.ui.search.presenter.showsPresenter.ShowsSearchPresenterImpl;
@@ -26,7 +28,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class SearchShowFragment extends BaseFragment implements FragmentSearchShowView, ShowsAdapter.ShowActions {
+public class ShowsSearchFragment extends BaseSearchFragment implements ShowsSearchView, ShowsAdapter.ShowActions {
 
     private View mainView;
     private ProgressBar progressBar;
@@ -34,7 +36,7 @@ public class SearchShowFragment extends BaseFragment implements FragmentSearchSh
     private CustomRecyclerView customRecyclerView;
     private ShowsAdapter showsAdapter;
     private List<Show> showList = new ArrayList<>();
-
+    private EventBus eventBus = EventBus.getDefault();
 
     @Nullable
     @Override
@@ -47,45 +49,58 @@ public class SearchShowFragment extends BaseFragment implements FragmentSearchSh
 
     @Override
     protected void initPresenter() {
-        showFragmentPresenter = new ShowsSearchPresenterImpl(this);
+        showFragmentPresenter = new ShowsSearchPresenterImpl();
+        showFragmentPresenter.setView(this);
     }
 
     @Override
     protected void initViews() {
         customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
         showsAdapter = new ShowsAdapter(getContext(), showList, Constants.SEARCH_SHOW_TYPE);
+        showsAdapter.setShowActions(this);
         customRecyclerView.setAdapter(showsAdapter);
     }
 
-
     @Override
-    public void ViewSearchShow(String key) {
-        showFragmentPresenter.findShows(key);
+    public void showMessage(String message) {
+        showToastMessage(message);
     }
 
     @Override
-    public void showProgressBar() {
+    public void showMessage(int resID) {
+        showToastMessage(resID);
+    }
+
+    @Override
+    public void showLoading() {
         progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public void hideProgressBar() {
+    public void hideLoading() {
         progressBar.setVisibility(View.GONE);
     }
 
     @Override
-    public void viewShowsList(List<Show> showList) {
-
-        customRecyclerView.setVisibility(View.VISIBLE);
-        this.showList.clear();
-        this.showList.addAll(showList);
-        showsAdapter.notifyDataSetChanged();
+    public void setError(EditText editText, int resId) {
 
     }
 
     @Override
-    public void viewStateMessage(String msg) {
-        super.showToastMessage(msg);
+    public void search(String query) {
+        showFragmentPresenter.findShows(query);
+    }
+
+    @Override
+    public void viewShowsList(List<Show> showList) {
+        this.showList.clear();
+        this.showList.addAll(showList);
+        if (showList.isEmpty())
+            hideLoading();
+        else
+            customRecyclerView.setVisibility(View.VISIBLE);
+        showsAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -93,37 +108,14 @@ public class SearchShowFragment extends BaseFragment implements FragmentSearchSh
         customRecyclerView.setVisibility(View.GONE);
     }
 
-
-    @Override
-    public void showToastMessage(String message) {
-        super.showToastMessage(message);
-    }
-
-    @Override
-    public void showToastMessage(int messageResID) {
-        super.showToastMessage(messageResID);
-    }
-
     @Override
     public void onShowClicked(Show show) {
-//        eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+        eventBus.post(new ShowsClickEvent(show.getId(), show.getChannel().getId(), true));
+
     }
 
     @Override
     public void onFavClicked(int showID) {
 
     }
-//    @Override
-//    public void onStart() {
-//        super.onStart();
-//        if (!eventBus.isRegistered(this))
-//            eventBus.register(this);
-//    }
-//
-//    @Override
-//    public void onDestroy() {
-//        if (eventBus.isRegistered(this))
-//            eventBus.unregister(this);
-//        super.onDestroy();
-//    }
 }

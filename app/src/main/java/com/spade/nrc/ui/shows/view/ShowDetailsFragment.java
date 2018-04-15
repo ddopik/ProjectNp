@@ -29,6 +29,7 @@ import com.spade.nrc.ui.shows.presenter.ShowDetailsPresenterImpl;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
+import com.spade.nrc.utils.PrefUtils;
 import com.spade.nrc.utils.TextUtils;
 
 import org.greenrobot.eventbus.EventBus;
@@ -126,7 +127,9 @@ public class ShowDetailsFragment extends BaseFragment implements ShowDetailsView
         showTimes = showDetailsView.findViewById(R.id.show_times);
         presentersLayout = showDetailsView.findViewById(R.id.presenters_layout);
         addToFavouriteChannel = showDetailsView.findViewById(R.id.add_to_fav_image);
-
+        if (PrefUtils.getAppLang(getActivity()).equals(PrefUtils.ARABIC_LANG)) {
+            backBtn.setRotationY(180);
+        }
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
         int showID = getArguments().getInt(Constants.EXTRA_SHOW_ID);
         showName.setTextColor(ContextCompat.getColor(getContext(), ChannelUtils.getChannelPrimaryColor(channelID)));

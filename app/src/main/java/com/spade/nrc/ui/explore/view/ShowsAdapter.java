@@ -19,15 +19,16 @@ import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.player.LiveShowImagesAdapter;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
-import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.GlideApp;
 import com.spade.nrc.utils.TextUtils;
 
 import java.util.List;
 
 import static com.spade.nrc.utils.Constants.FEATURED_SHOW_TYPE;
+import static com.spade.nrc.utils.Constants.LIVE_SHOW_TYPE;
 import static com.spade.nrc.utils.Constants.NORMAL_SHOW_TYPE;
 import static com.spade.nrc.utils.Constants.SCHEDULE_SHOW_TYPE;
+import static com.spade.nrc.utils.Constants.SEARCH_SHOW_TYPE;
 
 /**
  * Created by Ayman Abouzeid on 1/6/18.
@@ -38,7 +39,6 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
     private Context context;
     private List<Show> showList;
     private int itemViewType;
-    //    private MusicProvider musicProvider;
     private ShowActions showActions;
     private RealmDbHelper realmDbHelper;
 
@@ -49,15 +49,17 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
         realmDbHelper = new RealmDbImpl();
     }
 
+    @NonNull
     @Override
-    public ShowsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ShowsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view;
         LayoutInflater layoutInflater = LayoutInflater.from(context);
-
         if (itemViewType == NORMAL_SHOW_TYPE) {
             view = layoutInflater.inflate(R.layout.item_show, parent, false);
         } else if (itemViewType == SCHEDULE_SHOW_TYPE) {
             view = layoutInflater.inflate(R.layout.item_show_schedule, parent, false);
+        } else if (itemViewType == SEARCH_SHOW_TYPE) {
+            view = layoutInflater.inflate(R.layout.item_search_show, parent, false);
         } else {
             view = layoutInflater.inflate(R.layout.item_explore_show, parent, false);
         }
@@ -72,9 +74,11 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
         boolean isFaved = realmDbHelper.isShowLiked(show.getId());
         switch (itemViewType) {
             case FEATURED_SHOW_TYPE:
+            case SEARCH_SHOW_TYPE:
                 holder.showTime.setVisibility(View.GONE);
                 holder.statusImage.setVisibility(View.GONE);
                 holder.channelImage.setVisibility(View.VISIBLE);
+                holder.channelImage.setImageResource(ChannelUtils.getChannelImage(show.getChannel().getId()));
                 break;
             case SCHEDULE_SHOW_TYPE:
                 String timeString = TextUtils.getScheduleTimes(show.getSchedules());
@@ -91,17 +95,6 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
                     holder.favImage.setImageResource(ChannelUtils.getChannelFavAddedBtn(show.getChannel().getId()));
                 else
                     holder.favImage.setImageResource(ChannelUtils.getChannelFavBtn(show.getChannel().getId()));
-                break;
-            case NORMAL_SHOW_TYPE:
-                holder.favImage.setOnClickListener(view -> {
-                    if (showActions != null)
-                        showActions.onFavClicked(show.getId());
-                });
-                holder.favImage.setVisibility(View.VISIBLE);
-                if (isFaved)
-                    holder.favImage.setImageResource(ChannelUtils.getChannelFavAddedBtn(0));
-                else
-                    holder.favImage.setImageResource(ChannelUtils.getChannelFavBtn(0));
                 break;
         }
 
@@ -123,6 +116,7 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
 
     }
 
+
     public interface ShowActions {
         void onShowClicked(Show show);
 
@@ -138,24 +132,26 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
         return showList.size();
     }
 
-
     class ShowsViewHolder extends RecyclerView.ViewHolder {
 
         private TextView showName, presenterName, showTime;
-        private ImageView channelImage, statusImage, showImage, favImage;
+        private ImageView channelImage, statusImage, showImage,favImage;
 
         ShowsViewHolder(View itemView) {
             super(itemView);
             showName = itemView.findViewById(R.id.show_title);
             presenterName = itemView.findViewById(R.id.presenter_name);
             showImage = itemView.findViewById(R.id.show_image);
-            if (itemViewType == Constants.LIVE_SHOW_TYPE || itemViewType == Constants.FEATURED_SHOW_TYPE) {
+            if (itemViewType == LIVE_SHOW_TYPE || itemViewType == FEATURED_SHOW_TYPE || itemViewType == SEARCH_SHOW_TYPE) {
                 channelImage = itemView.findViewById(R.id.channel_image);
                 statusImage = itemView.findViewById(R.id.status_image);
             }
 
-            if (itemViewType != Constants.NORMAL_SHOW_TYPE)
+            if (itemViewType != NORMAL_SHOW_TYPE)
                 showTime = itemView.findViewById(R.id.show_times);
+            if (itemViewType == NORMAL_SHOW_TYPE || itemViewType == SCHEDULE_SHOW_TYPE)
+                favImage = itemView.findViewById(R.id.favourite_image);
+
             if (itemViewType == NORMAL_SHOW_TYPE || itemViewType == SCHEDULE_SHOW_TYPE)
                 favImage = itemView.findViewById(R.id.favourite_image);
 

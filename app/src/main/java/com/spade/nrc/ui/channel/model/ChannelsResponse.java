@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.spade.nrc.ui.shows.model.Channel;
-import com.spade.nrc.ui.shows.model.Show;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,25 +23,25 @@ public class ChannelsResponse implements Parcelable {
     @SerializedName("data")
     @Expose
     private List<Channel> data = new ArrayList<>();
-    public final static Parcelable.Creator<ChannelsResponse> CREATOR = new Parcelable.Creator<ChannelsResponse>() {
+    public final static Parcelable.Creator<ChannelsDataResponse> CREATOR = new Parcelable.Creator<ChannelsDataResponse>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public ChannelsResponse createFromParcel(Parcel in) {
-            return new ChannelsResponse(in);
+        public ChannelsDataResponse createFromParcel(Parcel in) {
+            return new ChannelsDataResponse(in);
         }
 
-        public ChannelsResponse[] newArray(int size) {
-            return (new ChannelsResponse[size]);
+        public ChannelsDataResponse[] newArray(int size) {
+            return (new ChannelsDataResponse[size]);
         }
 
     };
 
     protected ChannelsResponse(Parcel in) {
         this.success = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
-        in.readList(this.data, (Show.class.getClassLoader()));
+        in.readList(this.data, (Channel.class.getClassLoader()));
     }
 
     public ChannelsResponse() {

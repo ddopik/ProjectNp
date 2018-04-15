@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Ayman Abouzeid on 2/5/18.
  */
 
-public class ChannelsResponse implements Parcelable {
+public class ChannelsDataResponse implements Parcelable {
 
 
     @SerializedName("success")
@@ -24,28 +24,28 @@ public class ChannelsResponse implements Parcelable {
     @SerializedName("data")
     @Expose
     private List<Channel> data = new ArrayList<>();
-    public final static Parcelable.Creator<ChannelsResponse> CREATOR = new Parcelable.Creator<ChannelsResponse>() {
+    public final static Parcelable.Creator<ChannelsDataResponse> CREATOR = new Parcelable.Creator<ChannelsDataResponse>() {
 
 
         @SuppressWarnings({
                 "unchecked"
         })
-        public ChannelsResponse createFromParcel(Parcel in) {
-            return new ChannelsResponse(in);
+        public ChannelsDataResponse createFromParcel(Parcel in) {
+            return new ChannelsDataResponse(in);
         }
 
-        public ChannelsResponse[] newArray(int size) {
-            return (new ChannelsResponse[size]);
+        public ChannelsDataResponse[] newArray(int size) {
+            return (new ChannelsDataResponse[size]);
         }
 
     };
 
-    protected ChannelsResponse(Parcel in) {
+    protected ChannelsDataResponse(Parcel in) {
         this.success = ((Boolean) in.readValue((Boolean.class.getClassLoader())));
         in.readList(this.data, (Show.class.getClassLoader()));
     }
 
-    public ChannelsResponse() {
+    public ChannelsDataResponse() {
     }
 
     public Boolean getSuccess() {

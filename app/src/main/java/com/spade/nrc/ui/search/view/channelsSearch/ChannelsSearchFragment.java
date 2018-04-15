@@ -10,14 +10,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.spade.nrc.R;
-import com.spade.nrc.base.BaseFragment;
+import com.spade.nrc.base.BaseSearchFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
 import com.spade.nrc.ui.search.presenter.channelsPresenter.ChannelsSearchPresenter;
 import com.spade.nrc.ui.search.presenter.channelsPresenter.ChannelsSearchPresenterImpl;
-import com.spade.nrc.ui.search.view.ChannelsSearchAdapter;
 import com.spade.nrc.ui.shows.model.Channel;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,17 +23,15 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class SearchChannelsFragment extends BaseFragment implements SearchChannelsView {
+public class ChannelsSearchFragment extends BaseSearchFragment implements ChannelsSearchView {
 
 
     private View mainView;
     private ProgressBar progressBar;
     private ChannelsSearchPresenter channelsSearchPresenter;
-    private CustomRecyclerView customRecyclerView;
+    private CustomRecyclerView channelsRecyclerView;
     private ChannelsSearchAdapter channelsAdapterAdapter;
-    private ArrayList<Channel> channelList = new ArrayList<>();
-    public static final int FEATURED_SHOW_TYPE = 0;
-    private EventBus eventBus;
+    private List<Channel> channelList = new ArrayList<>();
 
 
     @Nullable
@@ -55,81 +50,59 @@ public class SearchChannelsFragment extends BaseFragment implements SearchChanne
 
     @Override
     protected void initViews() {
-        customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
+        channelsRecyclerView = mainView.findViewById(R.id.search_recycler_view);
         progressBar = mainView.findViewById(R.id.progress_bar);
         channelsAdapterAdapter = new ChannelsSearchAdapter(getContext(), channelList);
-        customRecyclerView.setAdapter(channelsAdapterAdapter);
-
+        channelsRecyclerView.setAdapter(channelsAdapterAdapter);
     }
 
-    @Override
-    public void viewSearchChannels(String key) { //-->Presenter Call
-        channelsSearchPresenter.findChannels(key);
-    }
 
     @Override
     public void viewChannelsList(List<Channel> channelList) {
-
-        customRecyclerView.setVisibility(View.VISIBLE);
         this.channelList.clear();
         this.channelList.addAll(channelList);
+
+        if (channelList.isEmpty())
+            hideChannelsList();
+        else
+            channelsRecyclerView.setVisibility(View.VISIBLE);
         channelsAdapterAdapter.notifyDataSetChanged();
 
     }
 
     @Override
     public void hideChannelsList() {
-        customRecyclerView.setVisibility(View.GONE);
+        channelsRecyclerView.setVisibility(View.GONE);
     }
 
-    @Override
-    public void viewStateMessage(String msg) {
-        super.showToastMessage(msg);
-    }
-
-    @Override
-    public void showProgressBar() {
-        progressBar.setVisibility(View.VISIBLE);
-    }
-
-    @Override
-    public void hideProgressBar() {
-        progressBar.setVisibility(View.GONE);
-    }
-
-
-    @Override
-    public void showToastMessage(String message) {
-        super.showToastMessage(message);
-    }
-
-    @Override
-    public void showToastMessage(int messageResID) {
-        super.showToastMessage(messageResID);
-    }
 
     @Override
     public void showMessage(String message) {
-
+        showToastMessage(message);
     }
 
     @Override
     public void showMessage(int resID) {
-
+        showToastMessage(resID);
     }
 
     @Override
     public void showLoading() {
-
+        progressBar.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void hideLoading() {
-
+        progressBar.setVisibility(View.GONE);
     }
 
     @Override
     public void setError(EditText editText, int resId) {
 
+    }
+
+    @Override
+    public void search(String query) {
+        channelsSearchPresenter.findChannels(query);
     }
 }

@@ -6,16 +6,21 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ProgressBar;
 
 import com.spade.nrc.R;
 import com.spade.nrc.base.BaseSearchFragment;
+import com.spade.nrc.base.BaseSearchFragment;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.event.bus.events.PresenterClickEvent;
 import com.spade.nrc.ui.presenters.model.Presenter;
 import com.spade.nrc.ui.presenters.view.PresentersAdapter;
 import com.spade.nrc.ui.search.presenter.presentersPresenter.PresentersSearchPresenter;
 import com.spade.nrc.ui.search.presenter.presentersPresenter.PresentersSearchPresenterImpl;
 import com.spade.nrc.utils.Constants;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +29,7 @@ import java.util.List;
  * Created by abdalla-maged on 4/3/18.
  */
 
-public class PresentersSearchFragmentSearch extends BaseSearchFragment implements PresentersSearchView {
+public class PresentersSearchFragment extends BaseSearchFragment implements PresentersSearchView, PresentersAdapter.OnPresenterClicked {
 
 
     private View mainView;
@@ -33,7 +38,7 @@ public class PresentersSearchFragmentSearch extends BaseSearchFragment implement
     private PresentersAdapter presentersAdapter;
     private PresentersSearchPresenter presentersSearchPresenter;
     private List<Presenter> presentersList = new ArrayList<>();
-
+    private EventBus eventBus = EventBus.getDefault();
 
     @Nullable
     @Override
@@ -45,7 +50,8 @@ public class PresentersSearchFragmentSearch extends BaseSearchFragment implement
 
     @Override
     protected void initPresenter() {
-        presentersSearchPresenter = new PresentersSearchPresenterImpl(this);
+        presentersSearchPresenter = new PresentersSearchPresenterImpl();
+        presentersSearchPresenter.setView(this);
     }
 
 
@@ -55,18 +61,22 @@ public class PresentersSearchFragmentSearch extends BaseSearchFragment implement
         progressBar = mainView.findViewById(R.id.progress_bar);
         customRecyclerView = mainView.findViewById(R.id.search_recycler_view);
         presentersAdapter = new PresentersAdapter(getContext(), presentersList, Constants.NRC_ID);
+        presentersAdapter.setOnPresenterClicked(this);
         customRecyclerView.setAdapter(presentersAdapter);
     }
 
     @Override
     public void viewPresentersList(List<Presenter> presentersList) {
-
-        customRecyclerView.setVisibility(View.VISIBLE);
         this.presentersList.clear();
         this.presentersList.addAll(presentersList);
+        if (presentersList.isEmpty())
+            hidePresentersList();
+        else
+            customRecyclerView.setVisibility(View.VISIBLE);
         presentersAdapter.notifyDataSetChanged();
-
     }
+
+
 
 
     @Override
@@ -76,8 +86,38 @@ public class PresentersSearchFragmentSearch extends BaseSearchFragment implement
 
 
     @Override
-    protected void search(String query) {
+    public void showMessage(String message) {
+        showToastMessage(message);
+    }
+
+    @Override
+    public void showMessage(int resID) {
+        showToastMessage(resID);
+    }
+
+    @Override
+    public void showLoading() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void hideLoading() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setError(EditText editText, int resId) {
+
+    }
+
+    @Override
+    public void search(String query) {
         if (presentersSearchPresenter != null)
             presentersSearchPresenter.findPresenter(query);
+    }
+
+    @Override
+    public void onPresenterClicked(int presenterID) {
+        eventBus.post(new PresenterClickEvent(presenterID, Constants.NRC_ID, true));
     }
 }

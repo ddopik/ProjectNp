@@ -3,7 +3,7 @@ package com.spade.nrc.ui.search.presenter.presentersPresenter;
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.network.ApiHelper;
-import com.spade.nrc.ui.search.view.presentersSearch.FragmentSearchPresentersView;
+import com.spade.nrc.ui.search.view.presentersSearch.PresentersSearchView;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,31 +15,31 @@ import io.reactivex.schedulers.Schedulers;
 
 public class PresentersSearchPresenterImpl implements PresentersSearchPresenter {
 
-
-    FragmentSearchPresentersView fragmentSearchPresentersView;
-
-    public PresentersSearchPresenterImpl(FragmentSearchPresentersView fragmentSearchPresentersView) {
-        this.fragmentSearchPresentersView=fragmentSearchPresentersView;
-    }
+    private PresentersSearchView presentersSearchView;
 
     @Override
     public void findPresenter(String key) {
-        fragmentSearchPresentersView.showProgressBar();
+        presentersSearchView.showLoading();
         ApiHelper.getSearchPresenters(PrefUtils.getAppLang(NRCApplication.nrcApplication), key)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(showsResponse -> {
-                    fragmentSearchPresentersView.hideProgressBar();
-                    fragmentSearchPresentersView.viewPresentersList(showsResponse.getPresenterData().getPresenters());
+                    presentersSearchView.hideLoading();
+                    presentersSearchView.viewPresentersList(showsResponse.getPresenterData().getPresenters());
                 }, throwable -> {
-                    fragmentSearchPresentersView.hideProgressBar();
+                    presentersSearchView.hideLoading();
                     if (throwable != null) {
                         ANError anError = (ANError) throwable;
-                        fragmentSearchPresentersView.hidePresentersList();
-                        fragmentSearchPresentersView.viewStateMessage(anError.getResponse().toString());
+                        presentersSearchView.hidePresentersList();
+//                        fragmentSearchPresentersView.viewStateMessage(anError.getResponse().toString());
                     }
                 });
 
 
+    }
+
+    @Override
+    public void setView(PresentersSearchView view) {
+        presentersSearchView = view;
     }
 }

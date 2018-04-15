@@ -1,22 +1,17 @@
 package com.spade.nrc.ui.search.presenter.mainSearchPresenter;
 
-import android.support.v4.app.Fragment;
-
-import com.spade.nrc.ui.presenters.model.Presenter;
-import com.spade.nrc.ui.shows.model.Channel;
-import com.spade.nrc.ui.shows.model.Show;
-
-import java.util.List;
+import com.spade.nrc.base.BasePresenter;
+import com.spade.nrc.ui.search.view.SearchView;
 
 /**
  * Created by abdalla-maged on 4/3/18.
  */
 
-public interface SearchFragmentPresenter {
+public interface SearchPresenter extends BasePresenter<SearchView> {
 
-    List<Fragment> getViewPagerFragment();
+//    List<Fragment> getViewPagerFragment();
 
-    List<String> getViewPagerFragmentsTitles();
+//    List<String> getViewPagerFragmentsTitles();
 
     void notifyFragment(String key);
 

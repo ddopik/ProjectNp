@@ -4,19 +4,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.spade.nrc.ui.CustomViews.CustomRecyclerView
-        android:id="@+id/search_recycler_view"
+        android:id="@+id/items_recycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/activity_vertical_margin"
-        app:orientation="vertical" />
-
+        android:layout_height="match_parent"
+        app:orientation="grid" />
 
     <ProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:visibility="gone" />
+        android:layout_centerInParent="true" />
 </RelativeLayout>

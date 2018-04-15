@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Point;
 import android.os.Bundle;
@@ -18,15 +19,19 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatSpinner;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.SpinnerAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -64,11 +69,13 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements ChannelNavigationInterface,
-        MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked {
+        MediaInterface, View.OnClickListener, MenuAdapter.OnItemClicked, OnMenuOpenClicked, AdapterView.OnItemSelectedListener {
 
     private String TAG = MainActivity.class.getSimpleName();
+
     private NavigationManager navigationManager;
     private MediaBrowserCompat mMediaBrowser;
     private MusicProvider musicProvider;
@@ -83,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private ProgressBar playerProgressBar;
     private TextView showTitle, showTimes, exploreMenu, loginTextView;
     private DrawerLayout mDrawerLayout;
-
+    private AppCompatSpinner languageSpinner;
     private Show currentShow;
     private MediaPlayerTrack currentTrack;
 
@@ -162,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         setContentView(R.layout.activity_main);
         init();
     }
-
 //    @Override
 //    protected void onResume() {
 //        super.onResume();
@@ -231,11 +237,28 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
             loginTextView.setText(R.string.logout);
         }
 
+        languageSpinner = findViewById(R.id.language_spinner);
+        SpinnerAdapter spinnerAdapter = new ArrayAdapter<>(this, R.layout.language_single_item, getResources().getStringArray(R.array.languages));
+        languageSpinner.setAdapter(spinnerAdapter);
+
+        if (PrefUtils.getAppLang(this).equals(PrefUtils.ENGLISH_LANG)) {
+            languageSpinner.setSelection(0, false);
+        } else {
+            languageSpinner.setSelection(1, false);
+        }
+
+        languageSpinner.setOnItemSelectedListener(this);
         mainPresenter = new MainPresenterImpl(this);
         initMediaBrowser();
         initAnimation();
         openExploreFragment();
         openPlayerFragment();
+        if (getIntent() != null && getIntent().hasExtra(Constants.EXTRA_SHOW_ID)) {
+            int id = getIntent().getIntExtra(Constants.EXTRA_SHOW_ID, 0);
+            int channelID = getIntent().getIntExtra(Constants.EXTRA_CHANNEL_ID, 0);
+            ShowsClickEvent showsClickEvent = new ShowsClickEvent(id, channelID, true);
+            onShowClicked(showsClickEvent);
+        }
     }
 
     private void checkToLogoutOrLogin() {
@@ -271,7 +294,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     public void openSearchFragment() {
         SearchFragment searchFragment = new SearchFragment();
-        navigationManager.openFragment(searchFragment,R.id.fragment_container,SearchFragment.class.getSimpleName());
+        navigationManager.openFragment(searchFragment, R.id.fragment_container, SearchFragment.class.getSimpleName());
     }
 
     private void initMediaBrowser() {
@@ -338,6 +361,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
             eventBus.register(this);
     }
 
+
     @Override
     protected void onStop() {
         mMediaBrowser.disconnect();
@@ -359,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     protected void onDestroy() {
         Log.d("MainActivity", "ONDESTROY");
-        controlPlayer(0, true);
+        controlPlayer(Integer.parseInt(musicProvider.getPlayingMediaId()), true);
         super.onDestroy();
     }
 
@@ -549,6 +573,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         animTranslate.start();
     }
 
+
     private void hidePlayer() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(playerFragment, "translationY", 0, toY);
         animTranslate.setDuration(ANIMATION_SPEED);
@@ -662,6 +687,9 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 navigationManager.openFragment(contactUsFragment, R.id.fragment_container, ContactUsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
+            case 4:
+                languageSpinner.performClick();
+                break;
         }
     }
 
@@ -708,5 +736,41 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 exploreMenu.setAlpha(1f);
                 break;
         }
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (position == 0 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ENGLISH_LANG))
+            changeLanguage(PrefUtils.ENGLISH_LANG);
+
+        if (position == 1 && !PrefUtils.getAppLang(getApplicationContext()).equals(PrefUtils.ARABIC_LANG))
+            changeLanguage(PrefUtils.ARABIC_LANG);
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @SuppressWarnings("deprecation")
+    public void changeLanguage(String lang) {
+        Locale myLocale = new Locale(lang);
+        Configuration conf = new Configuration();
+        conf.locale = myLocale;
+
+        getResources().updateConfiguration(conf, getResources().getDisplayMetrics());
+        if (lang.equals(PrefUtils.ARABIC_LANG))
+            PrefUtils.setAppLang(this, PrefUtils.ARABIC_LANG);
+        else
+            PrefUtils.setAppLang(this, PrefUtils.ENGLISH_LANG);
+
+        PrefUtils.setIsLanguageSelected(this, true);
+        restartActivity();
+    }
+
+    public void restartActivity() {
+        startActivity(getLaunchIntent(this));
+        finish();
     }
 }

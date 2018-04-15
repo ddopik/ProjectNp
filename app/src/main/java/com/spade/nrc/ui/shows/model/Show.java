@@ -6,6 +6,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.spade.nrc.ui.explore.view.ShowsAdsAdapter;
 import com.spade.nrc.ui.presenters.model.Presenter;
 
 import java.util.List;
@@ -42,6 +43,8 @@ public class Show implements Parcelable {
     @SerializedName("is_liked")
     @Expose
     private boolean isLiked;
+    private int type = ShowsAdsAdapter.SHOW_VIEW_TYPE;
+
     public final static Creator<Show> CREATOR = new Creator<Show>() {
 
 
@@ -161,6 +164,14 @@ public class Show implements Parcelable {
 
     public void setLiked(boolean liked) {
         isLiked = liked;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

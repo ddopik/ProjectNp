@@ -3,7 +3,10 @@ package com.spade.nrc.network;
 import com.androidnetworking.common.Priority;
 import com.rx2androidnetworking.Rx2ANRequest;
 import com.rx2androidnetworking.Rx2AndroidNetworking;
+import com.spade.nrc.ui.ads.AdsResponse;
+import com.spade.nrc.ui.channel.model.ChannelsDataResponse;
 import com.spade.nrc.ui.channel.model.ChannelsResponse;
+import com.spade.nrc.ui.channel.model.ChannelsSearchResponse;
 import com.spade.nrc.ui.explore.model.LiveShowsResponse;
 import com.spade.nrc.ui.explore.model.SlideBannerResponse;
 import com.spade.nrc.ui.login.UserModel;
@@ -53,10 +56,12 @@ public class ApiHelper {
     public static final String ADD_CHANNEL_TO_FAV = BASE_URL + "channel/{id}/favorite";
     public static final String ADD_SHOW_TO_FAV = BASE_URL + "show/{id}/favorite";
     private static final String EDIT_PROFILE_URL = BASE_URL + "profile/edit";
+    private static final String ADS_URL = BASE_URL + "advertisements";
     public static final String SHOWS_SEARCH_URL = BASE_URL + "search/shows";
     public static final String CHANNELS_SEARCH_URL = BASE_URL + "search/channels";
     public static final String PRESENTERS_SEARCH_URL = BASE_URL + "search/presenters";
-
+    private static final String USER_CHANNELS = BASE_URL + "channel/favorite";
+    private static final String USER_SHOWS = BASE_URL + "show/favorite";
 
     private static final String LANG_PATH_PARAM = "lang";
     private static final String CHANNEL_PARAM = "channel";
@@ -66,7 +71,6 @@ public class ApiHelper {
     private static final String AUTH_TOKEN = "Authorization";
     private static final String BEARER = "bearer";
     private static final String KEY = "search";
-
 
 
     public static Observable<PresentersResponse> getPresenters(String appLang, String channelID, String pageNumber) {
@@ -104,12 +108,12 @@ public class ApiHelper {
                 .getObjectObservable(CurrentAndNextShowsResponse.class);
     }
 
-    public static Observable<ChannelsResponse> getChannels(String appLang, String authToken) {
+    public static Observable<ChannelsDataResponse> getChannels(String appLang, String authToken) {
         return Rx2AndroidNetworking.get(CHANNELS_URL)
                 .addHeaders(AUTH_TOKEN, BEARER + " " + authToken)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .build()
-                .getObjectObservable(ChannelsResponse.class);
+                .getObjectObservable(ChannelsDataResponse.class);
     }
 
     public static Observable<ShowDetailsResponse> getShowDetails(String appLang, String showID) {
@@ -149,6 +153,13 @@ public class ApiHelper {
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .build()
                 .getObjectObservable(SlideBannerResponse.class);
+    }
+
+    public static Observable<AdsResponse> getAds(String appLang) {
+        return Rx2AndroidNetworking.get(ADS_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .build()
+                .getObjectObservable(AdsResponse.class);
     }
 
     public static Observable<RegistrationResponse> registerUser(UserModel userModel, String notificationToken, String appLang) {
@@ -285,12 +296,28 @@ public class ApiHelper {
                 .getObjectObservable(ShowsPagesResponse.class);
     }
 
-    public static Observable<ChannelsResponse> getSearchChannels(String appLang, String key) {
+    public static Observable<ChannelsSearchResponse> getSearchChannels(String appLang, String key) {
         return Rx2AndroidNetworking.post(CHANNELS_SEARCH_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
                 .addBodyParameter(KEY, key)
                 .build()
+                .getObjectObservable(ChannelsSearchResponse.class);
+    }
+
+    public static Observable<ChannelsResponse> getUserChannels(String appLang, String authToken) {
+        return Rx2AndroidNetworking.get(USER_CHANNELS)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addHeaders(AUTH_TOKEN, BEARER + " " + authToken)
+                .build()
                 .getObjectObservable(ChannelsResponse.class);
+    }
+
+    public static Observable<ShowsResponse> getUserShows(String appLang, String authToken) {
+        return Rx2AndroidNetworking.get(USER_SHOWS)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addHeaders(AUTH_TOKEN, BEARER + " " + authToken)
+                .build()
+                .getObjectObservable(ShowsResponse.class);
     }
 
 
