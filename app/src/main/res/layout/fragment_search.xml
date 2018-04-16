@@ -52,6 +52,7 @@
         android:id="@+id/search_tabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        app:tabTextAppearance="@style/TabTextAppearance"
         android:layout_below="@+id/search_toolbar"
         android:background="@color/white"
         app:tabGravity="fill"
