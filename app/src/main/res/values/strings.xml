@@ -108,6 +108,7 @@
     <string name="pick_picture">Pick Picture From</string>
     <string name="remove_from_fav">Remove from favourite channels</string>
     <string name="search_hint">Search Here</string>
+    <string name="news_nrc_analytics">News section</string>
 
     <string-array name="week_days">
         <item>Saturday</item>

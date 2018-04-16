@@ -10,6 +10,7 @@ import com.spade.nrc.ui.channel.model.ChannelsSearchResponse;
 import com.spade.nrc.ui.explore.model.LiveShowsResponse;
 import com.spade.nrc.ui.explore.model.SlideBannerResponse;
 import com.spade.nrc.ui.login.UserModel;
+import com.spade.nrc.ui.news.model.NewsResponse;
 import com.spade.nrc.ui.presenters.model.PresenterDetailsResponse;
 import com.spade.nrc.ui.presenters.model.PresentersResponse;
 import com.spade.nrc.ui.register.RegistrationResponse;
@@ -43,6 +44,7 @@ public class ApiHelper {
     private static final String PRESENTERS_DETAILS_URL = BASE_URL + "presenters/{id}";
     private static final String SHOW_DETAILS_URL = BASE_URL + "shows/{id}";
     private static final String SHOWS_LIST_URL = BASE_URL + "shows";
+    private static final String NEWS_LIST_URL = BASE_URL + "news";
     private static final String FEATURED_SHOWS_LIST_URL = BASE_URL + "getFeaturedShows";
     private static final String CURRENT_AND_NEXT_SHOWS = BASE_URL + "getCurrentAndNextShowsForChannel";
     private static final String CHANNELS_URL = BASE_URL + "channels";
@@ -98,6 +100,12 @@ public class ApiHelper {
                 .addQueryParameter(PAGE_PARAM, pageNumber)
                 .build()
                 .getObjectObservable(ShowsPagesResponse.class);
+    }
+    public static Observable<NewsResponse> getNews(String appLang) {
+        return Rx2AndroidNetworking.get(NEWS_LIST_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .build()
+                .getObjectObservable(NewsResponse.class);
     }
 
     public static Observable<CurrentAndNextShowsResponse> getCurrentAndNextShows(String appLang, String channelID) {
