@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NRC.iml" filepath="$PROJECT_DIR$/NRC.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/nrc-mobile.iml" filepath="$PROJECT_DIR$/nrc-mobile.iml" />
     </modules>
   </component>
 </project>

@@ -384,7 +384,8 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     protected void onDestroy() {
         Log.d("MainActivity", "ONDESTROY");
-        controlPlayer(Integer.parseInt(musicProvider.getPlayingMediaId()), true);
+        if (musicProvider.getPlayingMediaId() != null)
+            controlPlayer(Integer.parseInt(musicProvider.getPlayingMediaId()), true);
         super.onDestroy();
     }
 
@@ -681,6 +682,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                     navigationManager.openFragment(profileFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
                     mDrawerLayout.closeDrawer(Gravity.START);
                 }
+                break;
 
             case 2:
 
@@ -688,7 +690,6 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 newsFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(newsFragment, R.id.fragment_container, NewsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
-
                 break;
             case 3:
                 ContactUsFragment contactUsFragment = new ContactUsFragment();

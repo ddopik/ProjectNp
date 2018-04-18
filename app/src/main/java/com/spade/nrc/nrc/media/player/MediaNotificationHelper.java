@@ -73,6 +73,7 @@ public class MediaNotificationHelper extends ContextWrapper {
     }
 
     public void clearNotification() {
+        if(notificationManager !=null)
         notificationManager.cancel(notificationID);
     }
 
