@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 
 import com.spade.nrc.R;
+import com.spade.nrc.ui.search.view.NewsSearch.NewsSearchFragment;
 import com.spade.nrc.ui.search.view.SearchView;
 import com.spade.nrc.ui.search.view.ShowSearch.ShowsSearchFragment;
 import com.spade.nrc.ui.search.view.channelsSearch.ChannelsSearchFragment;
@@ -25,6 +26,7 @@ public class SearchPresenterImpl implements SearchPresenter {
     private ShowsSearchFragment showsSearchFragment;
     private ChannelsSearchFragment channelsSearchFragment;
     private PresentersSearchFragment presentersSearchFragment;
+    private NewsSearchFragment newsSearchFragment;
     private Context context;
 
     public SearchPresenterImpl(Context context) {
@@ -59,6 +61,7 @@ public class SearchPresenterImpl implements SearchPresenter {
         showsSearchFragment.search(key);
         channelsSearchFragment.search(key);
         presentersSearchFragment.search(key);
+        newsSearchFragment.search(key);
     }
 
     @Override
@@ -66,17 +69,18 @@ public class SearchPresenterImpl implements SearchPresenter {
         showsSearchFragment = new ShowsSearchFragment();
         channelsSearchFragment = new ChannelsSearchFragment();
         presentersSearchFragment = new PresentersSearchFragment();
+        newsSearchFragment = new NewsSearchFragment();
 
         List<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(showsSearchFragment);
         fragmentList.add(channelsSearchFragment);
+        fragmentList.add(newsSearchFragment);
         fragmentList.add(presentersSearchFragment);
-        //fragmentList.add(new FragmentSearchNews());
 
         List<String> fragmentTitle = new ArrayList<>();
         fragmentTitle.add(context.getString(R.string.shows));
         fragmentTitle.add(context.getString(R.string.channels));
-//        fragmentTitle.add(NRCApplication.nrcApplication.getString(R.string.news));
+        fragmentTitle.add(context.getString(R.string.news));
         fragmentTitle.add(context.getString(R.string.presenters));
         searchView.addFragment(fragmentList, fragmentTitle);
     }

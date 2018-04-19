@@ -10,9 +10,11 @@ import com.spade.nrc.ui.channel.model.ChannelsSearchResponse;
 import com.spade.nrc.ui.explore.model.LiveShowsResponse;
 import com.spade.nrc.ui.explore.model.SlideBannerResponse;
 import com.spade.nrc.ui.login.UserModel;
+import com.spade.nrc.ui.news.model.NewsResponse;
 import com.spade.nrc.ui.presenters.model.PresenterDetailsResponse;
 import com.spade.nrc.ui.presenters.model.PresentersResponse;
 import com.spade.nrc.ui.register.RegistrationResponse;
+import com.spade.nrc.ui.search.view.NewsSearch.model.NewsSearchResponse;
 import com.spade.nrc.ui.shows.model.AddChannelToFavouriteResponse;
 import com.spade.nrc.ui.shows.model.AddShowToFavouriteResponse;
 import com.spade.nrc.ui.shows.model.CurrentAndNextShowsResponse;
@@ -43,6 +45,7 @@ public class ApiHelper {
     private static final String PRESENTERS_DETAILS_URL = BASE_URL + "presenters/{id}";
     private static final String SHOW_DETAILS_URL = BASE_URL + "shows/{id}";
     private static final String SHOWS_LIST_URL = BASE_URL + "shows";
+    private static final String NEWS_LIST_URL = BASE_URL + "news";
     private static final String FEATURED_SHOWS_LIST_URL = BASE_URL + "getFeaturedShows";
     private static final String CURRENT_AND_NEXT_SHOWS = BASE_URL + "getCurrentAndNextShowsForChannel";
     private static final String CHANNELS_URL = BASE_URL + "channels";
@@ -60,6 +63,7 @@ public class ApiHelper {
     public static final String SHOWS_SEARCH_URL = BASE_URL + "search/shows";
     public static final String CHANNELS_SEARCH_URL = BASE_URL + "search/channels";
     public static final String PRESENTERS_SEARCH_URL = BASE_URL + "search/presenters";
+    public static final String NEWS_SEARCH_URL = BASE_URL + "search/news";
     private static final String USER_CHANNELS = BASE_URL + "channel/favorite";
     private static final String USER_SHOWS = BASE_URL + "show/favorite";
 
@@ -98,6 +102,12 @@ public class ApiHelper {
                 .addQueryParameter(PAGE_PARAM, pageNumber)
                 .build()
                 .getObjectObservable(ShowsPagesResponse.class);
+    }
+    public static Observable<NewsResponse> getNews(String appLang) {
+        return Rx2AndroidNetworking.get(NEWS_LIST_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .build()
+                .getObjectObservable(NewsResponse.class);
     }
 
     public static Observable<CurrentAndNextShowsResponse> getCurrentAndNextShows(String appLang, String channelID) {
@@ -327,6 +337,14 @@ public class ApiHelper {
                 .addBodyParameter(KEY, key)
                 .build()
                 .getObjectObservable(PresentersResponse.class);
+    }
+
+    public static Observable<NewsSearchResponse> getSearchNews(String appLang, String key) {
+        return Rx2AndroidNetworking.post(NEWS_SEARCH_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addBodyParameter(KEY, key)
+                .build()
+                .getObjectObservable(NewsSearchResponse.class);
     }
 
 
