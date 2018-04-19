@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_menu" />
+                    app:srcCompat="@drawable/ic_menu" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -220,7 +220,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_facebook" />
+                        app:srcCompat="@drawable/ic_facebook" />
 
                     <ImageView
                         android:id="@+id/twitter_image"
@@ -228,7 +228,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_twitter" />
+                        app:srcCompat="@drawable/ic_twitter" />
 
                     <ImageView
                         android:id="@+id/linkedin_image"
@@ -236,7 +236,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_linkedin" />
+                        app:srcCompat="@drawable/ic_linkedin" />
 
                     <ImageView
                         android:id="@+id/instagram_image"
@@ -244,7 +244,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="@dimen/activity_horizontal_margin"
                         android:layout_weight="1"
-                        android:src="@drawable/ic_instagram" />
+                        app:srcCompat="@drawable/ic_instagram" />
 
                 </LinearLayout>
 

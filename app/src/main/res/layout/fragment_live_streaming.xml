@@ -53,7 +53,7 @@
                 android:layout_marginEnd="@dimen/activity_vertical_margin"
                 android:background="@color/white"
                 android:scaleType="center"
-                android:src="@drawable/ic_play_btn_mega"
+                app:srcCompat="@drawable/ic_play_btn_mega"
                 app:backgroundTint="@color/white"
                 app:fabSize="normal"
                 app:layout_anchor="@+id/current_show_image"
@@ -112,14 +112,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_fb_black" />
+                app:srcCompat="@drawable/ic_fb_black" />
 
             <ImageView
                 android:id="@+id/twitter_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_twitter_black" />
+                app:srcCompat="@drawable/ic_twitter_black" />
 
 
             <ImageView
@@ -127,14 +127,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_msg_black" />
+                app:srcCompat="@drawable/ic_msg_black" />
 
             <ImageView
                 android:id="@+id/call_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_call_black" />
+                app:srcCompat="@drawable/ic_call_black" />
         </LinearLayout>
 
         <View

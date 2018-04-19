@@ -91,7 +91,7 @@
                             android:id="@+id/facebook_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_fb_white" />
+                            app:srcCompat="@drawable/ic_fb_white" />
 
                         <ImageView
                             android:id="@+id/twitter_image_view"
@@ -99,13 +99,13 @@
                             android:layout_height="wrap_content"
                             android:layout_marginEnd="@dimen/dp32"
                             android:layout_marginStart="@dimen/dp32"
-                            android:src="@drawable/ic_twitter_white" />
+                            app:srcCompat="@drawable/ic_twitter_white" />
 
                         <ImageView
                             android:id="@+id/instagram_image_view"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@drawable/ic_instagram_white" />
+                            app:srcCompat="@drawable/ic_instagram_white" />
 
                     </LinearLayout>
                 </LinearLayout>
@@ -123,7 +123,7 @@
                     android:id="@+id/back_button"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_arrow_left" />
+                    app:srcCompat="@drawable/ic_arrow_left" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 

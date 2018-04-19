@@ -72,6 +72,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:padding="@dimen/activity_vertical_margin"
-        android:src="@drawable/ic_favorite_radio"
+        app:srcCompat="@drawable/ic_favorite_radio"
         android:visibility="visible" />
 </RelativeLayout>

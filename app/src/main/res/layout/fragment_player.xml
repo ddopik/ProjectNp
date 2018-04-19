@@ -82,7 +82,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp8"
-                android:src="@drawable/ic_arrow_down" />
+                app:srcCompat="@drawable/ic_arrow_down" />
 
 
         </RelativeLayout>
@@ -121,14 +121,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_fb_white" />
+                app:srcCompat="@drawable/ic_fb_white" />
 
             <ImageView
                 android:id="@+id/twitter_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_twitter_white" />
+                app:srcCompat="@drawable/ic_twitter_white" />
 
             <FrameLayout
                 android:layout_width="match_parent"
@@ -140,7 +140,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/ic_play_btn" />
+                    app:srcCompat="@drawable/ic_play_btn" />
 
                 <ProgressBar
                     android:id="@+id/player_progress_bar"
@@ -155,14 +155,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_msg_white" />
+                app:srcCompat="@drawable/ic_msg_white" />
 
             <ImageView
                 android:id="@+id/call_image_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_call_white" />
+                app:srcCompat="@drawable/ic_call_white" />
         </LinearLayout>
 
         <TextView

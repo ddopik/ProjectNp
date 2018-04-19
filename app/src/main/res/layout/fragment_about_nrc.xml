@@ -32,7 +32,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentStart="true"
                     android:layout_centerVertical="true"
-                    android:src="@drawable/ic_menu" />
+                    app:srcCompat="@drawable/ic_menu" />
 
                 <TextView
                     android:layout_width="wrap_content"

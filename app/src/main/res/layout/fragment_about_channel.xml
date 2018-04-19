@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -46,14 +47,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_fb_black" />
+                    app:srcCompat="@drawable/ic_fb_black" />
 
                 <ImageView
                     android:id="@+id/twitter_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_twitter_black" />
+                    app:srcCompat="@drawable/ic_twitter_black" />
 
 
                 <ImageView
@@ -61,14 +62,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_instagram_black" />
+                    app:srcCompat="@drawable/ic_instagram_black" />
 
                 <ImageView
                     android:id="@+id/youtube_image_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_youtube_black" />
+                    app:srcCompat="@drawable/ic_youtube_black" />
             </LinearLayout>
         </LinearLayout>
 

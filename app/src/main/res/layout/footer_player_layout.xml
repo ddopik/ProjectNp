@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:src="@drawable/ic_play_btn" />
+                app:srcCompat="@drawable/ic_play_btn" />
 
             <ProgressBar
                 android:id="@+id/player_progress_bar"
@@ -73,7 +73,7 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:padding="@dimen/dp8"
-            android:src="@drawable/ic_arrow_up" />
+            app:srcCompat="@drawable/ic_arrow_up" />
 
         <ImageView
             android:id="@+id/fav_image_view"
@@ -82,7 +82,7 @@
             android:layout_centerVertical="true"
             android:layout_toStartOf="@id/expand_image_view"
             android:padding="@dimen/dp8"
-            android:src="@drawable/ic_favorite_white"
+            app:srcCompat="@drawable/ic_favorite_white"
             android:visibility="gone" />
     </RelativeLayout>
 </LinearLayout>

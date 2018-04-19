@@ -20,14 +20,14 @@
                 android:id="@+id/back_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_arrow_left" />
+                app:srcCompat="@drawable/ic_arrow_left" />
 
             <android.support.v7.widget.SearchView
                 android:id="@+id/search_action"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="@dimen/dp16"
-                android:src="@drawable/ic_arrow_left"
+                app:srcCompat="@drawable/ic_arrow_left"
                 android:textSize="@dimen/small_text"
                 app:iconifiedByDefault="false" />
 
