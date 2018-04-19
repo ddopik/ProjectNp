@@ -109,6 +109,8 @@
     <string name="remove_from_fav">Remove from favourite channels</string>
     <string name="search_hint">Search Here</string>
     <string name="news_nrc_analytics">News section</string>
+    <string name="related_news">Related News</string>
+    <string name="static_published_at">Published At</string>
 
     <string-array name="week_days">
         <item>Saturday</item>

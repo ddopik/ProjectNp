@@ -10,7 +10,9 @@ import com.spade.nrc.ui.channel.model.ChannelsSearchResponse;
 import com.spade.nrc.ui.explore.model.LiveShowsResponse;
 import com.spade.nrc.ui.explore.model.SlideBannerResponse;
 import com.spade.nrc.ui.login.UserModel;
+import com.spade.nrc.ui.news.model.InnerNewsResponse;
 import com.spade.nrc.ui.news.model.NewsResponse;
+import com.spade.nrc.ui.news.model.RelatedNewsResponse;
 import com.spade.nrc.ui.presenters.model.PresenterDetailsResponse;
 import com.spade.nrc.ui.presenters.model.PresentersResponse;
 import com.spade.nrc.ui.register.RegistrationResponse;
@@ -66,6 +68,8 @@ public class ApiHelper {
     public static final String NEWS_SEARCH_URL = BASE_URL + "search/news";
     private static final String USER_CHANNELS = BASE_URL + "channel/favorite";
     private static final String USER_SHOWS = BASE_URL + "show/favorite";
+    private static final String INNER_NEWS_Url = BASE_URL + "news/{id}";
+    private static final String RELATED_NEWS_URL = BASE_URL + "newsRelated/{id}";
 
     private static final String LANG_PATH_PARAM = "lang";
     private static final String CHANNEL_PARAM = "channel";
@@ -103,6 +107,7 @@ public class ApiHelper {
                 .build()
                 .getObjectObservable(ShowsPagesResponse.class);
     }
+
     public static Observable<NewsResponse> getNews(String appLang) {
         return Rx2AndroidNetworking.get(NEWS_LIST_URL)
                 .addPathParameter(LANG_PATH_PARAM, appLang)
@@ -347,6 +352,25 @@ public class ApiHelper {
                 .getObjectObservable(NewsSearchResponse.class);
     }
 
+    public static Observable<InnerNewsResponse> getInnerNews(String newsID, String appLang) {
+        return Rx2AndroidNetworking.get(INNER_NEWS_Url)
+                .addPathParameter(ID_PATH_PARAM, newsID)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .setPriority(Priority.HIGH)
+                .getResponseOnlyFromNetwork()
+                .build()
+                .getObjectObservable(InnerNewsResponse.class);
+    }
+
+    public static Observable<RelatedNewsResponse> getRelatedNews(String appLang, String newsID) {
+        return Rx2AndroidNetworking.get(RELATED_NEWS_URL)
+                .addPathParameter(LANG_PATH_PARAM, appLang)
+                .addPathParameter(ID_PATH_PARAM, newsID)
+                .setPriority(Priority.HIGH)
+                .getResponseOnlyFromNetwork()
+                .build()
+                .getObjectObservable(RelatedNewsResponse.class);
+    }
 
     public interface AddToFavCallBacks {
         void addToFavSuccess();
