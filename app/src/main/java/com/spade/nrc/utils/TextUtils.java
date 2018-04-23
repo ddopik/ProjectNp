@@ -34,18 +34,22 @@ public class TextUtils {
     }
 
     public static String getShowNames(List<Show> shows) {
-        String presenterNames = "";
+        String showNames = "";
 
-        if (shows != null && !shows.isEmpty()) {
-            for (int i = 0; i < shows.size(); i++) {
-                if (i == shows.size() - 1) {
-                    presenterNames = presenterNames.concat(shows.get(i).getTitle());
-                } else {
-                    presenterNames = presenterNames.concat(shows.get(i).getTitle()).concat(" - ");
+        try {
+            if (shows != null && !shows.isEmpty()) {
+                for (int i = 0; i < shows.size(); i++) {
+                    if (i == shows.size() - 1) {
+                        showNames = showNames.concat(shows.get(i).getTitle());
+                    } else {
+                        showNames = showNames.concat(shows.get(i).getTitle()).concat(" - ");
+                    }
                 }
             }
+        } catch (Exception e) {
+            return showNames;
         }
-        return presenterNames;
+        return showNames;
     }
 
     public static String getScheduleTimes(List<Schedule> schedules) {
