@@ -1,5 +1,6 @@
 package com.spade.nrc.ui.explore.view;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.spade.nrc.base.BaseView;
 import com.spade.nrc.ui.explore.model.LiveShowsData;
 import com.spade.nrc.ui.explore.model.SlideBanner;
@@ -29,4 +30,8 @@ public interface ExploreView extends BaseView {
     void showFeaturedShows(List<Show> showList);
 
     void showLiveNowShows(List<LiveShowsData> showList);
+
+    void showProfilePic(String url, RequestOptions requestOptions);
+
+    void hideProfilePic();
 }

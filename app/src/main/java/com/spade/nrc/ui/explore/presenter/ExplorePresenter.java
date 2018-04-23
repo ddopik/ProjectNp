@@ -9,9 +9,12 @@ import com.spade.nrc.ui.explore.view.ExploreView;
 
 public interface ExplorePresenter extends BasePresenter<ExploreView> {
 
+
     void getFeaturedShows();
 
     void getLiveNowShows();
 
     void getSlidingBanners();
+
+    void getProfilePic();
 }

@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.analytics.Tracker;
 import com.spade.nrc.R;
@@ -18,7 +19,9 @@ import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.CustomViews.CustomRecyclerView;
+import com.spade.nrc.ui.about.nrc.AboutNrcFragment;
 import com.spade.nrc.ui.event.bus.events.ShowsClickEvent;
 import com.spade.nrc.ui.explore.model.LiveShowsData;
 import com.spade.nrc.ui.explore.model.SlideBanner;
@@ -27,10 +30,13 @@ import com.spade.nrc.ui.explore.presenter.ExplorePresenterImpl;
 import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.ChannelNavigationInterface;
 import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.ui.profile.ProfileFragment;
 import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.GlideApp;
+import com.spade.nrc.utils.PrefUtils;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -51,9 +57,11 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     private View exploreView;
     private ExplorePresenter explorePresenter;
     private ProgressBar sliderProgress, liveProgress, featuredProgress;
-    private ImageView searchIcon;
+    private ImageView searchIcon, profileImage;
     private ShowsAdapter featuredShowsAdapter;
     private LiveShowsAdapter liveShowsAdapter;
+
+
     private SlidingBannerAdapter slidingBannerAdapter;
     private List<LiveShowsData> liveNowShows;
     private List<Show> featuredShows;
@@ -63,6 +71,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     private NavigationManager navigationManager;
     private NavigationManager.OnMenuOpenClicked onMenuOpenClicked;
     private EventBus eventBus;
+    private RealmDbImpl realmDb;
 
 
     @Nullable
@@ -159,6 +168,19 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
     }
 
     @Override
+    public void showProfilePic(String url, RequestOptions requestOptions) {
+        profileImage.setVisibility(View.VISIBLE);
+        GlideApp.with(getActivity()).load(url).apply(requestOptions).centerCrop()
+                .placeholder(getActivity().getResources().getDrawable(R.drawable.ic_profile_default)).apply(requestOptions)
+                .into(profileImage);
+    }
+
+    @Override
+    public void hideProfilePic() {
+        profileImage.setVisibility(View.GONE);
+    }
+
+    @Override
     protected void initPresenter() {
         explorePresenter = new ExplorePresenterImpl(getContext());
         explorePresenter.setView(this);
@@ -184,6 +206,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         ImageView megaChannelImageView = exploreView.findViewById(R.id.mega_channel_image_view);
         ImageView menuImageView = exploreView.findViewById(R.id.menu_image_view);
         searchIcon = exploreView.findViewById(R.id.search_icon);
+        profileImage = exploreView.findViewById(R.id.profile_image);
         ViewPager sliderPager = exploreView.findViewById(R.id.slider_pager);
 
 
@@ -199,6 +222,7 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         naghamChannelImageView.setOnClickListener(this);
         megaChannelImageView.setOnClickListener(this);
         searchIcon.setOnClickListener(this);
+        profileImage.setOnClickListener(this);
 
         featuredShows = new ArrayList<>();
         liveNowShows = new ArrayList<>();
@@ -215,6 +239,8 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
         featuredShowsAdapter.setShowActions(this);
         featuredRecycler.setAdapter(featuredShowsAdapter);
 
+
+        explorePresenter.getProfilePic();
         explorePresenter.getSlidingBanners();
         explorePresenter.getLiveNowShows();
         explorePresenter.getFeaturedShows();
@@ -248,7 +274,12 @@ public class ExploreFragment extends BaseFragment implements ExploreView, View.O
                 channelNavigationInterface.openSearchFragment();
 //                navigationManager.openFragment(new SearchFragment(),R.id.fragment_container,ExploreFragment.class.getSimpleName());
                 break;
+            case R.id.profile_image:
+                ProfileFragment profileFragment = new ProfileFragment();
+                navigationManager.openFragment(profileFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
+                break;
         }
+
     }
 
     @Override

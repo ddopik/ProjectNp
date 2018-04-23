@@ -38,10 +38,10 @@ import static com.spade.nrc.ui.login.presenter.LoginPresenterImpl.GOOGLE_TYPE;
 public class ApiHelper {
 
     // DEV URL
-    private static final String BASE_URL = "http://dev.spade.studio/nrc/public/api/v1/{lang}/";
+//    private static final String BASE_URL = "http://dev.spade.studio/nrc/public/api/v1/{lang}/";
 
     // LIVE UR:
-//    private static final String BASE_URL = "http://admin.naghamfm1053.com/api/v1/{lang}/";
+    private static final String BASE_URL = "http://admin.naghamfm1053.com/api/v1/{lang}/";
 
     private static final String PRESENTERS_LIST_URL = BASE_URL + "presenters";
     private static final String PRESENTERS_DETAILS_URL = BASE_URL + "presenters/{id}";

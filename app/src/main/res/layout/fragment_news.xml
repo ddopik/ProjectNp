@@ -21,10 +21,15 @@
             app:layout_scrollFlags="scroll|enterAlways"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/menu_image_view"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:src="@drawable/ic_menu" />
 
             <TextView
@@ -35,8 +40,10 @@
                 android:layout_marginStart="@dimen/dp8"
                 android:padding="@dimen/dp8"
                 android:text="@string/news"
+                android:layout_toEndOf="@id/menu_image_view"
                 android:textColor="@color/white"
                 android:textSize="@dimen/material_text_subhead" />
+            </RelativeLayout>
         </android.support.v7.widget.Toolbar>
 
     </android.support.design.widget.AppBarLayout>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.R;
@@ -153,6 +154,7 @@ public class LoginPresenterImpl implements LoginPresenter, GoogleLoginCallBack, 
                 }, throwable -> {
                     if (throwable != null) {
                         ANError anError = (ANError) throwable;
+                        Log.e(getClass().getName(), "Error---->" + anError.getErrorDetail());
                         mLoginView.showMessage(ErrorUtils.getErrors(anError));
                     }
                 });

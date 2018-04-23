@@ -83,7 +83,7 @@
     <string name="enter_message">Please Enter Message</string>
     <string name="enter_password">Please Enter Your Password</string>
     <string name="enter_confirm_password">Please Confirm Your Password</string>
-    <string name="welcome_to_nrc">welcome to nrc</string>
+    <string name="welcome_to_nrc">w e l c o m e \u0020t o \u0020 n r c </string>
     <string name="register">Register</string>
     <string name="forget_password">Forgot password?</string>
     <string name="something_wrong">Something went wrong</string>
@@ -138,7 +138,7 @@
     </string-array>
 
     <string-array name="menu_titles">
-        <!--&lt;!&ndash;<item>@string/explore</item>&ndash;&gt;-->
+        <item>@string/explore</item>
         <item>@string/about</item>
         <item>@string/profile</item>
         <item>@string/news</item>

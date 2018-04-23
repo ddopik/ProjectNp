@@ -3,9 +3,14 @@ package com.spade.nrc.ui.explore.presenter;
 import android.content.Context;
 
 import com.androidnetworking.error.ANError;
+import com.bumptech.glide.request.RequestOptions;
+import com.spade.nrc.R;
 import com.spade.nrc.network.ApiHelper;
 import com.spade.nrc.nrc.media.player.MusicProvider;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.explore.view.ExploreView;
+import com.spade.nrc.utils.ChannelUtils;
+import com.spade.nrc.utils.GlideApp;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -19,6 +24,8 @@ public class ExplorePresenterImpl implements ExplorePresenter {
 
     private ExploreView exploreView;
     private Context context;
+    private RealmDbImpl realmDb;
+    private RequestOptions requestOptions;
 
     public ExplorePresenterImpl(Context context) {
         this.context = context;
@@ -83,5 +90,16 @@ public class ExplorePresenterImpl implements ExplorePresenter {
                         exploreView.showMessage(anError.getErrorDetail());
                     }
                 });
+    }
+
+    @Override
+    public void getProfilePic() {
+        realmDb = new RealmDbImpl();
+        requestOptions = new RequestOptions();
+        if (PrefUtils.isLoggedIn(context)) {
+            exploreView.showProfilePic(realmDb.getUser(PrefUtils.getUserId(context)).getUserPhoto(), requestOptions);
+        } else {
+            exploreView.hideProfilePic();
+        }
     }
 }

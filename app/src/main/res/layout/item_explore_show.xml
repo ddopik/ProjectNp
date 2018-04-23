@@ -5,11 +5,13 @@
     android:layout_width="@dimen/nav_header_height"
     android:layout_height="wrap_content"
     android:layout_marginStart="@dimen/dp8"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@color/white">
 
     <FrameLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        tools:background="@color/grey_background">
 
         <!--<ImageView-->
         <!--android:layout_width="match_parent"-->
@@ -47,7 +49,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
-        android:padding="@dimen/dp4"
+        android:layout_marginTop="@dimen/dp8"
+        android:padding="@dimen/dp2"
         app:color="@color/black"
         tools:text="Show Name" />
 
@@ -55,7 +58,7 @@
         android:id="@+id/presenter_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/dp4"
+        android:layout_marginBottom="@dimen/dp2"
         android:layout_marginStart="@dimen/dp4"
         android:ellipsize="end"
         android:maxLines="1"

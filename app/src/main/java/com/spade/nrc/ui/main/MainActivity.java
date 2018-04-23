@@ -669,13 +669,20 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     @Override
     public void onItemClicked(int position) {
         switch (position) {
+
             case 0:
+                ExploreFragment exploreFragment = new ExploreFragment();
+                exploreFragment.setOnMenuOpenClicked(this);
+                navigationManager.openFragment(exploreFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
+                mDrawerLayout.closeDrawer(Gravity.START);
+                break;
+            case 1:
                 AboutNrcFragment aboutNrcFragment = new AboutNrcFragment();
                 aboutNrcFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(aboutNrcFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
-            case 1:
+            case 2:
                 if (PrefUtils.getLoginProvider(this) != LoginProviders.NONE.getLoginProviderCode()) {
                     ProfileFragment profileFragment = new ProfileFragment();
 //                    aboutNrcFragment.setOnMenuOpenClicked(this);
@@ -684,20 +691,20 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
                 }
                 break;
 
-            case 2:
+            case 3:
 
                 NewsFragment newsFragment = new NewsFragment();
                 newsFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(newsFragment, R.id.fragment_container, NewsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
-            case 3:
+            case 4:
                 ContactUsFragment contactUsFragment = new ContactUsFragment();
                 contactUsFragment.setOnMenuOpenClicked(this);
                 navigationManager.openFragment(contactUsFragment, R.id.fragment_container, ContactUsFragment.class.getSimpleName());
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
-            case 4:
+            case 5:
                 languageSpinner.performClick();
                 break;
         }
