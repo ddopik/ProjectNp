@@ -21,13 +21,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.RequestOptions;
 import com.bumptech.glide.request.target.Target;
 import com.spade.nrc.R;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.media.player.MediaPlayerTrack;
 import com.spade.nrc.nrc.media.player.MediaPlayerEvent;
 import com.spade.nrc.nrc.media.player.MusicProvider;
+import com.spade.nrc.ui.main.ChannelNavigationInterface;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
@@ -51,7 +55,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by Ayman Abouzeid on 1/27/18.
  */
 
-public class PlayerFragment extends BaseFragment implements PlayerView, View.OnClickListener {
+public class PlayerFragment extends BaseFragment implements PlayerView, View.OnClickListener, LiveShowImagesAdapter.LiveShowImagesAdapterAction {
 
     private int TRANSLATION_VALUE;
     private View playerView;
@@ -66,6 +70,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
     private MusicProvider musicProvider;
     private EventBus eventBus;
     private OnPlayerCollapsed onPlayerCollapsed;
+    private ChannelNavigationInterface channelNavigationInterface;
     private Show currentShow;
 
     @SuppressLint("UseSparseArrays")
@@ -119,6 +124,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         loadChannels();
 
         liveShowImagesAdapter = new LiveShowImagesAdapter(showsImages, getContext());
+        liveShowImagesAdapter.setLiveShowImagesAdapterAction(this);
         viewPager.setAdapter(liveShowImagesAdapter);
         viewPager.setClipToPadding(false);
         viewPager.setPadding(150, 0, 150, 0);
@@ -142,6 +148,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
 
             }
         });
+
 
         playerPresenter.getLiveStreamingShows(String.valueOf(channelID));
         viewPager.setCurrentItem(0);
@@ -273,7 +280,10 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
             nextShowTimes.setText(TextUtils.getScheduleTimes(nextShow.getSchedules()));
             nextShowName.setText(nextShow.getTitle());
             nextShowPresenters.setText(TextUtils.getPresentersNames(nextShow.getPresenters()));
-            GlideApp.with(getContext()).load(nextShow.getMedia()).centerCrop()
+            RequestOptions requestOptions = new RequestOptions();
+            requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
+
+            GlideApp.with(getContext()).load(nextShow.getMedia()).apply(requestOptions)
                     .placeholder(ChannelUtils.getShowDefaultImage(channelID))
                     .into(nextShowImage);
         } else {
@@ -455,8 +465,18 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         }
     }
 
+    public void setChannelNavigationInterface(ChannelNavigationInterface channelNavigationInterface) {
+        this.channelNavigationInterface = channelNavigationInterface;
+    }
+
     public void setOnPlayerCollapsed(OnPlayerCollapsed onPlayerCollapsed) {
         this.onPlayerCollapsed = onPlayerCollapsed;
+    }
+
+    @Override
+    public void onLiveShowImagesClicked(int position) {
+        channelNavigationInterface.hidePlayer();
+        channelNavigationInterface.openChannel(position);
     }
 
     public interface OnPlayerCollapsed {

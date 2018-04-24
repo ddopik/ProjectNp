@@ -13,7 +13,6 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.spade.nrc.R;
-import com.spade.nrc.ui.explore.view.LiveShowsAdapter;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.GlideApp;
 
@@ -28,6 +27,8 @@ public class LiveShowImagesAdapter extends PagerAdapter {
     private Context mContext;
     public static final int CORNERS_RADIUS = 16;
 
+    private LiveShowImagesAdapterAction liveShowImagesAdapteActionl;
+
     public LiveShowImagesAdapter(List<String> showsImages, Context mContext) {
         this.showsImages = showsImages;
         this.mContext = mContext;
@@ -40,6 +41,10 @@ public class LiveShowImagesAdapter extends PagerAdapter {
         View itemView = inflater.inflate(R.layout.item_show_image, container,
                 false);
         ImageView showImage = itemView.findViewById(R.id.show_image);
+        if (liveShowImagesAdapteActionl != null)
+            itemView.setOnClickListener(view -> {
+                liveShowImagesAdapteActionl.onLiveShowImagesClicked(position);
+            });
         RelativeLayout playerImageLayout = itemView.findViewById(R.id.player_image_layout);
         ViewCompat.setElevation(playerImageLayout, 8);
 
@@ -73,5 +78,15 @@ public class LiveShowImagesAdapter extends PagerAdapter {
     @Override
     public int getItemPosition(Object object) {
         return POSITION_NONE;
+    }
+
+
+    public void setLiveShowImagesAdapterAction(LiveShowImagesAdapterAction liveShowImagesAdapterAction) {
+        this.liveShowImagesAdapteActionl = liveShowImagesAdapterAction;
+    }
+
+    public interface LiveShowImagesAdapterAction {
+        void onLiveShowImagesClicked(int position);
+
     }
 }

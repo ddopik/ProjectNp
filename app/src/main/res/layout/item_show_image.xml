@@ -3,6 +3,7 @@
     android:id="@+id/player_image_layout"
     android:layout_width="@dimen/player_item_width"
     android:layout_height="@dimen/player_item_height"
+
     android:orientation="vertical">
 
     <ImageView
@@ -16,6 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:alpha="0.5"
-        android:background="@drawable/linear_black_gradient"
+        android:background="@drawable/rounded_corners_channel_background"
         android:scaleType="centerCrop" />
 </RelativeLayout>

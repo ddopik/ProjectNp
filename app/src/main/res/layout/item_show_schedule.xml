@@ -18,6 +18,7 @@
         android:layout_height="@dimen/show_schedule_image_dimen"
         android:layout_alignParentStart="true"
         android:scaleType="centerCrop"
+
         tools:src="@drawable/ic_radio_default_show" />
 
     <LinearLayout

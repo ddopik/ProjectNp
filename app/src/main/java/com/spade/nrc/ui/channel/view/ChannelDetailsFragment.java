@@ -22,7 +22,10 @@ import com.spade.nrc.application.NRCApplication;
 import com.spade.nrc.base.BaseFragment;
 import com.spade.nrc.ui.channel.presenter.ChannelDetailsPresenter;
 import com.spade.nrc.ui.channel.presenter.ChannelDetailsPresenterImpl;
+import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.general.PagingAdapter;
+import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.ui.search.view.SearchFragment;
 import com.spade.nrc.utils.ChannelUtils;
 import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.PrefUtils;
@@ -33,23 +36,25 @@ import java.util.List;
  * Created by Ayman Abouzeid on 1/14/18.
  */
 
-public class ChannelDetailsFragment extends BaseFragment implements ChannelsDetailsView {
+public class ChannelDetailsFragment extends BaseFragment implements ChannelsDetailsView, View.OnClickListener {
 
     private ChannelDetailsPresenter channelDetailsPresenter;
     private View channelDetailsView;
     private ViewPager viewPager;
     private TabLayout tabLayout;
     private TextView channelTitle;
-    private ImageView channelLogo, channelBackground, channelIllustration;
+    private ImageView channelLogo, channelBackground, channelIllustration, searchIcon;
     private PagingAdapter pagingAdapter;
     private int channelID;
     private ProgressDialog progressDialog;
     private TextView addToFavouriteChannel;
+    private NavigationManager navigationManager;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         channelDetailsView = inflater.inflate(R.layout.fragment_channel, container, false);
+        navigationManager = new NavigationManager(((MainActivity) getActivity()));
         initViews();
         return channelDetailsView;
     }
@@ -77,8 +82,9 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         viewPager = channelDetailsView.findViewById(R.id.fragments_viewpager);
         tabLayout = channelDetailsView.findViewById(R.id.tabs);
         addToFavouriteChannel = channelDetailsView.findViewById(R.id.add_to_favourite_btn);
+        searchIcon = channelDetailsView.findViewById(R.id.search_icon);
         channelID = getArguments().getInt(Constants.EXTRA_CHANNEL_ID);
-        if(PrefUtils.getAppLang(getActivity()).equals(PrefUtils.ARABIC_LANG)){
+        if (PrefUtils.getAppLang(getActivity()).equals(PrefUtils.ARABIC_LANG)) {
             backBtn.setRotationX(180);
         }
         sendAnalytics(getString(ChannelUtils.getChannelTitle(channelID)));
@@ -88,6 +94,7 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
         channelDetailsPresenter.setUpViewPager(channelID);
 
         backBtn.setOnClickListener(view -> getActivity().onBackPressed());
+        searchIcon.setOnClickListener(this);
         addToFavouriteChannel.setOnClickListener(view -> channelDetailsPresenter.addChannelToFav(channelID));
         updateAddToFavouriteBtn();
     }
@@ -157,4 +164,14 @@ public class ChannelDetailsFragment extends BaseFragment implements ChannelsDeta
                 break;
         }
     }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.search_icon:
+                navigationManager.openFragment(new SearchFragment(), R.id.fragment_container, ChannelDetailsFragment.class.getSimpleName());
+                break;
+        }
+    }
 }
+

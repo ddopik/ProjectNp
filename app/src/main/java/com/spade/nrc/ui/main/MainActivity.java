@@ -54,6 +54,7 @@ import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.general.NavigationManager.OnMenuOpenClicked;
 import com.spade.nrc.ui.news.view.NewsFragment;
 import com.spade.nrc.ui.player.PlayerFragment;
+import com.spade.nrc.ui.player.ViewInnerChannelView;
 import com.spade.nrc.ui.presenters.view.PresenterDetailsFragment;
 import com.spade.nrc.ui.profile.ProfileFragment;
 import com.spade.nrc.ui.search.view.SearchFragment;
@@ -278,6 +279,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
     private void openPlayerFragment() {
         PlayerFragment playerFragment = new PlayerFragment();
         playerFragment.setOnPlayerCollapsed(this::hidePlayer);
+        playerFragment.setChannelNavigationInterface(this);
         navigationManager.openFragmentAsRoot(playerFragment, R.id.player_fragment_container, ExploreFragment.class.getSimpleName());
     }
 
@@ -575,8 +577,8 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         animTranslate.start();
     }
 
-
-    private void hidePlayer() {
+    @Override
+    public void hidePlayer() {
         ObjectAnimator animTranslate = ObjectAnimator.ofFloat(playerFragment, "translationY", 0, toY);
         animTranslate.setDuration(ANIMATION_SPEED);
         animTranslate.addListener(new Animator.AnimatorListener() {
@@ -688,6 +690,8 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
 //                    aboutNrcFragment.setOnMenuOpenClicked(this);
                     navigationManager.openFragment(profileFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
                     mDrawerLayout.closeDrawer(Gravity.START);
+                } else {
+                    Toast.makeText(this, getResources().getString(R.string.user_not_login_msg), Toast.LENGTH_LONG).show();
                 }
                 break;
 

@@ -16,7 +16,7 @@
         android:id="@+id/opacity_image"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.4"
+        android:alpha="0.6"
         android:background="@color/black" />
 
     <ImageView
@@ -49,6 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp4"
             android:textColor="@color/white"
+            android:textStyle="normal"
             tools:text="Osam Mounir" />
     </LinearLayout>
 </RelativeLayout>

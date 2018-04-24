@@ -72,15 +72,15 @@ public class ChannelDetailsPresenterImpl implements ChannelDetailsPresenter {
         List<String> fragmentTitles = new ArrayList<>();
 
         fragments.add(liveStreamingFragment);
+        fragments.add(scheduleFragment);
         fragments.add(showsFragment);
         fragments.add(presentersFragment);
-        fragments.add(scheduleFragment);
         fragments.add(aboutChannelFragment);
 
         fragmentTitles.add(context.getString(R.string.live_streaming));
+        fragmentTitles.add(context.getString(R.string.schedule));
         fragmentTitles.add(context.getString(R.string.shows));
         fragmentTitles.add(context.getString(R.string.presenters));
-        fragmentTitles.add(context.getString(R.string.schedule));
         fragmentTitles.add(context.getString(R.string.about));
 
         channelsDetailsView.addFragment(fragments, fragmentTitles);

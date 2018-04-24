@@ -110,8 +110,9 @@
 <string name="pick_picture">اختيار الصورة من</string>
 <string name="remove_from_fav">حذف من المضفلة</string>
 <string name="search_hint">ابحث هنا</string>
+    <string name="user_not_login_msg">من فضلك قم بتسجيل الدخل لتتمكن من عرض المحتوى</string>
 
-<string-array name="week_days">
+    <string-array name="week_days">
     <item>السبت</item>
     <item>الاحد</item>
     <item>الاثنين</item>

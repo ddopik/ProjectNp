@@ -104,6 +104,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     app:srcCompat="@drawable/ic_arrow_left" />
+
+                <ImageView
+                    android:id="@+id/search_icon"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:background="@android:color/transparent"
+                    android:padding="@dimen/dp8"
+                    android:src="@android:drawable/ic_menu_search" />
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.CollapsingToolbarLayout>
 
@@ -113,7 +122,8 @@
             android:layout_height="wrap_content"
             android:background="@color/white"
             app:layout_anchorGravity="bottom"
-            app:tabMode="scrollable" />
+            app:tabMode="scrollable"
+            app:tabTextAppearance="@android:style/TextAppearance.Widget.TabWidget" />
 
     </android.support.design.widget.AppBarLayout>
 

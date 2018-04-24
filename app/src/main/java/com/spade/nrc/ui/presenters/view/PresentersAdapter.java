@@ -64,8 +64,7 @@ public class PresentersAdapter extends RecyclerView.Adapter<PresentersAdapter.Pr
             holder.arrowImage.setRotationY(180);
         }
 
-        holder.presenterImageBackground.
-                setImageResource(ChannelUtils.getPresenterImageBackground(channelID));
+//        holder.presenterImageBackground.setImageResource(ChannelUtils.getPresenterImageBackground(channelID));
         holder.itemView.setOnClickListener(view -> {
             if (onPresenterClicked != null)
                 onPresenterClicked.onPresenterClicked(presenter.getId());

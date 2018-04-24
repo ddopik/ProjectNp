@@ -21,7 +21,7 @@
     <string name="explore">Explore</string>
     <string name="presented_by">Presented by</string>
     <string name="presented_by_separated">P r e s e n t e d b y</string>
-    <string name="up_next">Coming next</string>
+    <string name="up_next">C o m i n g n e x t</string>
     <string name="next_show_title_tag" translatable="false">next show tag</string>
     <string name="enjoy_listening">Enjoy listening to %s</string>
     <string name="live_streaming">Live Streaming</string>
@@ -111,6 +111,7 @@
     <string name="news_nrc_analytics">News section</string>
     <string name="related_news">Related News</string>
     <string name="static_published_at">Published At</string>
+    <string name="user_not_login_msg">Please Login to view your profile</string>
 
     <string-array name="week_days">
         <item>Saturday</item>

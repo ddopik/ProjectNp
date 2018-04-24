@@ -88,7 +88,8 @@ public class ShowsSearchFragment extends BaseSearchFragment implements ShowsSear
 
     @Override
     public void search(String query) {
-        showFragmentPresenter.findShows(query);
+        if (showFragmentPresenter != null)
+            showFragmentPresenter.findShows(query);
     }
 
     @Override

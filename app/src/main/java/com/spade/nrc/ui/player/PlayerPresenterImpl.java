@@ -1,9 +1,15 @@
 package com.spade.nrc.ui.player;
 
 import android.content.Context;
+import android.os.Bundle;
 
 import com.androidnetworking.error.ANError;
+import com.spade.nrc.R;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.ui.channel.view.ChannelDetailsFragment;
+import com.spade.nrc.ui.general.NavigationManager;
+import com.spade.nrc.ui.main.MainActivity;
+import com.spade.nrc.utils.Constants;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -17,9 +23,11 @@ public class PlayerPresenterImpl implements PlayerPresenter {
 
     private PlayerView playerView;
     private Context context;
+    private NavigationManager navigationManager;
 
     public PlayerPresenterImpl(Context context) {
         this.context = context;
+        this.navigationManager = new NavigationManager((MainActivity) context);
     }
 
     @Override
@@ -69,6 +77,8 @@ public class PlayerPresenterImpl implements PlayerPresenter {
                     }
                 });
     }
+
+
 //
 //    @Override
 //    public void getShowByChannelID(int channelID, List<Show> showList) {
