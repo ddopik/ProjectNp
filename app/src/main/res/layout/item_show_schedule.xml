@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:background="@android:color/transparent"
     android:orientation="horizontal"
-    android:paddingBottom="@dimen/activity_vertical_margin"
+
     android:paddingEnd="@dimen/dp8"
     android:paddingStart="@dimen/dp8"
     android:paddingTop="@dimen/activity_vertical_margin">
@@ -18,7 +18,6 @@
         android:layout_height="@dimen/show_schedule_image_dimen"
         android:layout_alignParentStart="true"
         android:scaleType="centerCrop"
-
         tools:src="@drawable/ic_radio_default_show" />
 
     <LinearLayout
@@ -67,7 +66,7 @@
     </LinearLayout>
 
     <ImageView
-        android:id="@+id/favourite_image"
+        android:id="@+id/favourite_image_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"

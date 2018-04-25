@@ -11,4 +11,6 @@ public interface PlayerPresenter extends BasePresenter<PlayerView> {
 
     void getLiveStreamingShows(String channelID);
 //    void getShowByChannelID(int channelID, List<Show> showList);
+
+    void addShowToFav(int showID);
 }

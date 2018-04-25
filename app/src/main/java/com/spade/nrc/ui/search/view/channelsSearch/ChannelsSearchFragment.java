@@ -39,13 +39,14 @@ public class ChannelsSearchFragment extends BaseSearchFragment implements Channe
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.search_show_fragment, container, false);
         initViews();
+        channelsSearchPresenter = new ChannelsSearchPresenterImpl();
+        channelsSearchPresenter.setView(this);
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-        channelsSearchPresenter = new ChannelsSearchPresenterImpl();
-        channelsSearchPresenter.setView(this);
+
     }
 
     @Override
@@ -103,6 +104,7 @@ public class ChannelsSearchFragment extends BaseSearchFragment implements Channe
 
     @Override
     public void search(String query) {
-        channelsSearchPresenter.findChannels(query);
+        if (channelsSearchPresenter != null)
+            channelsSearchPresenter.findChannels(query);
     }
 }

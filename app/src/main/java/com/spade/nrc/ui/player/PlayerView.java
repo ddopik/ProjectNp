@@ -17,4 +17,6 @@ public interface PlayerView extends BaseView {
     void showCurrentShow(Show currentShow);
 
     void showNextShow(Show nextShow);
+
+    void updateAddToFavouriteNextBtn(int showId, boolean isFav);
 }

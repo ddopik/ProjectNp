@@ -6,10 +6,14 @@ import android.os.Bundle;
 import com.androidnetworking.error.ANError;
 import com.spade.nrc.R;
 import com.spade.nrc.network.ApiHelper;
+import com.spade.nrc.realm.RealmDbHelper;
+import com.spade.nrc.realm.RealmDbImpl;
 import com.spade.nrc.ui.channel.view.ChannelDetailsFragment;
 import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.MainActivity;
 import com.spade.nrc.utils.Constants;
+import com.spade.nrc.utils.ErrorUtils;
+import com.spade.nrc.utils.LoginProviders;
 import com.spade.nrc.utils.PrefUtils;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -24,10 +28,12 @@ public class PlayerPresenterImpl implements PlayerPresenter {
     private PlayerView playerView;
     private Context context;
     private NavigationManager navigationManager;
+    private RealmDbHelper realmDbHelper;
 
     public PlayerPresenterImpl(Context context) {
         this.context = context;
         this.navigationManager = new NavigationManager((MainActivity) context);
+        realmDbHelper = new RealmDbImpl();
     }
 
     @Override
@@ -78,6 +84,23 @@ public class PlayerPresenterImpl implements PlayerPresenter {
                 });
     }
 
+    @Override
+    public void addShowToFav(int showID) {
+        if (PrefUtils.getLoginProvider(context) != LoginProviders.NONE.getLoginProviderCode()) {
+            ApiHelper.addShowToFavourite(String.valueOf(showID), ApiHelper.ADD_SHOW_TO_FAV, PrefUtils.getUserToken(context), PrefUtils.getAppLang(context))
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(addToFavouriteResponse -> {
+                        realmDbHelper.updateShowData(addToFavouriteResponse.getShowRealm());
+                        playerView.updateAddToFavouriteNextBtn(showID, addToFavouriteResponse.getShowRealm().isLiked());
+                    }, throwable -> {
+                        if (throwable != null) {
+                            ANError anError = (ANError) throwable;
+                            playerView.showMessage(ErrorUtils.getErrors(anError));
+                        }
+                    });
+        }
+    }
 
 //
 //    @Override

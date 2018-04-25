@@ -93,7 +93,7 @@ public class LiveStreamingFragment extends BaseFragment implements LiveStreaming
 
         favouriteLayout = liveStreamingView.findViewById(R.id.favourite_share_layout);
         currentShowFavImageView = liveStreamingView.findViewById(R.id.fav_image_view);
-        nextShowFavImageView = liveStreamingView.findViewById(R.id.favourite_image);
+        nextShowFavImageView = liveStreamingView.findViewById(R.id.favourite_image_btn);
         nextShowLayout = liveStreamingView.findViewById(R.id.item_show);
         progressBar = liveStreamingView.findViewById(R.id.progress_bar);
         currentShowImage = liveStreamingView.findViewById(R.id.current_show_image);

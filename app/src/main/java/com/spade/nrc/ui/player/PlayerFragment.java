@@ -62,7 +62,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
     private FrameLayout nextShowLayout;
     private LiveShowImagesAdapter liveShowImagesAdapter;
     private ViewPager viewPager;
-    private ImageView channelLogo, showImageBackground, mediaControlBtn, nextShowImage, nextShowBackground;
+    private ImageView channelLogo, showImageBackground, mediaControlBtn, nextShowImage, nextShowBackground, favouriteNextShow;
     private TextView showTitle, showPresentersNames, nextShowTimes, nextShowName, nextShowPresenters, upNextShow, showDescription;
     private ProgressBar progressBar, playerProgressBar;
     private String mediaTitle, facebookUrl, twitterUrl, phoneNumber, smsNumber;
@@ -120,7 +120,7 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         progressBar = playerView.findViewById(R.id.progress_bar);
         playerProgressBar = playerView.findViewById(R.id.player_progress_bar);
         showImageBackground = playerView.findViewById(R.id.player_background);
-
+        favouriteNextShow = playerView.findViewById(R.id.favourite_image_btn);
         loadChannels();
 
         liveShowImagesAdapter = new LiveShowImagesAdapter(showsImages, getContext());
@@ -262,6 +262,8 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
         loadImages();
         showTitle.setText(mediaTitle);
         channelLogo.setImageResource(ChannelUtils.getChannelMenuLogo(channelID));
+
+
     }
 
     @Override
@@ -282,13 +284,33 @@ public class PlayerFragment extends BaseFragment implements PlayerView, View.OnC
             nextShowPresenters.setText(TextUtils.getPresentersNames(nextShow.getPresenters()));
             RequestOptions requestOptions = new RequestOptions();
             requestOptions = requestOptions.transforms(new CenterCrop(), new RoundedCorners(LiveShowImagesAdapter.CORNERS_RADIUS));
-
             GlideApp.with(getContext()).load(nextShow.getMedia()).apply(requestOptions)
                     .placeholder(ChannelUtils.getShowDefaultImage(channelID))
                     .into(nextShowImage);
         } else {
             nextShowLayout.setVisibility(View.GONE);
         }
+
+        favouriteNextShow.setOnClickListener(view -> {
+            playerPresenter.addShowToFav(nextShow.getId());
+        });
+        favouriteNextShow.setImageResource(ChannelUtils.getChannelFavBtn(nextShow.getChannel().getId()));
+        if (nextShow.isLiked())
+            favouriteNextShow.setImageResource(ChannelUtils.getChannelFavAddedBtn(nextShow.getChannel().getId()));
+        else
+            favouriteNextShow.setImageResource(ChannelUtils.getChannelFavBtn(nextShow.getChannel().getId()));
+
+    }
+
+    @Override
+    public void updateAddToFavouriteNextBtn(int showID, boolean isFav) {
+        if (isFav)
+            favouriteNextShow.setImageResource(ChannelUtils.getChannelFavAddedBtn(showID));
+        else {
+            return;
+//            favouriteNextShow.setImageResource(ChannelUtils.getChannelFavBtn(showID.getChannel().getId()));
+        }
+
     }
 
     private void loadImages() {

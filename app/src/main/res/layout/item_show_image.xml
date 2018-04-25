@@ -3,7 +3,6 @@
     android:id="@+id/player_image_layout"
     android:layout_width="@dimen/player_item_width"
     android:layout_height="@dimen/player_item_height"
-
     android:orientation="vertical">
 
     <ImageView

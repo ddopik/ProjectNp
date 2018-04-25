@@ -29,8 +29,8 @@
         android:layout_height="wrap_content"
         android:ellipsize="end"
         android:maxLines="1"
+        android:layout_marginTop="@dimen/dp12"
         app:color="@color/black"
-        android:textAlignment="textStart"
         tools:text="news Name" />
 
     <TextView
@@ -38,14 +38,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp8"
+        android:padding="@dimen/dp4"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/grey_text_color"
         tools:text="News Name SDcsdcsdcsdcsd" />
-    <TextView
-        android:id="@+id/news_id"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:visibility="gone"/>
+    \
 
 </LinearLayout>

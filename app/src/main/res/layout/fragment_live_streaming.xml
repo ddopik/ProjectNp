@@ -77,6 +77,7 @@
                 android:visibility="gone" />
         </android.support.design.widget.CoordinatorLayout>
 
+
         <com.spade.nrc.ui.CustomViews.CustomTextView
             android:id="@+id/current_show_title"
             android:layout_width="match_parent"

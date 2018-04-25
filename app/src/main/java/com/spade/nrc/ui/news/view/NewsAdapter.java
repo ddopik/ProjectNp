@@ -66,7 +66,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
                     .into(holder.newsImage);
 
         }
-        holder.itemView.setOnClickListener(view -> newsActions.onNewsClicked(news));
+        if (newsActions != null)
+            holder.itemView.setOnClickListener(view -> newsActions.onNewsClicked(news));
 
 
     }
@@ -88,14 +89,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.NewsViewHolder
         public TextView newsTitle;
         public ImageView newsImage;
         public TextView news_times;
-        public TextView newsID;
+
 
         public NewsViewHolder(View view) {
             super(view);
             newsTitle = view.findViewById(R.id.news_title);
             newsImage = view.findViewById(R.id.news_image);
             news_times = view.findViewById(R.id.news_times);
-            newsID = view.findViewById(R.id.news_id);
+
         }
     }
 }

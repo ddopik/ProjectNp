@@ -31,6 +31,7 @@ import com.spade.nrc.ui.general.NavigationManager;
 import com.spade.nrc.ui.main.ChannelNavigationInterface;
 import com.spade.nrc.ui.main.MainActivity;
 import com.spade.nrc.ui.profile.ProfileFragment;
+import com.spade.nrc.ui.search.view.SearchFragment;
 import com.spade.nrc.ui.shows.model.Schedule;
 import com.spade.nrc.ui.shows.model.Show;
 import com.spade.nrc.utils.ChannelUtils;

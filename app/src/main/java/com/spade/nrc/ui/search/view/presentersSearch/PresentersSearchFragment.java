@@ -45,13 +45,14 @@ public class PresentersSearchFragment extends BaseSearchFragment implements Pres
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.search_result_fragment, container, false);
         initViews();
+        presentersSearchPresenter = new PresentersSearchPresenterImpl();
+        presentersSearchPresenter.setView(this);
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-        presentersSearchPresenter = new PresentersSearchPresenterImpl();
-        presentersSearchPresenter.setView(this);
+
     }
 
 

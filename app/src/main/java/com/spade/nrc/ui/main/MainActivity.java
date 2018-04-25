@@ -673,9 +673,7 @@ public class MainActivity extends AppCompatActivity implements ChannelNavigation
         switch (position) {
 
             case 0:
-                ExploreFragment exploreFragment = new ExploreFragment();
-                exploreFragment.setOnMenuOpenClicked(this);
-                navigationManager.openFragment(exploreFragment, R.id.fragment_container, AboutNrcFragment.class.getSimpleName());
+                openExploreFragment();
                 mDrawerLayout.closeDrawer(Gravity.START);
                 break;
             case 1:

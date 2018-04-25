@@ -150,10 +150,10 @@ public class ShowsAdapter extends RecyclerView.Adapter<ShowsAdapter.ShowsViewHol
             if (itemViewType != NORMAL_SHOW_TYPE)
                 showTime = itemView.findViewById(R.id.show_times);
             if (itemViewType == NORMAL_SHOW_TYPE || itemViewType == SCHEDULE_SHOW_TYPE)
-                favImage = itemView.findViewById(R.id.favourite_image);
+                favImage = itemView.findViewById(R.id.favourite_image_btn);
 
             if (itemViewType == NORMAL_SHOW_TYPE || itemViewType == SCHEDULE_SHOW_TYPE)
-                favImage = itemView.findViewById(R.id.favourite_image);
+                favImage = itemView.findViewById(R.id.favourite_image_btn);
 
         }
     }

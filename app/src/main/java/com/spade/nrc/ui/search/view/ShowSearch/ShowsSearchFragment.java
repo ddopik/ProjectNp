@@ -44,13 +44,14 @@ public class ShowsSearchFragment extends BaseSearchFragment implements ShowsSear
         mainView = inflater.inflate(R.layout.search_show_fragment, container, false);
         progressBar = mainView.findViewById(R.id.progress_bar);
         initViews();
+        showFragmentPresenter = new ShowsSearchPresenterImpl();
+        showFragmentPresenter.setView(this);
         return mainView;
     }
 
     @Override
     protected void initPresenter() {
-        showFragmentPresenter = new ShowsSearchPresenterImpl();
-        showFragmentPresenter.setView(this);
+
     }
 
     @Override

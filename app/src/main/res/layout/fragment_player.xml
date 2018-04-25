@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/activity_vertical_margin"
+                android:layout_marginStart="@dimen/dp8"
                 tools:src="@drawable/ic_radiohits_menu" />
 
             <LinearLayout
@@ -218,7 +218,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:visibility="gone">
+
+        >
 
         <ImageView
             android:id="@+id/next_show_background"
@@ -250,7 +251,8 @@
             <include
                 layout="@layout/item_show_schedule"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp8" />
         </LinearLayout>
     </FrameLayout>
 

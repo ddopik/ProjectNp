@@ -22,7 +22,7 @@ import com.spade.nrc.ui.search.presenter.NewsPresenter.NewsSearchPresenterImp;
 import java.util.ArrayList;
 import java.util.List;
 
-public class NewsSearchFragment extends BaseSearchFragment implements NewsSearchFragmentView ,NewsAdapter.NewsActions {
+public class NewsSearchFragment extends BaseSearchFragment implements NewsSearchFragmentView, NewsAdapter.NewsActions {
 
     private View mainView;
     private List<News> newsList = new ArrayList<>();
@@ -40,6 +40,8 @@ public class NewsSearchFragment extends BaseSearchFragment implements NewsSearch
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mainView = inflater.inflate(R.layout.search_news_fragment, container, false);
         initViews();
+        newsSearchPresenter = new NewsSearchPresenterImp(getActivity());
+        newsSearchPresenter.setView(this);
         return mainView;
     }
 
@@ -56,8 +58,7 @@ public class NewsSearchFragment extends BaseSearchFragment implements NewsSearch
     @Override
     protected void initPresenter() {
 
-        newsSearchPresenter = new NewsSearchPresenterImp(getActivity());
-        newsSearchPresenter.setView(this);
+
     }
 
 
@@ -72,7 +73,8 @@ public class NewsSearchFragment extends BaseSearchFragment implements NewsSearch
 
     @Override
     public void hideNewsList() {
-
+        this.newsList.clear();
+        newsAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -87,12 +89,14 @@ public class NewsSearchFragment extends BaseSearchFragment implements NewsSearch
 
     @Override
     public void search(String query) {
-        if (newsSearchPresenter != null)
+        if (newsSearchPresenter != null) {
             newsSearchPresenter.findNews(query);
+        }
+
     }
 
     @Override
     public void onNewsClicked(News news) {
-        
+
     }
 }

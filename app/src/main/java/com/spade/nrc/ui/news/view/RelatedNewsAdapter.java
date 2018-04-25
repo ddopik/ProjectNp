@@ -100,7 +100,6 @@ public class RelatedNewsAdapter extends RecyclerView.Adapter<RelatedNewsAdapter.
             newsTitle = view.findViewById(R.id.news_title);
             newsImage = view.findViewById(R.id.news_image);
             news_times = view.findViewById(R.id.news_times);
-            newsID = view.findViewById(R.id.news_id);
         }
     }
 
